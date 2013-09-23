@@ -9,6 +9,7 @@ version = '0.1'
 
 tests_require = [
     'plone.app.testing',
+    'collective.betterbrowser'
 ]
 
 
@@ -42,6 +43,7 @@ setup(name=name, version=version, description=description,
       zip_safe=False,
       install_requires=[
           'Plone>=4.3',
+          'plone.api'
       ],
       extras_require=dict(
           tests=tests_require

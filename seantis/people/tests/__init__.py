@@ -28,11 +28,12 @@ def install_mailhost(portal, mailhost):
 def install_mock_mailhost(portal, from_address='noreply@example.com'):
     portal._original_mailhost = portal.MailHost
     portal.email_from_address = from_address
-    install_mailhost(portal, MockMailHost())
+
+    install_mailhost(portal, MockMailHost('MailHost'))
 
 
 def uninstall_mock_mailhost(portal):
-    if hasattr('_original_mailhost', portal):
+    if hasattr(portal, '_original_mailhost'):
         install_mailhost(portal, portal._original_mailhost)
 
 

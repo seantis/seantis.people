@@ -14,8 +14,6 @@
 
 <includeDependencies package="." />
 
-<grok:grok package="." />
-
 <genericsetup:registerProfile 
     name="default"
     title="Seantis People"
