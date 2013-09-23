@@ -22,6 +22,12 @@ Build Status
 .. image:: https://travis-ci.org/seantis/seantis.people.png   
     :target: https://travis-ci.org/seantis/seantis.people
 
+Coverage
+--------
+
+.. image:: https://coveralls.io/repos/seantis/seantis.people/badge.png
+  :target: https://coveralls.io/r/seantis/seantis.people
+
 License
 -------
 seantis.people is released under GPL v2
