@@ -16,6 +16,12 @@ Requirements
 -  Plone 4.3+
 -  Linux / Posix ( Windows may or may not work )
 
+Build Status
+------------
+
+.. image:: https://travis-ci.org/seantis/seantis.people.png   
+    :target: https://travis-ci.org/seantis/seantis.people
+
 License
 -------
 seantis.people is released under GPL v2
