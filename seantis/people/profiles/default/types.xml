@@ -1,0 +1,3 @@
+<object name="portal_types">
+    <object name="seantis.people.membership" meta_type="Dexterity FTI" />
+</object>
