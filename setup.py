@@ -43,7 +43,10 @@ setup(name=name, version=version, description=description,
       zip_safe=False,
       install_requires=[
           'Plone>=4.3',
-          'plone.api'
+          'plone.api',
+          'five.grok',
+          'plone.behavior',
+          'plone.app.dexterity [grok]'
       ],
       extras_require=dict(
           tests=tests_require
