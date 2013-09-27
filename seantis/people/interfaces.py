@@ -1,5 +1,8 @@
 
+from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.directives import form
+
+from z3c.relationfield.schema import RelationChoice
 
 from zope import schema
 from zope.interface import Interface, invariant, Invalid
@@ -12,7 +15,12 @@ class ISeantisPeopleLayer(Interface):
 
 
 class IPerson(Interface):
-    pass
+    
+    def memberships(self):
+        pass
+
+    def memberships_by_organizations(self, organizations=None):
+        pass
 
 
 class IMembership(form.Schema):
@@ -30,6 +38,12 @@ class IMembership(form.Schema):
     end = schema.Date(
         title=_(u"End of membership"),
         required=False
+    )
+
+    person = RelationChoice(
+        title=_(u"Person"),
+        source=ObjPathSourceBinder(object_provides=IPerson.__identifier__),
+        required=True,
     )
 
     @invariant

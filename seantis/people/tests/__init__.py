@@ -112,11 +112,11 @@ class TestCase(unittest.TestCase):
         event.subscribers.append(subscriber)
         return subscriber
 
-    def new_temporary_folder(self):
+    def new_temporary_folder(self, title=None):
         with self.user('admin'):
             folder = api.content.create(
                 type='Folder',
-                title=uuid.uuid4().hex,
+                title=title or uuid.uuid4().hex,
                 container=self.portal
             )
 

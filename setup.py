@@ -46,7 +46,7 @@ setup(name=name, version=version, description=description,
           'plone.api',
           'five.grok',
           'plone.behavior',
-          'plone.app.dexterity [grok]'
+          'plone.app.dexterity [grok, relations]'
       ],
       extras_require=dict(
           tests=tests_require
