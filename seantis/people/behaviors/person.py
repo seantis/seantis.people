@@ -1,8 +1,11 @@
+from collections import defaultdict
+
 from plone import api
 from zope.interface import implements
 
 from seantis.people import tools
 from seantis.people.interfaces import IPerson
+
 
 class Person(object):
     implements(IPerson)
@@ -17,18 +20,12 @@ class Person(object):
         return memberships
 
     def memberships_by_organization(self, organizations=None):
-        result = {}
+        result = defaultdict(list)
 
         for membership in self.memberships():
             organization = tools.get_parent(membership).title
 
-            if organizations is not None:
-                if organization not in organizations:
-                    continue
-
-            if organization in result:
+            if organizations is None or organization in organizations:
                 result[organization].append(membership)
-            else:
-                result[organization] = [membership]
 
         return result

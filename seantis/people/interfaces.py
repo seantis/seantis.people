@@ -17,10 +17,11 @@ class ISeantisPeopleLayer(Interface):
 class IPerson(Interface):
     
     def memberships(self):
-        pass
+        """ A list of membership belonging to this person. """
 
     def memberships_by_organizations(self, organizations=None):
-        pass
+        """ A dictionary of memberships belonging to this person. They key
+        of the dictionary is the title of the organization. """
 
 
 class IMembership(form.Schema):
