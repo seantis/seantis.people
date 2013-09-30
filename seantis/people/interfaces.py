@@ -9,6 +9,13 @@ from zope.interface import Interface, invariant, Invalid
 
 from seantis.people import _
 
+# NameFromPerson Field Key
+NAME_FROM_PERSON = u'seantis.people.name_from_person'
+
+# Supermodel namespace and prefix
+PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
+PEOPLE_PREFIX = 'people'
+
 
 class ISeantisPeopleLayer(Interface):
     pass
@@ -22,6 +29,10 @@ class IPerson(Interface):
     def memberships_by_organizations(self, organizations=None):
         """ A dictionary of memberships belonging to this person. They key
         of the dictionary is the title of the organization. """
+
+
+class INameFromPerson(Interface):
+    pass
 
 
 class IMembership(form.Schema):

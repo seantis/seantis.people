@@ -1,5 +1,6 @@
 from plone import api
 
+from seantis.people.supermodel import set_title_fields
 from seantis.people import (
     behaviors,
     interfaces,
@@ -35,3 +36,39 @@ class TestSetup(tests.IntegrationTestCase):
             interfaces.IPerson,
             behaviors.Person
         )
+
+    def test_person_title_no_influence_if_not_activated(self):
+        blank_type = self.new_temporary_type()
+        set_title_fields(blank_type.lookupSchema(), ['foo', 'bar'])
+        
+        with self.user('admin'):
+            blank_obj = api.content.create(
+                id='',
+                type=blank_type.id,
+                container=self.new_temporary_folder(),
+                foo='stop',
+                bar='hammertime!'
+            )
+
+        self.assertEqual(blank_obj.title, '')
+
+    def test_person_title_behavior(self):
+        new_type = self.new_temporary_type(
+            behaviors=[
+                interfaces.INameFromPerson.__identifier__
+            ]
+        )
+
+        set_title_fields(new_type.lookupSchema(), ['foo', 'bar'])
+
+        with self.user('admin'):           
+            obj = api.content.create(
+                id='',
+                type=new_type.id,
+                container=self.new_temporary_folder(),
+                foo='stop',
+                bar='hammertime!'
+            )
+
+        self.assertEqual(obj.title, 'stop hammertime!')
+        self.assertEqual(obj.id, 'stop-hammertime')

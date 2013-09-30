@@ -138,8 +138,9 @@ class TestCase(unittest.TestCase):
             new_type = fti.DexterityFTI(uuid.uuid4().hex)
             kwargs['klass'] = 'plone.dexterity.content.Container'
 
-            if isinstance(kwargs['behaviors'], list):
-                kwargs['behaviors'] = '\n'.join(kwargs['behaviors'])
+            if 'behaviors' in kwargs:
+                if isinstance(kwargs['behaviors'], list):
+                    kwargs['behaviors'] = '\n'.join(kwargs['behaviors'])
             
             new_type.manage_changeProperties(
                 **kwargs

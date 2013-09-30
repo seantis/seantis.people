@@ -37,4 +37,18 @@
     factory=".behaviors.Person"
     />
 
+<plone:behavior
+    title="Name from person"
+    description="Generates a name from a Seantis People person"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    provides=".interfaces.INameFromPerson"
+    />
+
+<adapter factory=".behaviors.NameFromPerson" />
+
+<utility
+    factory=".supermodel.PeopleSchema"
+    name="seantis.people.name_from_person"
+    />
+
 </configure>

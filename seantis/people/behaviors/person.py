@@ -3,7 +3,7 @@ from collections import defaultdict
 from plone import api
 from zope.interface import implements
 
-from seantis.people import tools
+from seantis.people import utils
 from seantis.people.interfaces import IPerson
 
 
@@ -23,7 +23,7 @@ class Person(object):
         result = defaultdict(list)
 
         for membership in self.memberships():
-            organization = tools.get_parent(membership).title
+            organization = utils.get_parent(membership).title
 
             if organizations is None or organization in organizations:
                 result[organization].append(membership)
