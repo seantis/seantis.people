@@ -1,10 +1,10 @@
 from plone import api
 
 from seantis.people import tests
-from seantis.people import tools
+from seantis.people import utils
 
 
-class TestTools(tests.IntegrationTestCase):
+class TestUtils(tests.IntegrationTestCase):
 
     def test_get_parent(self):
         folder = self.new_temporary_folder(title='parent')
@@ -18,5 +18,5 @@ class TestTools(tests.IntegrationTestCase):
 
         brain = api.content.get('/'.join(ms.getPhysicalPath()))
 
-        self.assertEqual(tools.get_parent(brain).title, 'parent')
-        self.assertEqual(tools.get_parent(ms).title, 'parent')
+        self.assertEqual(utils.get_parent(brain).title, 'parent')
+        self.assertEqual(utils.get_parent(ms).title, 'parent')
