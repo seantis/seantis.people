@@ -8,7 +8,7 @@ from seantis.people import (
 )
 
 
-class TestSetup(tests.IntegrationTestCase):
+class TestBehavior(tests.IntegrationTestCase):
 
     def is_behavior_assignable(self, behavior, interface, factory):
 
