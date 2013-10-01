@@ -3,6 +3,7 @@ from plone import api
 from plone.dexterity.interfaces import IDexterityFTI
 from Products.ZCatalog.interfaces import ICatalogBrain
 from zope.component import getUtility
+from zope.schema import getFields
 
 
 def get_parent(obj):
@@ -19,3 +20,22 @@ def get_schema_from_portal_type(portal_type):
 
     fti = getUtility(IDexterityFTI, portal_type)
     return fti.lookupSchema()
+
+
+def order_fields_by_schema_appearance(fields, schema):
+
+     order = dict((key, f.order) for key, f in getFields(schema).items())
+     return sorted(fields, key=order.get)
+
+
+def add_attribute_to_metadata(attribute):
+    zcatalog = api.portal.get_tool('portal_catalog')._catalog
+
+    if attribute not in zcatalog.schema:
+        zcatalog.addColumn(attribute)
+
+def get_brain_by_object(obj):
+    """ The inverse of getObject. """
+    catalog = api.portal.get_tool('portal_catalog')
+
+    return catalog(path={'query': '/'.join(obj.getPhysicalPath())})[0]
