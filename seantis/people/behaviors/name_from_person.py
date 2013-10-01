@@ -20,10 +20,10 @@ class NameFromPerson(object):
 
     def __new__(cls, context):
         schema = utils.get_schema_from_portal_type(context.portal_type)
-
-        title = ' '.join([
-            getattr(context, field) for field in get_title_fields(schema)
-        ])
+        fields = utils.order_fields_by_schema_appearance(
+            get_title_fields(schema), schema
+        )
+        title = ' '.join([getattr(context, field) for field in fields])
 
         instance = super(NameFromPerson, cls).__new__(cls)
 

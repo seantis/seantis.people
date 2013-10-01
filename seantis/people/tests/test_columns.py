@@ -17,7 +17,7 @@ class TestColumns(tests.IntegrationTestCase):
     def test_add_person_column_first(self):
         new_type = self.new_temporary_type()
 
-        set_table_columns(new_type.lookupSchema(), ['foo'])
+        set_table_columns(new_type.lookupSchema(), {'foo': '1'})
 
         with self.user('admin'):           
             obj = api.content.create(
@@ -38,7 +38,7 @@ class TestColumns(tests.IntegrationTestCase):
     def test_add_person_column_later(self):
         new_type = self.new_temporary_type()
 
-        self.assertEqual(get_table_columns(new_type.lookupSchema()), [])
+        self.assertEqual(get_table_columns(new_type.lookupSchema()), {})
 
         with self.user('admin'):           
             obj = api.content.create(
@@ -50,7 +50,7 @@ class TestColumns(tests.IntegrationTestCase):
             )
 
         # define the metadata after the obj has been created
-        set_table_columns(new_type.lookupSchema(), ['foo'])
+        set_table_columns(new_type.lookupSchema(), {'foo': '1'})
 
         # which leaves the attribute in a missing value state
         brain = utils.get_brain_by_object(obj)
