@@ -20,12 +20,6 @@ class SchemaHandler(object):
         attribute = attribute or self.attribute
         return node.get(ns(attribute, self.namespace), default).lower()
 
-    def read(self, node, schema, field):
-        pass
-
-    def write(self, node, schema, field):
-        pass
-
 
 class TitleSchemaHandler(SchemaHandler):
 

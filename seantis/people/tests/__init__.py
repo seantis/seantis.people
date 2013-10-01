@@ -16,6 +16,7 @@ from plone import api
 
 from collective.betterbrowser import new_browser
 
+from seantis.people import utils
 from seantis.people.testing import (
     INTEGRATION_TESTING,
     FUNCTIONAL_TESTING
@@ -135,21 +136,7 @@ class TestCase(unittest.TestCase):
 
         """
         with self.user('admin'):
-            new_type = fti.DexterityFTI(uuid.uuid4().hex)
-            kwargs['klass'] = 'plone.dexterity.content.Container'
-
-            if 'behaviors' in kwargs:
-                if isinstance(kwargs['behaviors'], list):
-                    kwargs['behaviors'] = '\n'.join(kwargs['behaviors'])
-            
-            new_type.manage_changeProperties(
-                **kwargs
-            )
-
-            types = api.portal.get_tool('portal_types')
-            types._setObject(new_type.id, new_type)
-
-            fti.register(new_type)
+            new_type = utils.add_new_dexterity_type(uuid.uuid4().hex, **kwargs)
             self.temporary_types.append(new_type)
 
             return new_type

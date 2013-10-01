@@ -5,4 +5,5 @@ omit =
     parts/*
     eggs/*
     */test*
+    */test-views/*
     */distutils/__init__.py
