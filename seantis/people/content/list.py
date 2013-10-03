@@ -1,9 +1,13 @@
 from plone import api
 
-from seantis.people.interfaces import IPerson
+from five import grok
+
+from seantis.people.interfaces import IPerson, IList
 from seantis.people import utils
 
 from plone.dexterity.content import Container
+from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
+
 
 class List(Container):
 
@@ -29,3 +33,20 @@ class List(Container):
                 used_types.append(portal_type)
 
         return used_types
+
+
+class ListConstrainTypes(grok.Adapter):
+    grok.provides(IConstrainTypes)
+    grok.context(IList)
+
+    def getConstrainTypesMode(self):
+        return ENABLED
+
+    def getLocallyAllowedTypes(self):
+        return tuple(t.id for t in self.context.possible_types())
+
+    def allowedContentTypes(self):
+        return self.context.possible_types()
+
+    def getImmediatelyAddableTypes(self):
+        return self.getLocallyAllowedTypes()

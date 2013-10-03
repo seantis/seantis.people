@@ -44,6 +44,20 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(len(lst.possible_types()), 3)  # all people types
         self.assertEqual(len(lst.used_types()), 2)  # ignore the unused type
 
+    def test_add_unsupported_type(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            add_invalid_type = lambda: api.content.create(
+                id='invalid', type=self.new_temporary_type(), container=lst
+            )
+
+        self.assertRaises(api.exc.InvalidParameterError, add_invalid_type)
+
     def test_list_view_empty(self):
         with self.user('admin'):
             lst = api.content.create(
