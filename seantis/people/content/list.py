@@ -1,12 +1,10 @@
-from plone import api
-
 from five import grok
+from plone import api
+from plone.dexterity.content import Container
+from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
 from seantis.people.interfaces import IPerson, IList
 from seantis.people import utils
-
-from plone.dexterity.content import Container
-from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
 
 class List(Container):

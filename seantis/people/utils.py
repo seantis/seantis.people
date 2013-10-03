@@ -84,3 +84,13 @@ def add_new_dexterity_type(name, **kwargs):
     register_dexterity_type(new_type)
 
     return new_type
+
+
+def invert_dictionary(dictionary):
+    inverted = {}
+    
+    for k, v in dictionary.iteritems():
+        inverted[v] = inverted.get(v, [])
+        inverted[v].append(k)
+    
+    return inverted

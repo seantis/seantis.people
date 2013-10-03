@@ -116,3 +116,20 @@ def set_table_columns(schema, fields):
     
     for column in get_table_columns(schema):
         utils.add_attribute_to_metadata(column)
+
+def get_table_columns_merged(schema):
+    """ Returns the columns in the order of appearance in the table with
+    each column having a tuple with a list of titles and a corresponding
+    list of attributes.
+
+    """
+    columns = utils.invert_dictionary(get_table_columns(schema))
+    
+    for index in sorted(columns):
+        attributes = utils.order_fields_by_schema_appearance(
+            columns[index], schema
+        )
+
+        titles = [schema[attr].title for attr in attributes]
+        
+        yield (titles, attributes)

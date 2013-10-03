@@ -6,7 +6,8 @@ from seantis.people.supermodel import (
     get_title_fields,
     set_title_fields,
     get_table_columns,
-    set_table_columns
+    set_table_columns,
+    get_table_columns_merged
 )
 
 
@@ -72,24 +73,24 @@ class TestSupermodel(tests.IntegrationTestCase):
                         type="zope.schema.TextLine"
                         people:column="1">
                     <description/>
-                    <title>Foobar</title>
+                    <title>Eins</title>
                 </field>
                 <field  name="second"
                         type="zope.schema.TextLine"
                         people:column="1">
                     <description/>
-                    <title>Foobar</title>
+                    <title>Zwei</title>
                 </field>
                 <field  name="third"
                         type="zope.schema.TextLine">
                     <description/>
-                    <title>Foobar</title>
+                    <title>Drei</title>
                 </field>
                 <field  name="fourth"
                         type="zope.schema.TextLine"
                         people:column="2">
                     <description/>
-                    <title>Foobar</title>
+                    <title>Vier</title>
                 </field>
             </schema>
         </model>"""
@@ -118,3 +119,11 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn('<field name="second">', xml)
         self.assertIn('<field name="third" people:column="2">', xml)
         self.assertIn('<field name="fourth" people:column="2">', xml)
+
+    def test_get_table_columns_merged(self):
+        model = loadString(self.column_xml)
+
+        self.assertEqual(list(get_table_columns_merged(model.schema)), [
+            ([u'Eins', u'Zwei'], ['first', 'second']),
+            ([u'Vier'], ['fourth'])
+        ])
