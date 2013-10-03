@@ -1,3 +1,4 @@
+from App.config import getConfiguration, setConfiguration
 from plone import api
 
 from seantis.people import tests
@@ -20,3 +21,22 @@ class TestUtils(tests.IntegrationTestCase):
 
         self.assertEqual(utils.get_parent(brain).title, 'parent')
         self.assertEqual(utils.get_parent(ms).title, 'parent')
+
+    def test_in_debug_mode(self):
+        cfg = getConfiguration()
+        
+        cfg.debug_mode = False
+        setConfiguration(cfg)
+
+        self.assertFalse(utils.in_debug_mode())
+
+        cfg.debug_mode = True
+        setConfiguration(cfg)
+
+        self.assertTrue(utils.in_debug_mode())
+
+    def test_is_existing_portal_type(self):
+        new_type = self.new_temporary_type()
+
+        self.assertTrue(utils.is_existing_portal_type(new_type.id))
+        self.assertFalse(utils.is_existing_portal_type('inexistant'))
