@@ -29,21 +29,19 @@ class TestList(tests.IntegrationTestCase):
             person = lambda: self.new_temporary_type(
                 behaviors=[IPerson.__identifier__]
             )
-            beast = lambda: self.new_temporary_type()
 
             king = person()
             prince = person()
-            wolf = beast()
 
             person()  # creates an unused person type 
 
             api.content.create(id='ned', type=king.id, container=lst)
             api.content.create(id='robb', type=prince.id, container=lst)
-            api.content.create(id='lady', type=wolf.id, container=lst)
 
-        self.assertEqual(len(lst.people()), 2)  # the wolf doesn't count
-        self.assertEqual(len(lst.possible_types()), 3)  # all people types
-        self.assertEqual(len(lst.used_types()), 2)  # ignore the unused type
+        self.assertEqual(len(lst.people()), 2)
+        self.assertEqual(len(lst.possible_types()), 3)
+        self.assertEqual(len(lst.available_types()), 3)
+        self.assertEqual(len(lst.used_types()), 2)
 
     def test_compatible_types_only(self):
         """ A people list can deal with different IPerson types, as long
