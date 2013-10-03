@@ -34,11 +34,15 @@ class TestList(tests.IntegrationTestCase):
             prince = person()
             wolf = beast()
 
+            person()  # creates an unused person type 
+
             api.content.create(id='ned', type=king.id, container=lst)
             api.content.create(id='robb', type=prince.id, container=lst)
             api.content.create(id='lady', type=wolf.id, container=lst)
 
         self.assertEqual(len(lst.people()), 2)  # the wolf doesn't count
+        self.assertEqual(len(lst.possible_types()), 3)  # all people types
+        self.assertEqual(len(lst.used_types()), 2)  # ignore the unused type
 
     def test_list_view_empty(self):
         with self.user('admin'):
