@@ -16,4 +16,4 @@ class TestSetup(tests.IntegrationTestCase):
 
     def test_request_layer_active(self):
         layers = registered_layers()
-        self.assertIn(interfaces.ISeantisPeopleLayer, layers)
+        self.assertIn(interfaces.ISeantisPeopleSpecific, layers)
