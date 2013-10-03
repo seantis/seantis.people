@@ -2,6 +2,7 @@ from plone import api
 
 from seantis.people.interfaces import IPerson
 from seantis.people.content import List
+from seantis.people.supermodel import set_table_columns
 from seantis.people import tests
 
 
@@ -43,6 +44,51 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(len(lst.people()), 2)  # the wolf doesn't count
         self.assertEqual(len(lst.possible_types()), 3)  # all people types
         self.assertEqual(len(lst.used_types()), 2)  # ignore the unused type
+
+    def test_compatible_types_only(self):
+        """ A people list can deal with different IPerson types, as long
+        as their table-columns are the same. The available types are the ones
+        which have the same columns as the existing types used in the list.
+
+        """
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            def compatible_type():
+                new_type = self.new_temporary_type(
+                    behaviors=[IPerson.__identifier__],
+                )
+                set_table_columns(new_type.lookupSchema(), {
+                    'one': '1',
+                    'two': '2'
+                })
+                return new_type
+
+            def incompatible_type():
+                new_type = self.new_temporary_type(
+                    behaviors=[IPerson.__identifier__],
+                )
+                set_table_columns(new_type.lookupSchema(), {
+                    'one': '1'
+                })
+                return new_type
+
+            api.content.create(
+                id='compatible', type=compatible_type().id, container=lst
+            )
+            api.content.create(
+                id='another', type=compatible_type().id, container=lst
+            )
+
+            add_incompatible = lambda: api.content.create(
+                id='incompatible', type=incompatible_type().id, container=lst
+            )
+
+            self.assertRaises(api.exc.InvalidParameterError, add_incompatible)
 
     def test_add_unsupported_type(self):
         with self.user('admin'):
