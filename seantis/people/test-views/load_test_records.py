@@ -12,8 +12,8 @@ from urllib2 import urlopen
 
 from five import grok
 from plone import api
-from zope.interface import Interface
 
+from seantis.people.interfaces import IList
 from seantis.people import utils
 
 
@@ -22,7 +22,7 @@ class LoadTestRecordsView(grok.View):
     permission = 'cmf.ManagePortal'
     grok.require(permission)
 
-    grok.context(Interface)
+    grok.context(IList)
     grok.name('load-test-records')
 
     typename = 'test-record'

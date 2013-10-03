@@ -25,7 +25,7 @@ class ISeantisPeopleLayer(Interface):
 
 
 class IPerson(Interface):
-    
+
     def memberships(self):
         """ A list of membership belonging to this person. """
 
@@ -36,6 +36,15 @@ class IPerson(Interface):
 
 class INameFromPerson(Interface):
     pass
+
+
+class IList(form.Schema):
+    """ A list of IPerson objects. """
+
+    title = schema.TextLine(
+        title=_(u"Name of the list of people"),
+        required=True
+    )
 
 
 class IMembership(form.Schema):
