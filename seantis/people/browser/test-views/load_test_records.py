@@ -13,11 +13,12 @@ from urllib2 import urlopen
 from five import grok
 from plone import api
 
+from seantis.people.browser import BaseView
 from seantis.people.interfaces import IList
 from seantis.people import utils
 
 
-class LoadTestRecordsView(grok.View):
+class LoadTestRecordsView(BaseView):
 
     permission = 'cmf.ManagePortal'
     grok.require(permission)

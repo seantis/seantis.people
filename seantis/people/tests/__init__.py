@@ -5,6 +5,7 @@ from plone.dexterity import fti
 from contextlib import contextmanager
 
 from zope import event
+from zope.traversing.interfaces import BeforeTraverseEvent
 from zope.security.management import newInteraction, endInteraction
 
 from zope.component import getSiteManager
@@ -28,7 +29,7 @@ def install_mailhost(portal, mailhost):
 
     sm = getSiteManager(context=portal)
     sm.unregisterUtility(provided=IMailHost)
-    sm.registerUtility(mailhost, provided=IMailHost) 
+    sm.registerUtility(mailhost, provided=IMailHost)
 
 
 def install_mock_mailhost(portal, from_address='noreply@example.com'):
@@ -49,7 +50,7 @@ class TestCase(unittest.TestCase):
 
         self.app = self.layer['app']
         self.portal = self.layer['portal']
-        
+
         self.temporary_folders = []
         self.temporary_types = []
 
@@ -61,6 +62,10 @@ class TestCase(unittest.TestCase):
         ]
 
         self.current_user = None
+
+        # setup manually the correct browserlayer, see:
+        # https://dev.plone.org/ticket/11673
+        event.notify(BeforeTraverseEvent(self.portal, self.request))
 
     def tearDown(self):
         uninstall_mock_mailhost(self.portal)
@@ -80,14 +85,14 @@ class TestCase(unittest.TestCase):
             acl = self.app['acl_users']
         else:
             acl = self.portal['acl_users']
-        
+
         z2.login(acl, user)
         self.current_user = user
 
     def logout(self):
         z2.logout()
         self.current_user = None
-    
+
     @contextmanager
     def user(self, user):
         """ Use as follows:
@@ -98,7 +103,7 @@ class TestCase(unittest.TestCase):
         """
         old_user = self.current_user
         self.login(user)
-        
+
         yield
 
         self.logout()
@@ -132,7 +137,7 @@ class TestCase(unittest.TestCase):
 
     def new_temporary_type(self, **kwargs):
         """ Creates a new dexterity type and registers it with plone. Use it
-        to easily test behaviors. 
+        to easily test behaviors.
 
         """
         with self.user('admin'):

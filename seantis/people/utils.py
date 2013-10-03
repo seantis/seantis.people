@@ -6,7 +6,7 @@ from plone.dexterity.fti import (
 )
 from plone.dexterity.interfaces import IDexterityFTI
 from Products.ZCatalog.interfaces import ICatalogBrain
-from zope.component import getUtility
+from zope.component import getUtility, getAllUtilitiesRegisteredFor
 from zope.component.interfaces import ComponentLookupError
 from zope.schema import getFields
 
@@ -27,6 +27,12 @@ def is_existing_portal_type(portal_type):
         return False
 
     return True
+
+
+def get_type_info_by_behavior(behavior):
+    """ Returns a list of Dexterity ftis with the given behavior enabled. """
+    ftis = getAllUtilitiesRegisteredFor(IDexterityFTI)
+    return [fti for fti in ftis if behavior in fti.behaviors]
 
 
 def get_schema_from_portal_type(portal_type):

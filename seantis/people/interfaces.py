@@ -20,7 +20,7 @@ PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
 PEOPLE_PREFIX = 'people'
 
 
-class ISeantisPeopleLayer(Interface):
+class ISeantisPeopleSpecific(Interface):
     pass
 
 
