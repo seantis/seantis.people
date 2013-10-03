@@ -3,7 +3,6 @@ from plone import api
 from five import grok
 
 from seantis.people.interfaces import IPerson, IList
-from seantis.people.supermodel import get_table_columns
 from seantis.people import utils
 
 from plone.dexterity.content import Container
@@ -16,41 +15,28 @@ class List(Container):
         catalog = api.portal.get_tool('portal_catalog')
         path = {'query': '/'.join(self.getPhysicalPath()), 'depth': 1}
 
-        return catalog(
-            path=path, 
-            portal_type=tuple(fti.id for fti in self.possible_types())
-        )
+        return catalog(path=path)
 
     def possible_types(self):
         return utils.get_type_info_by_behavior(IPerson.__identifier__)
 
     def available_types(self):
-        used_types = self.used_types()
-        possible_types = self.possible_types()
+        used_type = self.used_type()
         
-        if not used_types:
-            return possible_types
+        if used_type:
+            return [used_type]
+        else:
+            return self.possible_types()
 
-        existing_columns = get_table_columns(used_types[0].lookupSchema())
-
-        available = []
-        for fti in possible_types:
-            if get_table_columns(fti.lookupSchema()) == existing_columns:
-                available.append(fti)
-
-        return available
-
-    def used_types(self):
+    def used_type(self):
         catalog = api.portal.get_tool('portal_catalog')
         path = {'query': '/'.join(self.getPhysicalPath()), 'depth': 1}
 
-        used_types = []
-
         for fti in self.possible_types():
             if catalog(path=path, portal_type=fti.id, sort_limit=1)[:1]:
-                used_types.append(fti)
+                return fti
 
-        return used_types
+        return None
 
 
 class ListConstrainTypes(grok.Adapter):
