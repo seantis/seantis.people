@@ -27,8 +27,20 @@ class LoadTestRecordsView(BaseView):
     grok.name('load-test-records')
 
     typename = 'test-record'
-    url='http://www.briandunning.com/sample-data/500.zip'
-    csv='500.csv'
+
+    @property
+    def count(self):
+        return self.request.get('count', '500')
+
+    @property
+    def url(self):
+        return 'http://www.briandunning.com/sample-data/{}.zip'.format(
+            self.count
+        )
+
+    @property
+    def csv(self):
+        return '{}.csv'.format(self.count)
 
     def load_xml(self):
         path = os.path.dirname(

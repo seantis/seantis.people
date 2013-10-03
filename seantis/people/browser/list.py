@@ -2,7 +2,7 @@ from five import grok
 
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView
-
+from seantis.people.supermodel import get_table_columns_merged
 
 class ListView(BaseView):
 
@@ -13,5 +13,10 @@ class ListView(BaseView):
 
     template = grok.PageTemplateFile('templates/list.pt')
 
-    def count(self):
-        return len(self.context.people())
+    def columns(self):
+        used_type = self.context.used_type()
+
+        if not used_type:
+            return []
+
+        return list(get_table_columns_merged(used_type.lookupSchema()))

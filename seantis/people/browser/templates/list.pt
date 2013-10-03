@@ -5,10 +5,34 @@
       metal:use-macro="context/main_template/macros/master">
 
 <metal:block fill-slot="content-core">
-<tal:block condition="not: view/count">
-    <div class="seantis-people-no-results" i18n:translate="">
+<tal:block define="people view/context/people">
+    <div tal:condition="not: people" i18n:translate="" class="seantis-people-no-results">
         No people in the list.
     </div>
+
+    <tal:block condition="python: len(people)">
+        <table tal:define="columns view/columns">
+            <thead>
+                <tr>
+                    <th tal:repeat="column columns">
+                        <span tal:repeat="title python: column[0]" 
+                              tal:content="title" 
+                        />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="person people">
+                    <td tal:repeat="column columns">
+                        <span tal:repeat="attribute python: column[1]"
+                              tal:content="python: getattr(person, attribute)"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </tal:block>
 </tal:block>
 </metal:block>
 

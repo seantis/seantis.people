@@ -7,7 +7,7 @@
   <property name="title" i18n:translate="">List of People</property>
   <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
   <property name="global_allow">True</property>
-  <property name="filter_content_types">False</property>
+  <property name="filter_content_types">True</property>
   <property name="allowed_content_types"></property>
  
   <!-- schema interface -->
