@@ -4,7 +4,7 @@ from plone.dexterity.content import Container
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
 from seantis.people.interfaces import IPerson, IList
-from seantis.people import utils
+from seantis.plonetools import utils
 
 
 class List(Container):

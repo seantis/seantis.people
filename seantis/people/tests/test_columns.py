@@ -6,10 +6,8 @@ from seantis.people.supermodel import (
     get_table_columns,
     set_table_columns
 )
-from seantis.people import (
-    utils,
-    tests
-)
+from seantis.plonetools import utils
+from seantis.people import tests
 
 
 class TestColumns(tests.IntegrationTestCase):

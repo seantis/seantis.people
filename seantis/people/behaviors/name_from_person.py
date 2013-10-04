@@ -2,7 +2,7 @@ from plone.app.content.interfaces import INameFromTitle
 from zope.interface import implements
 from zope.component import adapts
 
-from seantis.people import utils
+from seantis.plonetools import utils
 from seantis.people.supermodel import get_title_fields
 from seantis.people.interfaces import INameFromPerson
 
@@ -20,7 +20,7 @@ class NameFromPerson(object):
 
     def __new__(cls, context):
         schema = utils.get_schema_from_portal_type(context.portal_type)
-        fields = utils.order_fields_by_schema_appearance(
+        fields = utils.order_fields_by_schema(
             get_title_fields(schema), schema
         )
         title = ' '.join([getattr(context, field) for field in fields])

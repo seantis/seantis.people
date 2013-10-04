@@ -3,7 +3,7 @@ from plone.supermodel.utils import ns
 
 from zope.interface import implements
 
-from seantis.people import utils
+from seantis.plonetools import utils
 from seantis.people.interfaces import (
     NAME_FROM_PERSON,
     PERSON_COLUMNS,
@@ -126,7 +126,7 @@ def get_table_columns_merged(schema):
     columns = utils.invert_dictionary(get_table_columns(schema))
     
     for index in sorted(columns):
-        attributes = utils.order_fields_by_schema_appearance(
+        attributes = utils.order_fields_by_schema(
             columns[index], schema
         )
 

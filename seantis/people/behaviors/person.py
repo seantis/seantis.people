@@ -3,7 +3,7 @@ from collections import defaultdict
 from plone import api
 from zope.interface import implements
 
-from seantis.people import utils
+from seantis.plonetools import utils
 from seantis.people.interfaces import IPerson
 
 

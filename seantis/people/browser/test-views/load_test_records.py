@@ -15,7 +15,7 @@ from plone import api
 
 from seantis.people.browser import BaseView
 from seantis.people.interfaces import IList
-from seantis.people import utils
+from seantis.plonetools import utils
 
 
 class LoadTestRecordsView(BaseView):

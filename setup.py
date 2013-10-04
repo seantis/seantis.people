@@ -9,7 +9,8 @@ version = '0.1'
 
 tests_require = [
     'plone.app.testing',
-    'collective.betterbrowser'
+    'collective.betterbrowser',
+    'seantis.plonetools[tests]'
 ]
 
 
@@ -46,7 +47,8 @@ setup(name=name, version=version, description=description,
           'plone.api',
           'five.grok',
           'plone.behavior',
-          'plone.app.dexterity [grok, relations]'
+          'plone.app.dexterity [grok, relations]',
+          'seantis.plonetools'
       ],
       extras_require=dict(
           tests=tests_require
