@@ -10,10 +10,7 @@ from seantis.plonetools import utils
 class List(Container):
 
     def people(self):
-        catalog = api.portal.get_tool('portal_catalog')
-        path = {'query': '/'.join(self.getPhysicalPath()), 'depth': 1}
-
-        return catalog(path=path)
+        return self.getFolderContents()
 
     def possible_types(self):
         return utils.get_type_info_by_behavior(IPerson.__identifier__)

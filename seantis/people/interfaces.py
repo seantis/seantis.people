@@ -9,16 +9,6 @@ from zope.interface import Interface, invariant, Invalid
 
 from seantis.people import _
 
-# NameFromPerson Field Key
-NAME_FROM_PERSON = u'seantis.people.name_from_person'
-
-# Person Column Field Key
-PERSON_COLUMNS = u'seantis.people.person_column'
-
-# Supermodel namespace and prefix
-PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
-PEOPLE_PREFIX = 'people'
-
 
 class ISeantisPeopleSpecific(Interface):
     pass

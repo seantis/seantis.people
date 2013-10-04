@@ -7,7 +7,9 @@ from seantis.people.supermodel import (
     set_title_fields,
     get_table_columns,
     set_table_columns,
-    get_table_columns_merged
+    get_table_columns_merged,
+    get_table_order_flat,
+    set_table_order_flat
 )
 
 
@@ -127,3 +129,45 @@ class TestSupermodel(tests.IntegrationTestCase):
             ([u'Eins', u'Zwei'], ['first', 'second']),
             ([u'Vier'], ['fourth'])
         ])
+
+    order_xml = """<?xml version='1.0' encoding='utf8'?>
+        <model  xmlns="http://namespaces.plone.org/supermodel/schema"
+                xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <field  name="second"
+                        type="zope.schema.TextLine"
+                        people:order="2">
+                </field>
+                <field  name="third"
+                        type="zope.schema.TextLine"
+                        people:order="3">
+                </field>
+                <field  name="first"
+                        type="zope.schema.TextLine"
+                        people:order="1">
+                </field>
+            </schema>
+        </model>"""
+
+    def test_load_order_schema(self):
+        model = loadString(self.order_xml)
+        self.assertEqual(
+            list(get_table_order_flat(model.schema)),
+            ['first', 'second', 'third']
+        )
+
+    def test_write_order_schema(self):
+        model = loadString(self.order_xml)
+
+        set_table_order_flat(
+            model.schema, ['third', 'second', 'first']
+        )
+
+        xml = serializeSchema(model.schema)
+
+        # get shorter assertions below
+        xml = xml.replace(' type="zope.schema.TextLine"', '')
+
+        self.assertIn('<field name="first" people:order="3"/>', xml)
+        self.assertIn('<field name="second" people:order="2"/>', xml)
+        self.assertIn('<field name="third" people:order="1"/>', xml)
