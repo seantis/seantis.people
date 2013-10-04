@@ -44,11 +44,11 @@ class ListConstrainTypes(grok.Adapter):
     def getConstrainTypesMode(self):
         return ENABLED
 
-    def getLocallyAllowedTypes(self):
-        return tuple(t.id for t in self.context.available_types())
-
     def allowedContentTypes(self):
         return self.context.available_types()
 
+    def getLocallyAllowedTypes(self):
+        return [t.id for t in self.allowedContentTypes()]
+
     def getImmediatelyAddableTypes(self):
-        return self.getLocallyAllowedTypes()
+        return self.allowedContentTypes()

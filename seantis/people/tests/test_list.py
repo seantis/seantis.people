@@ -1,8 +1,11 @@
 from plone import api
 
+from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
+
 from seantis.people.interfaces import IPerson
 from seantis.people.content import List
 from seantis.people import tests
+from seantis.people.content.list import ListConstrainTypes
 
 
 class TestList(tests.IntegrationTestCase):
@@ -45,6 +48,27 @@ class TestList(tests.IntegrationTestCase):
             self.assertEqual(len(lst.possible_types()), 2)
             self.assertEqual(len(lst.available_types()), 1)
             self.assertEqual(lst.used_type(), person)
+
+    def test_list_constrain(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+            constrain = IConstrainTypes(lst)
+
+            new_type = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__]
+            )
+
+            self.assertIs(type(constrain), ListConstrainTypes)
+            self.assertEqual(constrain.getConstrainTypesMode(), ENABLED)
+            self.assertEqual(constrain.allowedContentTypes(), [new_type])
+            self.assertEqual(constrain.getLocallyAllowedTypes(), [new_type.id])
+            self.assertEqual(
+                constrain.getImmediatelyAddableTypes(), [new_type]
+            )
 
     def test_add_unsupported_type(self):
         with self.user('admin'):
