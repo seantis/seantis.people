@@ -7,6 +7,7 @@ from seantis.people.content import List
 from seantis.people import tests
 from seantis.people.content.list import ListConstrainTypes
 
+from pyquery import PyQuery as pq
 
 class TestList(tests.IntegrationTestCase):
 
@@ -95,3 +96,57 @@ class TestList(tests.IntegrationTestCase):
             view = lst.unrestrictedTraverse('@@view')
         
         self.assertIn('No people in the list.', view())
+
+    def test_list_view_columns(self):
+
+        model = """<?xml version='1.0' encoding='utf8'?>
+        <model 
+            xmlns="http://namespaces.plone.org/supermodel/schema"
+            xmlns:people="http://namespaces.plone.org/supermodel/people"
+        >
+            <schema>
+                <field
+                    name="firstname" 
+                    type="zope.schema.TextLine"
+                    people:column="1">
+                    <title>First name</title>
+                </field>
+                <field 
+                    name="lastname" 
+                    type="zope.schema.TextLine" 
+                    people:column="2">
+                    <title>Last name</title>
+                </field>
+            </schema>
+        </model>"""
+
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder(),
+            )
+            
+            person = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                model_source=model
+            ).id
+            
+            api.content.create(id='miri', type=person, container=lst,
+                firstname='Miriam', lastname='Linky'
+            )
+            api.content.create(id='zack', type=person, container=lst, 
+                firstname='Zack', lastname='Brown'
+            )
+
+            view = lst.unrestrictedTraverse('@@view')
+
+        page = pq(view())
+        
+        self.assertEqual(len(page.find('thead th')), 2)
+
+        self.assertEqual(len(page.find('tbody tr')), 2)
+        self.assertEqual(len(page.find('tbody tr:first-child td')), 2)
+
+        self.assertEqual(page.find('thead').text(), 'First name Last name')
+        self.assertEqual(page.find('tbody').text(), 'Miriam Linky Zack Brown')

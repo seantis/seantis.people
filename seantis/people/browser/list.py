@@ -15,8 +15,9 @@ class ListView(BaseView):
 
     def columns(self):
         used_type = self.context.used_type()
-
-        if not used_type:
-            return []
+        
+        assert used_type, """
+            Do not use if there are no people in the list.
+        """
 
         return list(get_table_columns_merged(used_type.lookupSchema()))

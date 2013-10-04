@@ -11,7 +11,7 @@
     </div>
 
     <tal:block condition="python: len(people)">
-        <table tal:define="columns view/columns">
+        <table tal:define="columns view/columns" class="listing">
             <thead>
                 <tr>
                     <th tal:repeat="column columns">
