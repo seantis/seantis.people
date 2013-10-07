@@ -4,25 +4,35 @@ from plone.dexterity.content import Container
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
 from seantis.people.interfaces import IPerson, IList
+
+from seantis.people.supermodel import SELECTABLE_PREFIX
 from seantis.plonetools import utils
 
 
 class List(Container):
 
-    def people(self):
+    def people(self, filter=None):
         catalog = api.portal.get_tool('portal_catalog')
-        path = {'query': '/'.join(self.getPhysicalPath()), 'depth': 1}
 
-        return catalog(
-            path=path, sort_on='sortable_title', sort_order='ascending'
-        )
+        query = {}
+        query['path'] = {
+            'query': '/'.join(self.getPhysicalPath()), 'depth': 1
+        }
+        query['sort_on'] = 'sortable_title'
+        query['sort_order'] = 'ascending'
+
+        if filter:
+            field, value = filter
+            query[SELECTABLE_PREFIX + field] = value
+
+        return catalog(query)
 
     def possible_types(self):
         return utils.get_type_info_by_behavior(IPerson.__identifier__)
 
     def available_types(self):
         used_type = self.used_type()
-        
+
         if used_type:
             return [used_type]
         else:

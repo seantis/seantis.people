@@ -17,6 +17,8 @@ PERSON_SELECTABLE = u'seantis.people.selectable'
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
 PEOPLE_PREFIX = 'people'
 
+SELECTABLE_PREFIX = 'selectable_'
+
 missing = object()
 
 
@@ -30,9 +32,44 @@ def on_type_modified(fti, event=None):
         return
 
     catalog = api.portal.get_tool('portal_catalog')
+    new_indexes = update_selectable_field_indexes(fti)
+
+    if new_indexes:
+        for new_index in new_indexes:
+            catalog.reindexIndex(new_index, event.object.REQUEST)
 
     for brain in catalog(portal_type=fti.id):
         brain.getObject().reindexObject(idxs=['sortable_title'])
+
+
+def get_selectable_field_indexes(fti):
+    zcatalog = api.portal.get_tool('portal_catalog')._catalog
+    return [ix for ix in zcatalog.indexes if ix.startswith(SELECTABLE_PREFIX)]
+
+
+def update_selectable_field_indexes(fti):
+    catalog = api.portal.get_tool('portal_catalog')
+    fields = get_selectable_fields(fti.lookupSchema())
+
+    new_indexes = []
+
+    # remove the indexes which are no longer used
+    for ix in get_selectable_field_indexes(fti):
+        field = ix.replace(SELECTABLE_PREFIX, '')
+
+        if field not in fields:
+            catalog.delIndex(ix)
+
+    # add the indexes which are not yet defined
+    for field in fields:
+        index_name = SELECTABLE_PREFIX + field
+        if index_name not in catalog.indexes():
+            catalog.addIndex(index_name, 'FieldIndex', extra={
+                'indexed_attrs': field
+            })
+            new_indexes.append(index_name)
+
+    return new_indexes
 
 
 @indexer(IPersonMarker)
@@ -178,7 +215,7 @@ class FieldListSchemaHandler(SchemaHandler):
 
 
 class DictionarySchemaHandler(SchemaHandler):
-    
+
     setter, getter = None, None
 
     def get_attribute(self, schema, field):

@@ -5,7 +5,7 @@
       metal:use-macro="context/main_template/macros/master">
 
 <metal:block fill-slot="content-core">
-<tal:block define="people view/context/people">
+<tal:block define="people view/people">
     <div tal:condition="not: people" i18n:translate="" class="seantis-people-no-results">
         No people in the list.
     </div>
@@ -15,9 +15,21 @@
             <thead>
                 <tr>
                     <th tal:repeat="column columns">
-                        <span tal:repeat="title python: column[0]" 
+                      <tal:block define="show_combobox python: view.show_combobox(column)">
+                        <tal:block condition="show_combobox">
+                          <select>
+                            <option value="default" selected="selected" tal:content="python: column[0][0]" />
+                            <option 
+                              tal:repeat="value python: view.combobox_values(column)" 
+                              tal:content="value" />
+                          </select>
+                        </tal:block>
+                        <tal:block condition="not:show_combobox">
+                          <span tal:repeat="title python: column[0]" 
                               tal:content="title" 
-                        />
+                          />
+                        </tal:block>
+                      </tal:block>
                     </th>
                 </tr>
             </thead>
