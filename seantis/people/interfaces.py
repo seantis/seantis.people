@@ -14,6 +14,10 @@ class ISeantisPeopleSpecific(Interface):
     pass
 
 
+class IPersonMarker(Interface):
+    pass
+
+
 class IPerson(Interface):
 
     def memberships(self):

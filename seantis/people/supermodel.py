@@ -1,10 +1,11 @@
 from plone import api
+from plone.indexer import indexer
 from plone.supermodel.parser import IFieldMetadataHandler
 from plone.supermodel.utils import ns
 
 from zope.interface import implements
 
-from seantis.people.interfaces import IPerson
+from seantis.people.interfaces import IPerson, IPersonMarker
 from seantis.plonetools import utils
 
 NAME_FROM_PERSON = u'seantis.people.name_from_person'
@@ -28,7 +29,18 @@ def on_type_modified(fti, event=None):
     catalog = api.portal.get_tool('portal_catalog')
 
     for brain in catalog(portal_type=fti.id):
-        brain.getObject().reindexObject()
+        brain.getObject().reindexObject(idxs=['sortable_title'])
+
+
+@indexer(IPersonMarker)
+def sortable_title(obj):
+    schema = utils.get_schema_from_portal_type(obj.portal_type)
+    order = list(get_table_order_flat(schema))
+
+    if order:
+        return ' '.join((getattr(obj, field, '') for field in order))
+    else:
+        return getattr(obj, 'title', '')
 
 
 class SchemaHandler(object):

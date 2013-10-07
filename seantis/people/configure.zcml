@@ -38,6 +38,7 @@
     description="Use this type as a Seantis People person"
     provides=".interfaces.IPerson"
     factory=".behaviors.Person"
+    marker=".interfaces.IPersonMarker"
     />
 
 <plone:behavior
@@ -48,6 +49,7 @@
     />
 
 <adapter factory=".behaviors.NameFromPerson" />
+<adapter factory=".supermodel.sortable_title" name="sortable_title" />
 
 <utility
     factory=".supermodel.PeopleSchema"
