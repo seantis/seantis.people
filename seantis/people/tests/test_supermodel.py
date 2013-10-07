@@ -9,7 +9,9 @@ from seantis.people.supermodel import (
     set_table_columns,
     get_table_columns_merged,
     get_table_order_flat,
-    set_table_order_flat
+    set_table_order_flat,
+    get_selectable_fields,
+    set_selectable_fields
 )
 
 
@@ -171,3 +173,43 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn('<field name="first" people:order="3"/>', xml)
         self.assertIn('<field name="second" people:order="2"/>', xml)
         self.assertIn('<field name="third" people:order="1"/>', xml)
+
+    selectable_schema = """<?xml version='1.0' encoding='utf8'?>
+        <model  xmlns="http://namespaces.plone.org/supermodel/schema"
+                xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <field  name="first"
+                        type="zope.schema.TextLine"
+                        people:selectable="true">
+                </field>
+                <field  name="second"
+                        type="zope.schema.TextLine"
+                        people:selectable="true">
+                </field>
+                <field  name="third"
+                        type="zope.schema.TextLine"
+                        people:selectable="true">
+                </field>
+            </schema>
+        </model>"""
+
+    def test_load_selectable_schema(self):
+        model = loadString(self.selectable_schema)
+        self.assertEqual(
+            sorted(get_selectable_fields(model.schema)),
+            ['first', 'second', 'third']
+        )
+
+    def test_write_selectable_schema(self):
+        model = loadString(self.selectable_schema)
+
+        set_selectable_fields(model.schema, ['third'])
+
+        xml = serializeSchema(model.schema)
+
+        # get shorter assertions below
+        xml = xml.replace(' type="zope.schema.TextLine"', '')
+
+        self.assertIn('<field name="first"/>', xml)
+        self.assertIn('<field name="second"/>', xml)
+        self.assertIn('<field name="third" people:selectable="true"/>', xml)

@@ -11,10 +11,13 @@ from seantis.plonetools import utils
 NAME_FROM_PERSON = u'seantis.people.name_from_person'
 PERSON_COLUMNS = u'seantis.people.person_column'
 PERSON_ORDER = u'seantis.people.order'
+PERSON_SELECTABLE = u'seantis.people.selectable'
 
 # Supermodel namespace and prefix
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
 PEOPLE_PREFIX = 'people'
+
+missing = object()
 
 
 def on_type_modified(fti, event=None):
@@ -43,112 +46,6 @@ def sortable_title(obj):
         return getattr(obj, 'title', '')
 
 
-class SchemaHandler(object):
-
-    namespace = PEOPLE_NAMESPACE
-    prefix = PEOPLE_PREFIX
-
-    def get_attribute_value(self, node, attribute=None, default=''):
-        attribute = attribute or self.attribute
-        return node.get(ns(attribute, self.namespace), default).lower()
-
-
-class TitleSchemaHandler(SchemaHandler):
-
-    attribute = 'title'
-
-    def add_title(self, schema, field):
-        """ Adds the given field to the schema as a people title field. See
-        seantis.people.behaviors.person.NameFromPerson.
-
-        """
-        fields = schema.queryTaggedValue(NAME_FROM_PERSON, [])
-        fields.append(field)
-
-        set_title_fields(schema, fields)
-
-    def read(self, node, schema, field):
-        if self.get_attribute_value(node) == 'true':
-            self.add_title(schema, field.__name__)
-
-    def write(self, node, schema, field):
-        if field.__name__ in get_title_fields(schema):
-            node.set(ns(self.attribute, self.namespace), 'true')
-
-
-class ColumnSchemaHandler(SchemaHandler):
-
-    attribute = 'column'
-
-    def add_column(self, schema, field, column):
-        """ Adds the given field to the schema as a people title field. See
-        seantis.people.behaviors.person.NameFromPerson.
-
-        """
-        fields = schema.queryTaggedValue(PERSON_COLUMNS, {})
-        fields[field] = column
-
-        set_table_columns(schema, fields)
-
-    def read(self, node, schema, field):
-        column = self.get_attribute_value(node)
-        if column:
-            self.add_column(schema, field.__name__, column)
-
-    def write(self, node, schema, field):
-        value = get_table_columns(schema).get(field.__name__)
-        if value:
-            node.set(ns(self.attribute, self.namespace), value)
-
-
-class OrderSchemaHandler(SchemaHandler):
-
-    attribute = 'order'
-
-    def add_order(self, schema, field, index):
-        """ Adds the given field to the schema as a people title field. See
-        seantis.people.behaviors.person.NameFromPerson.
-
-        """
-        order = schema.queryTaggedValue(PERSON_ORDER, {})
-        order[field] = index
-
-        set_table_order(schema, order)
-
-    def read(self, node, schema, field):
-        index = self.get_attribute_value(node)
-        if index:
-            self.add_order(schema, field.__name__, index)
-
-    def write(self, node, schema, field):
-        value = get_table_order(schema).get(field.__name__)
-        if value:
-            node.set(ns(self.attribute, self.namespace), value)
-
-
-class PeopleSchema(object):
-    """ Handles the people namepsace definitions on the supermodel schema. """
-
-    implements(IFieldMetadataHandler)
-
-    namespace = PEOPLE_NAMESPACE
-    prefix = PEOPLE_PREFIX
-
-    handlers = [
-        TitleSchemaHandler(),
-        ColumnSchemaHandler(),
-        OrderSchemaHandler()
-    ]
-
-    def read(self, node, schema, field):
-        for handler in self.handlers:
-            handler.read(node, schema, field)
-
-    def write(self, node, schema, field):
-        for handler in self.handlers:
-            handler.write(node, schema, field)
-
-
 def get_title_fields(schema):
     """ Gets the people-title fields of the schema. """
     return schema.queryTaggedValue(NAME_FROM_PERSON, [])
@@ -157,6 +54,18 @@ def get_title_fields(schema):
 def set_title_fields(schema, fields):
     """ Sets the people-title fields of the schema. """
     schema.setTaggedValue(NAME_FROM_PERSON, list(set(fields)))
+
+
+def get_selectable_fields(schema):
+    """ Gets the selectable fields of the schema. Those are displayed
+    on the list view as combo boxes. """
+    return schema.queryTaggedValue(PERSON_SELECTABLE, [])
+
+
+def set_selectable_fields(schema, fields):
+    """ Sets the selectable fields of the schema. Those are displayed
+    on the list view as combo boxes. """
+    schema.setTaggedValue(PERSON_SELECTABLE, list(set(fields)))
 
 
 def get_table_columns(schema):
@@ -216,3 +125,119 @@ def set_table_order_flat(schema, fields):
     """ Stores the given list in the raw dictionary format of the schema. """
     order = dict((field, str(ix+1)) for ix, field in enumerate(fields))
     set_table_order(schema, order)
+
+
+class SchemaHandler(object):
+
+    namespace = PEOPLE_NAMESPACE
+    prefix = PEOPLE_PREFIX
+
+    def get_node_value(self, node, default=missing):
+        value = node.get(ns(self.attribute, self.namespace), default)
+        if isinstance(value, basestring):
+            return value.lower()
+        else:
+            return value
+
+    def set_node_value(self, node, value):
+        node.set(ns(self.attribute, self.namespace), value)
+
+    def get_attribute(self, schema, field):
+        raise NotImplementedError
+
+    def set_attribute(self, schema, field, value):
+        raise NotImplementedError
+
+    def read(self, node, schema, field):
+        value = self.get_node_value(node)
+        if value is not missing:
+            self.set_attribute(schema, field, value)
+
+    def write(self, node, schema, field):
+        value = self.get_attribute(schema, field)
+        if value is not missing:
+            self.set_node_value(node, value)
+
+
+class FieldListSchemaHandler(SchemaHandler):
+
+    setter, getter = None, None
+
+    def get_attribute(self, schema, field):
+        if field.__name__ in self.getter(schema):
+            return 'true'
+        else:
+            return missing
+
+    def set_attribute(self, schema, field, value):
+        if value == 'true':
+            fields = self.getter(schema)
+            fields.append(field.__name__)
+
+            self.setter(schema, fields)
+
+
+class DictionarySchemaHandler(SchemaHandler):
+    
+    setter, getter = None, None
+
+    def get_attribute(self, schema, field):
+        return self.getter(schema).get(field.__name__, missing)
+
+    def set_attribute(self, schema, field, value):
+        fields = self.getter(schema)
+        fields[field.__name__] = value
+
+        self.setter(schema, fields)
+
+
+class TitleSchemaHandler(FieldListSchemaHandler):
+
+    attribute = 'title'
+    getter = staticmethod(get_title_fields)
+    setter = staticmethod(set_title_fields)
+
+
+class ColumnSchemaHandler(DictionarySchemaHandler):
+
+    attribute = 'column'
+    getter = staticmethod(get_table_columns)
+    setter = staticmethod(set_table_columns)
+
+
+class OrderSchemaHandler(DictionarySchemaHandler):
+
+    attribute = 'order'
+    getter = staticmethod(get_table_order)
+    setter = staticmethod(set_table_order)
+
+
+class SelectableSchemaHandler(FieldListSchemaHandler):
+
+    attribute = 'selectable'
+    getter = staticmethod(get_selectable_fields)
+    setter = staticmethod(set_selectable_fields)
+
+
+class PeopleSchema(object):
+    """ Handles the people namepsace definitions on the supermodel schema. """
+
+    implements(IFieldMetadataHandler)
+
+    namespace = PEOPLE_NAMESPACE
+    prefix = PEOPLE_PREFIX
+
+    handlers = [
+        TitleSchemaHandler(),
+        ColumnSchemaHandler(),
+        OrderSchemaHandler(),
+        SelectableSchemaHandler()
+    ]
+
+    def read(self, node, schema, field):
+        for handler in self.handlers:
+            handler.read(node, schema, field)
+
+    def write(self, node, schema, field):
+        for handler in self.handlers:
+            handler.write(node, schema, field)
