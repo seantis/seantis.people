@@ -1,6 +1,7 @@
 from plone.supermodel import loadString, serializeSchema
 
 from seantis.people import tests
+from seantis.people.events import PeopleSchemaParsedEvent
 
 from seantis.people.supermodel import (
     get_title_fields,
@@ -171,3 +172,9 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn('<field name="first" people:order="3"/>', xml)
         self.assertIn('<field name="second" people:order="2"/>', xml)
         self.assertIn('<field name="third" people:order="1"/>', xml)
+
+    def test_schema_parsing_event(self):
+        subscriber = self.subscribe(PeopleSchemaParsedEvent)
+        loadString(self.order_xml)
+
+        self.assertTrue(subscriber.was_fired())

@@ -1,8 +1,13 @@
-from plone.supermodel.parser import IFieldMetadataHandler
+from plone.supermodel.parser import (
+    IFieldMetadataHandler,
+    ISchemaMetadataHandler
+)
 from plone.supermodel.utils import ns
 
 from zope.interface import implements
+from zope.event import notify
 
+from seantis.people.events import PeopleSchemaParsedEvent
 from seantis.plonetools import utils
 
 NAME_FROM_PERSON = u'seantis.people.name_from_person'
@@ -12,6 +17,24 @@ PERSON_ORDER = u'seantis.people.order'
 # Supermodel namespace and prefix
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
 PEOPLE_PREFIX = 'people'
+
+
+class SchemaMetadataHandler(object):
+
+    implements(ISchemaMetadataHandler)
+
+    namespace = PEOPLE_NAMESPACE
+    prefix = PEOPLE_PREFIX
+
+    def read(self, node, schema):
+        """ Called when a schema is done parsing, a fact which is turned into
+        a useful event. 
+
+        """
+        notify(PeopleSchemaParsedEvent(schema))
+
+    def write(self, node, schema):
+        pass
 
 
 class SchemaHandler(object):

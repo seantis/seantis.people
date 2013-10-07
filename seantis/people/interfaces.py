@@ -5,13 +5,18 @@ from plone.directives import form
 from z3c.relationfield.schema import RelationChoice
 
 from zope import schema
-from zope.interface import Interface, invariant, Invalid
+from zope.interface import Interface, invariant, Invalid, Attribute
 
 from seantis.people import _
 
 
 class ISeantisPeopleSpecific(Interface):
     pass
+
+
+class IPeopleSchemaParsedEvent(Interface):
+
+    schema = Attribute("Schema which has just been parsed")
 
 
 class IPerson(Interface):

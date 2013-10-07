@@ -51,4 +51,9 @@
     name="seantis.people.name_from_person"
     />
 
+<utility
+    factory=".supermodel.SchemaMetadataHandler"
+    name="seantis.people.schema_metadata_handler"
+    />
+
 </configure>
