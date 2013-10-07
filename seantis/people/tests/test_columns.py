@@ -7,6 +7,9 @@ from seantis.people.supermodel import (
     set_table_columns
 )
 from seantis.plonetools import utils
+
+from seantis.people.supermodel import on_type_modified
+from seantis.people.interfaces import IPerson
 from seantis.people import tests
 
 
@@ -17,7 +20,7 @@ class TestColumns(tests.IntegrationTestCase):
 
         set_table_columns(new_type.lookupSchema(), {'foo': '1'})
 
-        with self.user('admin'):           
+        with self.user('admin'):
             obj = api.content.create(
                 id='123',
                 type=new_type.id,
@@ -38,7 +41,7 @@ class TestColumns(tests.IntegrationTestCase):
 
         self.assertEqual(get_table_columns(new_type.lookupSchema()), {})
 
-        with self.user('admin'):           
+        with self.user('admin'):
             obj = api.content.create(
                 id='123',
                 type=new_type.id,
@@ -58,3 +61,38 @@ class TestColumns(tests.IntegrationTestCase):
         obj.reindexObject()
         brain = utils.get_brain_by_object(obj)
         self.assertEqual(brain.foo, 'stop')
+
+    def test_reindex_on_change(self):
+        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+
+        set_table_columns(new_type.lookupSchema(), {'foo': '1'})
+
+        with self.user('admin'):
+            obj = api.content.create(
+                id='123',
+                type=new_type.id,
+                container=self.new_temporary_folder(),
+                foo='stop',
+                bar='hammertime!'
+            )
+
+        brain = utils.get_brain_by_object(obj)
+
+        self.assertTrue(hasattr(brain, 'foo'))
+        self.assertFalse(hasattr(brain, 'bar'))
+
+        self.assertEqual(brain.foo, 'stop')
+
+        set_table_columns(new_type.lookupSchema(), {'bar': '1'})
+
+        # usually the dexterity fti modified event does this
+        on_type_modified(new_type)
+
+        brain = utils.get_brain_by_object(obj)
+
+        # The metadata is not deleted at this point because it is impossible
+        # to tell if the metadata is used elsewhere. It's a rather big caveat..
+        self.assertTrue(hasattr(brain, 'foo'))
+        self.assertTrue(hasattr(brain, 'bar'))
+
+        self.assertEqual(brain.bar, 'hammertime!')

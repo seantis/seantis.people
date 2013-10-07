@@ -1,8 +1,10 @@
+from plone import api
 from plone.supermodel.parser import IFieldMetadataHandler
 from plone.supermodel.utils import ns
 
 from zope.interface import implements
 
+from seantis.people.interfaces import IPerson
 from seantis.plonetools import utils
 
 NAME_FROM_PERSON = u'seantis.people.name_from_person'
@@ -12,6 +14,21 @@ PERSON_ORDER = u'seantis.people.order'
 # Supermodel namespace and prefix
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
 PEOPLE_PREFIX = 'people'
+
+
+def on_type_modified(fti, event=None):
+    """ The IPerson types need to be reindexed if the type changes, because
+    the supermodel could be different and it's hints may have an effect on
+    the metadata/indexes.
+
+    """
+    if IPerson.__identifier__ not in fti.behaviors:
+        return
+
+    catalog = api.portal.get_tool('portal_catalog')
+
+    for brain in catalog(portal_type=fti.id):
+        brain.getObject().reindexObject()
 
 
 class SchemaHandler(object):
