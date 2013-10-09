@@ -1,14 +1,14 @@
 <model xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:people="http://namespaces.plone.org/supermodel/people" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns="http://namespaces.plone.org/supermodel/schema">
   <schema>
-    <field name="firstname" type="zope.schema.TextLine" people:title="true" people:column="1">
-      <description/>
-      <title>First Name</title>
-    </field>
-    <field name="lastname" type="zope.schema.TextLine" people:title="true" people:column="1">
+    <field name="lastname" type="zope.schema.TextLine" people:title="true" people:column="1" people:order="1">
       <description/>
       <title>Last Name</title>
     </field>
-    <field name="company" type="zope.schema.TextLine" people:column="2">
+    <field name="firstname" type="zope.schema.TextLine" people:title="true" people:column="1" people:order="2">
+      <description/>
+      <title>First Name</title>
+    </field>
+    <field name="company" type="zope.schema.TextLine">
       <description/>
       <required>False</required>
       <title>Company</title>
@@ -18,7 +18,7 @@
       <required>False</required>
       <title>Address</title>
     </field>
-    <field name="city" type="zope.schema.TextLine">
+    <field name="city" type="zope.schema.TextLine" people:column="2" people:selectable="true">
       <description/>
       <required>False</required>
       <title>City</title>
@@ -33,12 +33,12 @@
       <required>False</required>
       <title>Zip</title>
     </field>
-    <field name="state" type="zope.schema.TextLine">
+    <field name="state" type="zope.schema.TextLine" people:column="3" people:selectable="true">
       <description/>
       <required>False</required>
       <title>State</title>
     </field>
-    <field name="phone" type="zope.schema.TextLine" people:column="3">
+    <field name="phone" type="zope.schema.TextLine" people:column="4">
       <description/>
       <required>False</required>
       <title>Phone</title>
@@ -48,7 +48,7 @@
       <required>False</required>
       <title>Fax</title>
     </field>
-    <field name="email" type="zope.schema.TextLine" people:column="4">
+    <field name="email" type="zope.schema.TextLine" people:column="5">
       <description/>
       <required>False</required>
       <title>E-Mail</title>

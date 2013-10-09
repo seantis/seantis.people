@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from plone import api
 from plone.indexer import indexer
 from plone.supermodel.parser import IFieldMetadataHandler
@@ -124,10 +126,11 @@ def set_table_columns(schema, fields):
 
 def get_table_columns_merged(schema):
     """ Returns the columns in the order of appearance in the table with
-    each column having a tuple with a list of titles and a corresponding
-    list of attributes.
+    each column having a list of titles, a corresponding list of attributes and
+    a flag indicating wheter the column contains more than one field.
 
     """
+    Column = namedtuple('Column', ['titles', 'attributes', 'single_attribute'])
     columns = utils.invert_dictionary(get_table_columns(schema))
 
     for index in sorted(columns):
@@ -137,7 +140,7 @@ def get_table_columns_merged(schema):
 
         titles = [schema[attr].title for attr in attributes]
 
-        yield (titles, attributes)
+        yield Column(titles, attributes, len(titles) == 1)
 
 
 def get_table_order(schema):

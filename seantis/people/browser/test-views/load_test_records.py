@@ -58,7 +58,7 @@ class LoadTestRecordsView(BaseView):
         utils.add_new_dexterity_type(
             self.typename, model_source=self.load_xml(),
             title=u'Test Record',
-            behaviors = [
+            behaviors=[
                 'seantis.people.interfaces.IPerson',
                 'seantis.people.interfaces.INameFromPerson'
             ]
@@ -70,7 +70,7 @@ class LoadTestRecordsView(BaseView):
         # get rid of windows newlines - there's probably a more efficient way
         content = '\n'.join(zipfile.open(self.csv).read().splitlines())
         reader = csv.reader(StringIO(content), delimiter=',')
-        
+
         headers = None
 
         for rowix, row in enumerate(reader):
@@ -104,5 +104,4 @@ class LoadTestRecordsView(BaseView):
         rows = self.import_sample_data()
 
         log.info('imported {} records'.format(rows))
-
-        return 'success'
+        self.request.response.redirect(self.context.absolute_url())

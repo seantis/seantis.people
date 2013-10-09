@@ -4,46 +4,74 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="context/main_template/macros/master">
 
+<metal:block fill-slot="javascript_head_slot">
+  <script id="list-filter-options" tal:attributes="data-filter-prefix view/filter_prefix">
+   $(document).ready(function() {
+        $('.list-filter').ListFilterTable({
+          'reset-element': '.filter-reset',
+          'prefix': $('#list-filter-options').data('filter-prefix')
+        });
+    });
+  </script>
+</metal:block>
+
 <metal:block fill-slot="content-core">
 <tal:block define="people view/people">
+    
     <div tal:condition="not: people" i18n:translate="" class="seantis-people-no-results">
         No people in the list.
     </div>
 
-    <tal:block condition="python: len(people)">
-        <table tal:define="columns view/columns" class="listing">
-            <thead>
+    <div class="filter-fragment" id="filter-fragment-1">
+      <a tal:condition="view/filter" class="filter-reset" i18n:translate="" href="#">
+        Filtered by 
+        <span>
+          <span class="filter-name" tal:content="view/filter/title"></span>
+          <span class="filter-value" tal:content="view/filter/value"></span>
+        </span>
+        Click to Reset
+      </a>
+    </div>
+
+    <tal:block condition="people">
+        <table tal:define="columns view/columns" class="listing nosort list-filter">
+            <thead tal:condition="not:view/hide_table_header">
                 <tr>
                     <th tal:repeat="column columns">
                       <tal:block define="show_combobox python: view.show_combobox(column)">
-                        <tal:block condition="show_combobox">
-                          <select>
-                            <option value="default" selected="selected" tal:content="python: column[0][0]" />
+
+                        <tal:comment replace="nothing">
+                        Columns with comboboxes for filtering
+                        </tal:comment>
+                        <tal:block condition="python: people and show_combobox">
+                          <select tal:attributes="data-filter-attribute python: column.attributes[0]">
+                            <option value="__all__" selected="selected" tal:content="python: column.titles[0]" />
                             <option 
                               tal:repeat="value python: view.combobox_values(column)" 
                               tal:content="value" />
                           </select>
                         </tal:block>
+
+                        <tal:comment replace="nothing">
+                        Normal columns showing the title
+                        </tal:comment>
                         <tal:block condition="not:show_combobox">
-                          <span tal:repeat="title python: column[0]" 
-                              tal:content="title" 
-                          />
+                          <span tal:repeat="title python: column[0]" tal:content="title" />
                         </tal:block>
                       </tal:block>
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="filter-fragment" id="filter-fragment-2">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
-                        <span tal:repeat="attribute python: column[1]"
+                        <span tal:repeat="attribute python: column.attributes"
                               tal:content="python: getattr(person, attribute)"
                         />
                     </td>
                 </tr>
             </tbody>
         </table>
-
     </tal:block>
 </tal:block>
 </metal:block>

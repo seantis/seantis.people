@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from five import grok
 from plone import api
 from plone.dexterity.content import Container
@@ -7,6 +9,9 @@ from seantis.people.interfaces import IPerson, IList
 
 from seantis.people.supermodel import SELECTABLE_PREFIX
 from seantis.plonetools import utils
+
+
+ListFilter = namedtuple('ListFilter', ['key', 'value', 'title'])
 
 
 class List(Container):
@@ -22,8 +27,7 @@ class List(Container):
         query['sort_order'] = 'ascending'
 
         if filter:
-            field, value = filter
-            query[SELECTABLE_PREFIX + field] = value
+            query[SELECTABLE_PREFIX + filter.key] = filter.value
 
         return catalog(query)
 

@@ -9,6 +9,7 @@ from seantis.people.content.list import ListConstrainTypes
 
 from pyquery import PyQuery as pq
 
+
 class TestList(tests.IntegrationTestCase):
 
     def test_list_creation(self):
@@ -94,26 +95,26 @@ class TestList(tests.IntegrationTestCase):
             )
 
             view = lst.unrestrictedTraverse('@@view')
-        
+
         self.assertIn('No people in the list.', view())
 
     def test_list_view_columns(self):
 
         model = """<?xml version='1.0' encoding='utf8'?>
-        <model 
+        <model
             xmlns="http://namespaces.plone.org/supermodel/schema"
             xmlns:people="http://namespaces.plone.org/supermodel/people"
         >
             <schema>
                 <field
-                    name="firstname" 
+                    name="firstname"
                     type="zope.schema.TextLine"
                     people:column="1">
                     <title>First name</title>
                 </field>
-                <field 
-                    name="lastname" 
-                    type="zope.schema.TextLine" 
+                <field
+                    name="lastname"
+                    type="zope.schema.TextLine"
                     people:column="2">
                     <title>Last name</title>
                 </field>
@@ -126,23 +127,25 @@ class TestList(tests.IntegrationTestCase):
                 type='seantis.people.list',
                 container=self.new_temporary_folder(),
             )
-            
+
             person = self.new_temporary_type(
                 behaviors=[IPerson.__identifier__],
                 model_source=model
             ).id
-            
-            api.content.create(id='miri', type=person, container=lst,
+
+            api.content.create(
+                id='miri', type=person, container=lst,
                 firstname='Miriam', lastname='Linky'
             )
-            api.content.create(id='zack', type=person, container=lst, 
+            api.content.create(
+                id='zack', type=person, container=lst,
                 firstname='Zack', lastname='Brown'
             )
 
             view = lst.unrestrictedTraverse('@@view')
 
         page = pq(view())
-        
+
         self.assertEqual(len(page.find('thead th')), 2)
 
         self.assertEqual(len(page.find('tbody tr')), 2)
@@ -150,3 +153,87 @@ class TestList(tests.IntegrationTestCase):
 
         self.assertEqual(page.find('thead').text(), 'First name Last name')
         self.assertEqual(page.find('tbody').text(), 'Miriam Linky Zack Brown')
+
+    def test_list_view_filter(self):
+
+        model = """<?xml version='1.0' encoding='utf8'?>
+        <model
+            xmlns="http://namespaces.plone.org/supermodel/schema"
+            xmlns:people="http://namespaces.plone.org/supermodel/people"
+        >
+            <schema>
+                <field
+                    name="country"
+                    type="zope.schema.TextLine"
+                    people:column="1"
+                    people:selectable="true">
+                    <title>Country</title>
+                </field>
+            </schema>
+        </model>"""
+
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder(),
+            )
+
+            country = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                model_source=model
+            ).id
+
+            api.content.create(
+                id='CH', type=country, container=lst, country='Switzerland'
+            )
+            api.content.create(
+                id='DE', type=country, container=lst, country='Germany'
+            )
+
+            view = lst.unrestrictedTraverse('@@view')
+
+        self.assertEqual(len(view.people()), 2)
+
+        view.request['filter-country'] = 'Switzerland'
+        self.assertEqual(len(view.people()), 1)
+
+    def test_list_view_schema(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            view = lst.unrestrictedTraverse('@@view')
+
+        # don't call if there are no people
+        self.assertRaises(AssertionError, lambda: view.schema)
+
+        with self.user('admin'):
+            person = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__]
+            )
+            api.content.create(id='test', type=person.id, container=lst)
+
+        self.assertEqual(view.schema, person.lookupSchema())
+
+    def test_list_view_filter_property(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            view = lst.unrestrictedTraverse('@@view')
+
+        self.assertEqual(view.filter, None)
+
+        view.filter_prefix = 'test-filter-'
+        view.request['test-filter-key'] = 'value'
+
+        self.assertEqual(view.filter.key, 'key')
+        self.assertEqual(view.filter.value, 'value')
+        self.assertEqual(view.filter.title, u'')

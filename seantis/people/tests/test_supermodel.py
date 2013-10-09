@@ -126,11 +126,17 @@ class TestSupermodel(tests.IntegrationTestCase):
 
     def test_get_table_columns_merged(self):
         model = loadString(self.column_xml)
+        columns = list(get_table_columns_merged(model.schema))
 
-        self.assertEqual(list(get_table_columns_merged(model.schema)), [
-            ([u'Eins', u'Zwei'], ['first', 'second']),
-            ([u'Vier'], ['fourth'])
-        ])
+        self.assertEqual(len(columns), 2)
+
+        self.assertEqual(columns[0].titles, [u'Eins', u'Zwei'])
+        self.assertEqual(columns[0].attributes, ['first', 'second'])
+        self.assertFalse(columns[0].single_attribute)
+
+        self.assertEqual(columns[1].titles, [u'Vier'])
+        self.assertEqual(columns[1].attributes, ['fourth'])
+        self.assertTrue(columns[1].single_attribute)
 
     order_xml = """<?xml version='1.0' encoding='utf8'?>
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
