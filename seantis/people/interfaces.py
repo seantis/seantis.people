@@ -40,6 +40,12 @@ class IList(form.Schema):
         required=True
     )
 
+    people_per_page = schema.Int(
+        title=_(u"Number of people shown on each page"),
+        required=True,
+        default=50
+    )
+
 
 class IMembership(form.Schema):
 
@@ -73,4 +79,4 @@ class IMembership(form.Schema):
             return
 
         if Membership.start > Membership.end:
-            raise Invalid(_(u"The membership can't end before it starts" ))
+            raise Invalid(_(u"The membership can't end before it starts"))

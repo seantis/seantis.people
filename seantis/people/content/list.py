@@ -16,7 +16,7 @@ ListFilter = namedtuple('ListFilter', ['key', 'value', 'title'])
 
 class List(Container):
 
-    def people(self, filter=None):
+    def people(self, filter=None, batch_start=None, batch_size=None):
         catalog = api.portal.get_tool('portal_catalog')
 
         query = {}
@@ -25,6 +25,10 @@ class List(Container):
         }
         query['sort_on'] = 'sortable_title'
         query['sort_order'] = 'ascending'
+
+        if batch_start is not None and batch_size is not None:
+            query['b_start'] = batch_start
+            query['b_size'] = batch_size
 
         if filter:
             query[SELECTABLE_PREFIX + filter.key] = filter.value

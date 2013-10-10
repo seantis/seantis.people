@@ -1,5 +1,7 @@
 from five import grok
 
+from Products.CMFPlone.PloneBatch import Batch
+
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView
 from seantis.people.content.list import ListFilter
@@ -46,11 +48,20 @@ class ListView(BaseView):
         return None
 
     @property
-    def hide_table_header(self):
-        return 'hide-table-header' in self.request
+    def batch_size(self):
+        return int(self.request.get('b_size', self.context.people_per_page))
+
+    @property
+    def batch_start(self):
+        return int(self.request.get('b_start', 0))
 
     def people(self):
-        return self.context.people(filter=self.filter)
+        people = self.context.people(
+            filter=self.filter,
+            batch_start=self.batch_start,
+            batch_size=self.batch_size
+        )
+        return Batch(people, self.batch_size, self.batch_start)
 
     def columns(self):
         return list(get_table_columns_merged(self.schema))

@@ -58,8 +58,8 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                 });
             }
 
-            // the filter boxes don't need to be generated on these requests
-            params['hide-table-header'] = true;
+            // reset the batching
+            params['b_start:int'] = 0;
 
             return uri.query(params).toString();
         };
@@ -70,9 +70,9 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
         */
         self.load = function(url) {
             var carrier = $('<div>');
-            url += ' ' + self.options.fragments;
+            var selector = url + ' ' + self.options.fragments;
 
-            carrier.load(url, function(data) {
+            carrier.load(selector, function(data) {
 
                 var map_fragments = function(fragments) {
                     return _.object(
@@ -91,6 +91,12 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                         $(local_fragments[id]).replaceWith($(fragment));
                     }
                 });
+
+                // update the url if the browser supports it
+                if (window.history.replaceState) {
+                    var readable = new URI(url).readable();
+                    window.history.replaceState({}, document.title, readable);
+                }
 
                 $(document).trigger('filter-fragments-loaded');
             });

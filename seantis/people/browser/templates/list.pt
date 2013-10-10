@@ -6,12 +6,12 @@
 
 <metal:block fill-slot="javascript_head_slot">
   <script id="list-filter-options" tal:attributes="data-filter-prefix view/filter_prefix">
-   $(document).ready(function() {
-        $('.list-filter').ListFilterTable({
-          'reset-element': '.filter-reset',
-          'prefix': $('#list-filter-options').data('filter-prefix')
-        });
-    });
+   load_libraries(['jQuery', 'jQuery.fn.ListFilterTable'], function($) {
+      $('.list-filter').ListFilterTable({
+        'reset-element': '.filter-reset',
+        'prefix': $('#list-filter-options').data('filter-prefix')
+      });
+   });
   </script>
 </metal:block>
 
@@ -35,7 +35,7 @@
 
     <tal:block condition="people">
         <table tal:define="columns view/columns" class="listing nosort list-filter">
-            <thead tal:condition="not:view/hide_table_header">
+            <thead>
                 <tr>
                     <th tal:repeat="column columns">
                       <tal:block define="show_combobox python: view.show_combobox(column)">
@@ -72,6 +72,11 @@
                 </tr>
             </tbody>
         </table>
+
+        <div tal:define="batch people" class="filter-fragment" 
+             id="filter-fragment-3">
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
+        </div>
     </tal:block>
 </tal:block>
 </metal:block>
