@@ -78,3 +78,13 @@ class ListView(BaseView):
                 brain, column.attributes[0]
             ) for brain in self.context.people()
         ))
+
+    def selected_column_value(self, column):
+        assert self.show_combobox(column)
+
+        filter = self.filter
+
+        if not filter or filter.key != column.attributes[0]:
+            return '__all__'
+        else:
+            return filter.value

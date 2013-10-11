@@ -41,14 +41,21 @@
                       <tal:block define="show_combobox python: view.show_combobox(column)">
 
                         <tal:comment replace="nothing">
-                        Columns with comboboxes for filtering
+                          Columns with comboboxes for filtering
                         </tal:comment>
                         <tal:block condition="python: people and show_combobox">
-                          <select tal:attributes="data-filter-attribute python: column.attributes[0]">
-                            <option value="__all__" selected="selected" tal:content="python: column.titles[0]" />
+                          <select tal:attributes="data-filter-attribute python: column.attributes[0]"
+                                  tal:define="selected_value python: view.selected_column_value(column)"
+                          >
                             <option 
-                              tal:repeat="value python: view.combobox_values(column)" 
-                              tal:content="value" />
+                              value="__all__" 
+                              tal:attributes="selected python: selected_value == '__all__' and 'selected' or ''" 
+                              tal:content="python: column.titles[0]" 
+                            />
+                            <option 
+                                tal:content="value" tal:repeat="value python: view.combobox_values(column)" 
+                                tal:attributes="selected python: selected_value == value and 'selected' or ''"
+                            />
                           </select>
                         </tal:block>
 
