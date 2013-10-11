@@ -1,6 +1,43 @@
 load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
     "use strict";
 
+     /*
+        If a function is wrapped with the acquire_lock it cannot be called
+        again as long as it is running.
+
+        It stops this function from repeating forever:
+
+        var infinite = function() {
+            infinite();
+        }
+        infinite();
+
+        By wrapping it:
+
+        var infinite = function acquire_lock('infinite-lock', function() {
+            infinite(); // will lead nowhere
+        })
+        infinite();
+
+        The use for this function is to wrap event-handlers so they can change
+        things on the dom without triggering another invocation of themselves.
+    */
+    var locked = {};
+    var acquire_lock = function(id, inner_function) {
+        if (! _.has(locked, id)) {
+            locked[id] = false;
+        }
+        return function() {
+            if (locked[id]) return;
+            try {
+                locked[id] = true;
+                return inner_function.apply(this, arguments);
+            } finally {
+                locked[id] = false;
+            }
+        };
+    };
+
     /*
         Creates a loader which loads urls using ajax, replacing the blocks
         with the class defined in options.fragments with the ones loaded in
@@ -39,10 +76,10 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                     }
                 });
 
-                // update the url if the browser supports it
                 if (window.history.replaceState) {
-                    var readable = new URI(url).readable();
-                    window.history.replaceState({}, document.title, readable);
+                    window.history.replaceState(
+                        {}, document.title, new URI(url).readable()
+                    );
                 }
 
                 $(document).trigger('fragments-loaded', [loaded_fragments]);
@@ -145,43 +182,6 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
     };
 
     /*
-        If a function is wrapped with the acquire_lock it cannot be called
-        again as long as it is running.
-
-        It stops this function from repeating forever:
-
-        var infinite = function() {
-            infinite();
-        }
-        infinite();
-
-        By wrapping it:
-
-        var infinite = function acquire_lock('infinite-lock', function() {
-            infinite(); // will lead nowhere
-        })
-        infinite();
-
-        The use for this function is to wrap event-handlers so they can change
-        things on the dom without triggering another invocation of themselves.
-    */
-    var locked = {};
-    var acquire_lock = function(id, inner_function) {
-        if (! _.has(locked, id)) {
-            locked[id] = false;
-        }
-        return function() {
-            if (locked[id]) return;
-            try {
-                locked[id] = true;
-                return inner_function.apply(this, arguments);
-            } finally {
-                locked[id] = false;
-            }
-        };
-    };
-
-    /*
         Drives the ListFilter through select elements. Each select element
         is expected to have an 'all' value with the value set to '__all__' that
         is supposed to trigger the reset of the filter. The select must also
@@ -207,14 +207,37 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
         var selects = table.find(options['select-elements']);
         var list_filter = $.ListFilter(options);
 
+        var reset_handler = function(e) {
+            list_filter.filter();
+            selects.find('option[value="__all__"]').attr(
+                'selected', 'selected'
+            );
+            e.preventDefault();
+        };
+
+        var handle_batch_control = function(e) {
+            list_filter.filter_by_url($(this).attr('href'));
+            e.preventDefault();
+        };
+
+        var setup_fragment_handlers = function() {
+            if (options['reset-element']) {
+                $(options['reset-element']).click(
+                    acquire_lock('change-box', reset_handler)
+                );
+            }
+            $('.listingBar a').click(handle_batch_control);
+        };
+
+        setup_fragment_handlers();
+        $(document).on('fragments-loaded', setup_fragment_handlers);
+
         return selects.each(function() {
 
             var box = $(this);
             var attribute = box.data('filter-attribute');
 
-            var self = {};
-
-            self.selected_value = function() {
+            var selected_value = function() {
                 var selected = box.find('option:selected');
                 if (selected.attr('value') == '__all__') {
                     return null;
@@ -223,8 +246,8 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                 }
             };
 
-            self.change_handler = function(e) {
-                var value = self.selected_value();
+            var change_handler = function(e) {
+                var value = selected_value();
 
                 if (value) {
                     list_filter.filter(attribute, value);
@@ -246,31 +269,7 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                 });
             };
 
-            self.reset_handler = function(e) {
-                list_filter.filter();
-                selects.find('option[value="__all__"]').attr(
-                    'selected', 'selected'
-                );
-                e.preventDefault();
-            };
-
-            self.handle_batch_control = function(e) {
-                list_filter.filter_by_url($(this).attr('href'));
-                e.preventDefault();
-            };
-
-            self.setup_fragment_handlers = function() {
-                if (options['reset-element']) {
-                    $(options['reset-element']).click(
-                        acquire_lock('change-box', self.reset_handler)
-                    );
-                }
-                $('.listingBar a').click(self.handle_batch_control);
-            };
-
-            box.change(acquire_lock('change-box', self.change_handler));
-            self.setup_fragment_handlers();
-            $(document).on('fragments-loaded', self.setup_fragment_handlers);
+            box.change(acquire_lock('change-box', change_handler));
         });
     };
 });
