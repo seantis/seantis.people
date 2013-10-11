@@ -22,7 +22,7 @@
         No people in the list.
     </div>
 
-    <div class="filter-fragment" id="filter-fragment-1">
+    <div class="loader-fragment" data-fragment-id="1">
       <a tal:condition="view/filter" tal:attributes="href context/absolute_url" class="filter-reset" i18n:translate="">
         Filtered by 
         <span>
@@ -62,7 +62,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="filter-fragment" id="filter-fragment-2">
+            <tbody class="loader-fragment" data-fragment-id="2">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
                         <span tal:repeat="attribute column/attributes"
@@ -73,8 +73,8 @@
             </tbody>
         </table>
 
-        <div tal:define="batch people" class="filter-fragment" 
-             id="filter-fragment-3">
+        <div tal:define="batch people" class="loader-fragment" 
+             data-fragment-id="3">
             <div metal:use-macro="here/batch_macros/macros/navigation" />
         </div>
     </tal:block>

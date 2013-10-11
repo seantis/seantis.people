@@ -2,6 +2,59 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
     "use strict";
 
     /*
+        Creates a loader which loads urls using ajax, replacing the blocks
+        with the class defined in options.fragments with the ones loaded in
+        the request.
+
+        The blocks need the 'loader-fragment' class and an identifer:
+
+        <div class='loader-fragment' data-fragment-id='1' />
+    */
+    $.FragmentsLoader = function() {
+        var self = {};
+        var fragment_selector = '.loader-fragment';
+
+        self.map_fragments = function(fragments) {
+            return _.object(
+                _.map(fragments, function(fragment) {
+                    var f = $(fragment);
+                    return [f.data('fragment-id'), f];
+                })
+            );
+        };
+
+        self.load = function(url) {
+            var carrier = $('<div>');
+            var selector = url + ' ' + fragment_selector;
+
+            carrier.load(selector, function(data) {
+                var local_fragments = self.map_fragments($(fragment_selector));
+                var loaded_fragments = self.map_fragments(
+                    $(carrier).find(fragment_selector)
+                );
+
+                _.each(loaded_fragments, function(fragment, id) {
+                    if (_.has(local_fragments, id)) {
+                        local_fragments[id].replaceWith(fragment);
+                    }
+                });
+
+                // update the url if the browser supports it
+                if (window.history.replaceState) {
+                    var readable = new URI(url).readable();
+                    window.history.replaceState({}, document.title, readable);
+                }
+
+                $(document).trigger('fragments-loaded', [loaded_fragments]);
+            });
+        };
+
+        return {
+            'load': self.load
+        };
+    };
+
+    /*
         Queries the current url with the parameter '&select-[field]=[value]'
         using ajax and goes through the result replacing the
         list-select-fragments on the current page with the ones found in
@@ -24,9 +77,9 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
     $.ListFilter = function(options) {
 
         var self = {};
+        var loader = $.FragmentsLoader();
 
         self.options = $.extend({
-            'fragments': '.filter-fragment',
             'prefix': 'filter-'
         }, options);
 
@@ -67,44 +120,6 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
         };
 
         /*
-            loads the given url and replaces the local
-            fragments with the loaded fragments
-        */
-        self.load = function(url) {
-            var carrier = $('<div>');
-            var selector = url + ' ' + self.options.fragments;
-
-            carrier.load(selector, function(data) {
-
-                var map_fragments = function(fragments) {
-                    return _.object(
-                        _.map(fragments, function(fragment) {
-                            return [fragment.id, fragment];
-                        })
-                    );
-                };
-                var selector = self.options.fragments;
-
-                var local_fragments = map_fragments($(self.options.fragments));
-                var loaded_fragments = map_fragments($(carrier).find(selector));
-
-                _.each(loaded_fragments, function(fragment, id) {
-                    if (_.has(local_fragments, id)) {
-                        $(local_fragments[id]).replaceWith($(fragment));
-                    }
-                });
-
-                // update the url if the browser supports it
-                if (window.history.replaceState) {
-                    var readable = new URI(url).readable();
-                    window.history.replaceState({}, document.title, readable);
-                }
-
-                $(document).trigger('filter-fragments-loaded');
-            });
-        };
-
-        /*
             filters the table with the given field/value. if either of those
             are undefined, the possibly filtered table is reset.
         */
@@ -119,7 +134,7 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
         };
 
         self.filter_by_url = function(url) {
-            self.load(url);
+            loader.load(url);
         };
 
         // public functions
@@ -255,7 +270,7 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
 
             box.change(acquire_lock('change-box', self.change_handler));
             self.setup_fragment_handlers();
-            $(document).on('filter-fragments-loaded', self.setup_fragment_handlers);
+            $(document).on('fragments-loaded', self.setup_fragment_handlers);
         });
     };
 });
