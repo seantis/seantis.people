@@ -115,13 +115,17 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
             }
 
             var url = self.build_url(fieldmap);
+            self.filter_by_url(url);
+        };
 
+        self.filter_by_url = function(url) {
             self.load(url);
         };
 
         // public functions
         return {
-            'filter': self.filter
+            'filter': self.filter,
+            'filter_by_url': self.filter_by_url
         };
     };
 
@@ -186,7 +190,6 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
         }, options);
 
         var selects = table.find(options['select-elements']);
-
         var list_filter = $.ListFilter(options);
 
         return selects.each(function() {
@@ -236,16 +239,23 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                 e.preventDefault();
             };
 
-            box.change(acquire_lock('change-box', self.change_handler));
+            self.handle_batch_control = function(e) {
+                list_filter.filter_by_url($(this).attr('href'));
+                e.preventDefault();
+            };
 
-            if (options['reset-element']) {
-                var setup_handler = function() {
+            self.setup_fragment_handlers = function() {
+                if (options['reset-element']) {
                     $(options['reset-element']).click(
                         acquire_lock('change-box', self.reset_handler)
                     );
-                };
-                $(document).on('filter-fragments-loaded', setup_handler);
-            }
+                }
+                $('.listingBar a').click(self.handle_batch_control);
+            };
+
+            box.change(acquire_lock('change-box', self.change_handler));
+            self.setup_fragment_handlers();
+            $(document).on('filter-fragments-loaded', self.setup_fragment_handlers);
         });
     };
 });
