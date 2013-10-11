@@ -65,8 +65,8 @@
             <tbody class="filter-fragment" id="filter-fragment-2">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
-                        <span tal:repeat="attribute python: column.attributes"
-                              tal:content="python: getattr(person, attribute)"
+                        <span tal:repeat="attribute column/attributes"
+                              tal:content="person/?attribute"
                         />
                     </td>
                 </tr>

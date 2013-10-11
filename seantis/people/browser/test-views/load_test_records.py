@@ -73,6 +73,17 @@ class LoadTestRecordsView(BaseView):
 
         headers = None
 
+        try:
+            from collective.noindexing.patches import apply, unapply
+            noindexing_available = True
+            log.info("using collective.noindexing to speed the import up")
+        except ImportError:
+            noindexing_available = False
+            log.info("install collective.noindexing for faster imports")
+
+        if noindexing_available:
+            apply()
+
         for rowix, row in enumerate(reader):
             if not headers:
                 headers = [key.lower() for key in row]
@@ -87,6 +98,14 @@ class LoadTestRecordsView(BaseView):
                     container=self.context,
                     **kwargs
                 )
+
+            if rowix % 100 == 0:
+                log.info('imported 100 records')
+
+        if noindexing_available:
+            log.info('rebuilding the catalog')
+            unapply()
+            api.portal.get_tool('portal_catalog').clearFindAndRebuild()
 
         return rowix
 
