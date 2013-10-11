@@ -59,7 +59,9 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
             }
 
             // reset the batching
-            params['b_start:int'] = 0;
+            if (_.has(params, 'b_start:int')) {
+                delete params['b_start:int'];
+            }
 
             return uri.query(params).toString();
         };

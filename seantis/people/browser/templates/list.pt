@@ -23,7 +23,7 @@
     </div>
 
     <div class="filter-fragment" id="filter-fragment-1">
-      <a tal:condition="view/filter" class="filter-reset" i18n:translate="" href="#">
+      <a tal:condition="view/filter" tal:attributes="href context/absolute_url" class="filter-reset" i18n:translate="">
         Filtered by 
         <span>
           <span class="filter-name" tal:content="view/filter/title"></span>
