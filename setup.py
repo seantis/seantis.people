@@ -49,7 +49,8 @@ setup(name=name, version=version, description=description,
           'plone.behavior',
           'plone.app.dexterity [grok, relations]',
           'seantis.plonetools>=0.3',
-          'collective.js.underscore'
+          'collective.js.underscore',
+          'tablib'
       ],
       extras_require=dict(
           tests=tests_require
