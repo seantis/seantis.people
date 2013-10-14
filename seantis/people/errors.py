@@ -3,9 +3,13 @@ class PeopleException(Exception):
 
 
 class TranslatableException(PeopleException):
-    def __init__(self, msg):
-        self.msg = msg
+    def __init__(self, message):
+        self.message = message
 
 
 class PeopleImportError(TranslatableException):
-    pass
+
+    def __init__(self, message, rownumber=None, colname=None):
+        self.message = message
+        self.rownumber = rownumber
+        self.colname = colname

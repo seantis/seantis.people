@@ -1,7 +1,9 @@
 import tablib
 
 from plone import api
+
 from zope.schema import getFields
+from zope.schema.interfaces import IFromUnicode, ValidationError
 
 from seantis.people import _
 from seantis.people.errors import PeopleImportError
@@ -15,13 +17,20 @@ def import_people(container, portal_type, format, data):
     attribute_map = get_attribute_map(dataset.headers, portal_type)
 
     for ix, record in enumerate(dataset.dict):
-        values = get_attribute_values(record, attribute_map)
-        api.content.create(
-            container=container,
-            type=portal_type,
-            id='',
-            **values
-        )
+        try:
+            values = get_attribute_values(record, attribute_map)
+            api.content.create(
+                container=container,
+                type=portal_type,
+                id='',
+                **values
+            )
+        except PeopleImportError, e:
+            raise PeopleImportError(
+                e.message, rownumber=ix+1, colname=e.colname
+            )
+        except Exception, e:
+            raise PeopleImportError(e.message, rownumber=ix+1)
 
 
 def get_dataset(format, data):
@@ -75,6 +84,14 @@ def get_attribute_values(record, attribute_map):
     values = {}
 
     for header, field in attribute_map.items():
-        values[field.__name__] = record[header]
+
+        assert IFromUnicode.providedBy(field), """
+            {} does not support fromUnicode
+        """.format(field)
+
+        try:
+            values[field.__name__] = field.fromUnicode(record[header])
+        except ValidationError, e:
+            raise PeopleImportError(e.doc(), colname=header)
 
     return values

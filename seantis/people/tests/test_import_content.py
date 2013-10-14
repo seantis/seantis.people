@@ -1,11 +1,14 @@
 from textwrap import dedent
 
+from zope import schema
+
 from seantis.people import tests
 from seantis.people import interfaces
 from seantis.people.errors import PeopleImportError
 from seantis.people.content.import_content import (
     get_dataset,
     get_attribute_map,
+    get_attribute_values,
     import_people
 )
 
@@ -49,6 +52,36 @@ class TestImportContent(tests.IntegrationTestCase):
         self.assertFalse(hasattr(folder['peter'], 'town'))
         self.assertFalse(hasattr(folder['glenn'], 'town'))
 
+    def test_get_attribute_values(self):
+        casts = [
+            (schema.Text, u'Test', u'Test'),
+            (schema.Int, u'1', 1),
+            (schema.Bool, u'True', True),
+            (schema.Bool, u'False', False),
+            (schema.Bool, u'True', True),
+            (schema.Bool, u'', False)
+        ]
+        for ix, (fieldtype, value, expected) in enumerate(casts):
+            key = str(ix)
+
+            record = {key: value}
+            attrmap = {key: fieldtype(__name__=key)}
+
+            result = get_attribute_values(record, attrmap)
+            self.assertEqual(result[key], expected)
+
+    def test_get_attribute_values_validation_error(self):
+        record = {'test': u'www.example.com'}
+        attrmap = {'test': schema.URI(__name__='test')}
+
+        try:
+            get_attribute_values(record, attrmap)
+        except PeopleImportError, e:
+            self.assertEqual(e.colname, 'test')
+            self.assertEqual(e.message, u'The specified URI is not valid.')
+        else:
+            assert False, "The exception should have occured."
+
     def test_get_csv_dataset(self):
         ds = get_dataset('csv', dedent("""
             First Name,Last Name,Town
@@ -90,7 +123,7 @@ class TestImportContent(tests.IntegrationTestCase):
         try:
             get_attribute_map(['firstname', 'First Name'], portal_type)
         except PeopleImportError, e:
-            self.assertIn('column is specified more than once', e.msg)
+            self.assertIn('column is specified more than once', e.message)
         else:
             assert False, "The exception should have occured."
 
