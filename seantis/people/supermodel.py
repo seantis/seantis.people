@@ -8,7 +8,7 @@ from plone.supermodel.utils import ns
 from zope.interface import implements
 
 from seantis.people.interfaces import IPerson, IPersonMarker
-from seantis.plonetools import utils
+from seantis.plonetools import tools
 
 NAME_FROM_PERSON = u'seantis.people.name_from_person'
 PERSON_COLUMNS = u'seantis.people.person_column'
@@ -76,7 +76,7 @@ def update_selectable_field_indexes(fti):
 
 @indexer(IPersonMarker)
 def sortable_title(obj):
-    schema = utils.get_schema_from_portal_type(obj.portal_type)
+    schema = tools.get_schema_from_portal_type(obj.portal_type)
     order = list(get_table_order_flat(schema))
 
     if order:
@@ -121,7 +121,7 @@ def set_table_columns(schema, fields):
     schema.setTaggedValue(PERSON_COLUMNS, fields)
 
     for column in get_table_columns(schema):
-        utils.add_attribute_to_metadata(column)
+        tools.add_attribute_to_metadata(column)
 
 
 def get_table_columns_merged(schema):
@@ -131,10 +131,10 @@ def get_table_columns_merged(schema):
 
     """
     Column = namedtuple('Column', ['titles', 'attributes', 'single_attribute'])
-    columns = utils.invert_dictionary(get_table_columns(schema))
+    columns = tools.invert_dictionary(get_table_columns(schema))
 
     for index in sorted(columns):
-        attributes = utils.order_fields_by_schema(
+        attributes = tools.order_fields_by_schema(
             columns[index], schema
         )
 
@@ -155,11 +155,12 @@ def set_table_order(schema, order):
 
 def get_table_order_flat(schema):
     """ Generates a sorted list out of the raw dictionary of the schema. """
-    order = utils.invert_dictionary(get_table_order(schema))
+    order = tools.invert_dictionary(get_table_order(schema))
 
     for index in sorted(order):
         for item in order[index]:
             yield item
+
 
 def set_table_order_flat(schema, fields):
     """ Stores the given list in the raw dictionary format of the schema. """

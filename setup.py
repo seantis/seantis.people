@@ -48,7 +48,7 @@ setup(name=name, version=version, description=description,
           'five.grok',
           'plone.behavior',
           'plone.app.dexterity [grok, relations]',
-          'seantis.plonetools>=0.2',
+          'seantis.plonetools>=0.3',
           'collective.js.underscore'
       ],
       extras_require=dict(

@@ -2,14 +2,14 @@ from plone.app.content.interfaces import INameFromTitle
 from zope.interface import implements
 from zope.component import adapts
 
-from seantis.plonetools import utils
+from seantis.plonetools import tools
 from seantis.people.supermodel import get_title_fields
 from seantis.people.interfaces import INameFromPerson
 
 
 class NameFromPerson(object):
     """ Uses the fields defined as title by seantis.people.supermodel to
-    generate a title for a new object. 
+    generate a title for a new object.
 
     """
     implements(INameFromTitle)
@@ -19,8 +19,8 @@ class NameFromPerson(object):
         pass
 
     def __new__(cls, context):
-        schema = utils.get_schema_from_portal_type(context.portal_type)
-        fields = utils.order_fields_by_schema(
+        schema = tools.get_schema_from_portal_type(context.portal_type)
+        fields = tools.order_fields_by_schema(
             get_title_fields(schema), schema
         )
         title = ' '.join([getattr(context, field) for field in fields])

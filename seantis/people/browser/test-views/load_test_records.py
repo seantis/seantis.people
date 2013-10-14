@@ -15,7 +15,7 @@ from plone import api
 
 from seantis.people.browser import BaseView
 from seantis.people.interfaces import IList
-from seantis.plonetools import utils
+from seantis.plonetools import tools
 
 
 class LoadTestRecordsView(BaseView):
@@ -52,10 +52,10 @@ class LoadTestRecordsView(BaseView):
         return open(os.path.join(path, 'load_test_records.xml'), 'r').read()
 
     def create_type(self):
-        if utils.is_existing_portal_type(self.typename):
+        if tools.is_existing_portal_type(self.typename):
             return
 
-        utils.add_new_dexterity_type(
+        tools.add_new_dexterity_type(
             self.typename, model_source=self.load_xml(),
             title=u'Test Record',
             behaviors=[
@@ -110,7 +110,7 @@ class LoadTestRecordsView(BaseView):
         return rowix
 
     def render(self):
-        if not utils.in_debug_mode():
+        if not tools.in_debug_mode():
             return "zope must be run in debug mode for this to work"
 
         RESPONSE = self.request.RESPONSE

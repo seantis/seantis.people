@@ -8,7 +8,7 @@ from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 from seantis.people.interfaces import IPerson, IList
 
 from seantis.people.supermodel import SELECTABLE_PREFIX
-from seantis.plonetools import utils
+from seantis.plonetools import tools
 
 
 ListFilter = namedtuple('ListFilter', ['key', 'value', 'title'])
@@ -36,7 +36,7 @@ class List(Container):
         return catalog(query)
 
     def possible_types(self):
-        return utils.get_type_info_by_behavior(IPerson.__identifier__)
+        return tools.get_type_info_by_behavior(IPerson.__identifier__)
 
     def available_types(self):
         used_type = self.used_type()

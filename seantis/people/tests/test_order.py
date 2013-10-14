@@ -3,7 +3,7 @@ from plone import api
 from seantis.people.supermodel import (
     set_table_order_flat
 )
-from seantis.plonetools import utils
+from seantis.plonetools import tools
 
 from seantis.people.interfaces import IPerson
 from seantis.people import tests
@@ -24,7 +24,7 @@ class TestOrder(tests.IntegrationTestCase):
                 bar='hammertime!'
             )
 
-        brain = utils.get_brain_by_object(obj)
+        brain = tools.get_brain_by_object(obj)
         catalog = api.portal.get_tool('portal_catalog')
 
         self.assertEqual(
