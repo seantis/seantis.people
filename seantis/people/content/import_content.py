@@ -93,5 +93,7 @@ def get_attribute_values(record, attribute_map):
             values[field.__name__] = field.fromUnicode(record[header])
         except ValidationError, e:
             raise PeopleImportError(e.doc(), colname=header)
+        except ValueError, e:
+            raise PeopleImportError(e.message, colname=header)
 
     return values

@@ -52,6 +52,57 @@ class TestImportContent(tests.IntegrationTestCase):
         self.assertFalse(hasattr(folder['peter'], 'town'))
         self.assertFalse(hasattr(folder['glenn'], 'town'))
 
+    def test_import_people_error_in_row(self):
+        folder = self.new_temporary_folder()
+        model = """<?xml version='1.0' encoding='utf8'?>
+        <model  xmlns="http://namespaces.plone.org/supermodel/schema"
+                xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <field name="name" type="zope.schema.TextLine"
+                people:title="true">
+                    <title>Name</title>
+                </field>
+                <field name="age" type="zope.schema.Int">
+                    <title>Age</title>
+                </field>
+            </schema>
+        </model>"""
+
+        portal_type = self.new_temporary_type(
+            model_source=model,
+            behaviors=[interfaces.INameFromPerson.__identifier__],
+        ).id
+
+        self.login('admin')
+
+        # error with a column avaiable
+        try:
+            import_people(folder, portal_type, 'csv', dedent("""
+                Name,Age
+                Macallan,15
+                Glenmorangie,Sixteen
+            """.lstrip('\n')))
+        except PeopleImportError, e:
+            self.assertIn('invalid literal for int', e.message)
+            self.assertEqual(e.rownumber, 2)
+            self.assertEqual(e.colname, 'Age')
+        else:
+            assert False, "The exception should have occurred."
+
+        # error without column available
+        try:
+            # no folder is given
+            import_people(None, portal_type, 'csv', dedent("""
+                Name,Age
+                Macallan,15
+            """.lstrip('\n')))
+        except PeopleImportError, e:
+            self.assertIn('Missing required parameter', e.message)
+            self.assertEqual(e.rownumber, 1)
+            self.assertEqual(e.colname, None)
+        else:
+            assert False, "The exception should have occurred."
+
     def test_get_attribute_values(self):
         casts = [
             (schema.Text, u'Test', u'Test'),
