@@ -1,5 +1,7 @@
+from plone import api
 from plone.supermodel import loadString, serializeSchema
 
+from seantis.people.interfaces import IPerson
 from seantis.people import tests
 
 from seantis.people.supermodel import (
@@ -11,7 +13,8 @@ from seantis.people.supermodel import (
     get_table_order_flat,
     set_table_order_flat,
     get_selectable_fields,
-    set_selectable_fields
+    set_selectable_fields,
+    update_related_indexes
 )
 
 
@@ -219,3 +222,32 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn('<field name="first"/>', xml)
         self.assertIn('<field name="second"/>', xml)
         self.assertIn('<field name="third" people:selectable="true"/>', xml)
+
+    def test_selectable_fields_index(self):
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            model_source=self.selectable_schema
+        )
+
+        catalog = api.portal.get_tool('portal_catalog')
+
+        ix = '{}_selectable_{}'
+
+        self.assertIn(ix.format(new_type.id, 'first'), catalog.indexes())
+        self.assertIn(ix.format(new_type.id, 'second'), catalog.indexes())
+        self.assertIn(ix.format(new_type.id, 'third'), catalog.indexes())
+
+        # nothing changes implicitly
+        set_selectable_fields(new_type.lookupSchema(), ['third'])
+
+        self.assertIn(ix.format(new_type.id, 'first'), catalog.indexes())
+        self.assertIn(ix.format(new_type.id, 'second'), catalog.indexes())
+        self.assertIn(ix.format(new_type.id, 'third'), catalog.indexes())
+
+        # the index must be rebuilt by hand (using the web-interface events
+        # will take care of that)
+        update_related_indexes(new_type)
+
+        self.assertNotIn(ix.format(new_type.id, 'first'), catalog.indexes())
+        self.assertNotIn(ix.format(new_type.id, 'second'), catalog.indexes())
+        self.assertIn(ix.format(new_type.id, 'third'), catalog.indexes())

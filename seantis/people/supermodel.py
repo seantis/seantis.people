@@ -19,8 +19,6 @@ PERSON_SELECTABLE = u'seantis.people.selectable'
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
 PEOPLE_PREFIX = 'people'
 
-SELECTABLE_PREFIX = 'selectable_'
-
 missing = object()
 
 
@@ -30,6 +28,12 @@ def on_type_modified(fti, event=None):
     the metadata/indexes.
 
     """
+
+    update_related_indexes(fti)
+
+
+def update_related_indexes(fti):
+
     if IPerson.__identifier__ not in fti.behaviors:
         return
 
@@ -38,15 +42,24 @@ def on_type_modified(fti, event=None):
 
     if new_indexes:
         for new_index in new_indexes:
-            catalog.reindexIndex(new_index, event.object.REQUEST)
+            catalog.reindexIndex(new_index, REQUEST=None)
 
     for brain in catalog(portal_type=fti.id):
         brain.getObject().reindexObject(idxs=['sortable_title'])
 
 
+def get_selectable_prefix(portal_type):
+    return portal_type + '_selectable_'
+
+
+def get_selectable_field_ix(portal_type, field):
+    return get_selectable_prefix(portal_type) + field
+
+
 def get_selectable_field_indexes(fti):
+    prefix = get_selectable_prefix(fti.id)
     zcatalog = api.portal.get_tool('portal_catalog')._catalog
-    return [ix for ix in zcatalog.indexes if ix.startswith(SELECTABLE_PREFIX)]
+    return [ix for ix in zcatalog.indexes if ix.startswith(prefix)]
 
 
 def update_selectable_field_indexes(fti):
@@ -56,15 +69,16 @@ def update_selectable_field_indexes(fti):
     new_indexes = []
 
     # remove the indexes which are no longer used
+    prefix = get_selectable_prefix(fti.id)
     for ix in get_selectable_field_indexes(fti):
-        field = ix.replace(SELECTABLE_PREFIX, '')
+        field = ix.replace(prefix, '')
 
         if field not in fields:
             catalog.delIndex(ix)
 
     # add the indexes which are not yet defined
     for field in fields:
-        index_name = SELECTABLE_PREFIX + field
+        index_name = get_selectable_field_ix(fti.id, field)
         if index_name not in catalog.indexes():
             catalog.addIndex(index_name, 'FieldIndex', extra={
                 'indexed_attrs': field

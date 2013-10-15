@@ -3,6 +3,7 @@ class PeopleException(Exception):
 
 
 class TranslatableException(PeopleException):
+
     def __init__(self, message):
         self.message = message
 
@@ -10,6 +11,6 @@ class TranslatableException(PeopleException):
 class PeopleImportError(TranslatableException):
 
     def __init__(self, message, rownumber=None, colname=None):
-        self.message = message
+        super(PeopleImportError, self).__init__(message)
         self.rownumber = rownumber
         self.colname = colname

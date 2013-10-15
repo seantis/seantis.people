@@ -6,8 +6,7 @@ from plone.dexterity.content import Container
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
 from seantis.people.interfaces import IPerson, IList
-
-from seantis.people.supermodel import SELECTABLE_PREFIX
+from seantis.people.supermodel import get_selectable_field_ix
 from seantis.plonetools import tools
 
 
@@ -31,7 +30,11 @@ class List(Container):
             query['b_size'] = batch_size
 
         if filter:
-            query[SELECTABLE_PREFIX + filter.key] = filter.value
+            used_type = self.used_type()
+
+            if used_type:
+                field_index = get_selectable_field_ix(used_type.id, filter.key)
+                query[field_index] = filter.value
 
         return catalog(query)
 
