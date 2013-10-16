@@ -1,1 +1,1 @@
-from .base import BaseView
+from .base import BaseView, BaseForm

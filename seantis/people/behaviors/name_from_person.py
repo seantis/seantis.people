@@ -23,7 +23,11 @@ class NameFromPerson(object):
         fields = tools.order_fields_by_schema(
             get_title_fields(schema), schema
         )
-        title = ' '.join([getattr(context, field) for field in fields])
+
+        title = ' '.join(
+            [getattr(context, field, '') or '' for field in fields]
+        )
+        title = title.strip()
 
         instance = super(NameFromPerson, cls).__new__(cls)
 

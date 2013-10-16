@@ -1,15 +1,17 @@
 from textwrap import dedent
 
 from zope import schema
+from plone.supermodel import loadString
 
 from seantis.people import tests
 from seantis.people import interfaces
-from seantis.people.errors import PeopleImportError
+from seantis.people.errors import ContentImportError
 from seantis.people.content.import_content import (
     get_dataset,
     get_attribute_map,
     get_attribute_values,
-    import_people
+    import_people,
+    validate_attribute_values
 )
 
 
@@ -82,7 +84,7 @@ class TestImportContent(tests.IntegrationTestCase):
                 Macallan,15
                 Glenmorangie,Sixteen
             """.lstrip('\n')))
-        except PeopleImportError, e:
+        except ContentImportError, e:
             self.assertIn('invalid literal for int', e.message)
             self.assertEqual(e.rownumber, 2)
             self.assertEqual(e.colname, 'Age')
@@ -96,12 +98,39 @@ class TestImportContent(tests.IntegrationTestCase):
                 Name,Age
                 Macallan,15
             """.lstrip('\n')))
-        except PeopleImportError, e:
+        except ContentImportError, e:
             self.assertIn('Missing required parameter', e.message)
             self.assertEqual(e.rownumber, 1)
             self.assertEqual(e.colname, None)
         else:
             assert False, "The exception should have occurred."
+
+    def test_import_people_schema_validation(self):
+        folder = self.new_temporary_folder()
+        model = loadString("""<?xml version='1.0' encoding='utf8'?>
+        <model  xmlns="http://namespaces.plone.org/supermodel/schema"
+                xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <field name="name" type="zope.schema.TextLine"
+                people:title="true" required="true">
+                    <title>Name</title>
+                </field>
+                <field name="age" type="zope.schema.Int" required="false">
+                    <title>Age</title>
+                </field>
+            </schema>
+        </model>""")
+
+        try:
+            validate_attribute_values(model.schema, {'age': 1})
+        except ContentImportError, e:
+            self.assertIs(type(e), ContentImportError)
+            self.assertEqual(e.colname, 'name')
+            self.assertEqual('Required column is missing', e.message)
+        else:
+            assert False, "The exception should have occurred."
+
+        validate_attribute_values(model.schema, {'name': u'one', 'age': 1})
 
     def test_get_attribute_values(self):
         casts = [
@@ -127,7 +156,7 @@ class TestImportContent(tests.IntegrationTestCase):
 
         try:
             get_attribute_values(record, attrmap)
-        except PeopleImportError, e:
+        except ContentImportError, e:
             self.assertEqual(e.colname, 'test')
             self.assertEqual(e.message, u'The specified URI is not valid.')
         else:
@@ -168,12 +197,12 @@ class TestImportContent(tests.IntegrationTestCase):
         portal_type = self.new_temporary_type(model_source=model).id
 
         self.assertRaises(
-            PeopleImportError, get_attribute_map, [], portal_type
+            ContentImportError, get_attribute_map, [], portal_type
         )
 
         try:
             get_attribute_map(['firstname', 'First Name'], portal_type)
-        except PeopleImportError, e:
+        except ContentImportError, e:
             self.assertIn('column is specified more than once', e.message)
         else:
             assert False, "The exception should have occured."

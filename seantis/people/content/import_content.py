@@ -1,12 +1,19 @@
+import logging
+log = logging.getLogger('seantis.people')
+
+from collections import namedtuple
+
 import tablib
 
 from plone import api
 
-from zope.schema import getFields
-from zope.schema.interfaces import IFromUnicode, ValidationError
+from zope.schema import getFields, getValidationErrors
+from zope.schema.interfaces import (
+    IFromUnicode, ValidationError, SchemaNotFullyImplemented
+)
 
 from seantis.people import _
-from seantis.people.errors import PeopleImportError
+from seantis.people.errors import ContentImportError
 from seantis.plonetools import tools
 
 supported_formats = ('csv', )
@@ -16,21 +23,28 @@ def import_people(container, portal_type, format, data):
     dataset = get_dataset(format, data)
     attribute_map = get_attribute_map(dataset.headers, portal_type)
 
+    schema = tools.get_schema_from_portal_type(portal_type)
+
     for ix, record in enumerate(dataset.dict):
         try:
             values = get_attribute_values(record, attribute_map)
+            validate_attribute_values(schema, values)
+
             api.content.create(
                 container=container,
                 type=portal_type,
                 id='',
                 **values
             )
-        except PeopleImportError, e:
-            raise PeopleImportError(
+        except ContentImportError, e:
+            raise ContentImportError(
                 e.message, rownumber=ix+1, colname=e.colname
             )
         except Exception, e:
-            raise PeopleImportError(e.message, rownumber=ix+1)
+            log.exception('error importing people')
+            raise ContentImportError(e.message, rownumber=ix+1)
+
+    return ix + 1
 
 
 def get_dataset(format, data):
@@ -48,7 +62,7 @@ def get_dataset(format, data):
 def get_attribute_map(headers, portal_type):
 
     if not headers:
-        raise PeopleImportError(_(u'No column headers were found'))
+        raise ContentImportError(_(u'No column headers were found'))
 
     schema = tools.get_schema_from_portal_type(portal_type)
     attribute_map = {}
@@ -68,7 +82,7 @@ def get_attribute_map(headers, portal_type):
             continue
 
         if field in attribute_map.values():
-            raise PeopleImportError(
+            raise ContentImportError(
                 _(
                     u'The ${name} column is specified more than once',
                     mapping=dict(name=header)
@@ -92,8 +106,22 @@ def get_attribute_values(record, attribute_map):
         try:
             values[field.__name__] = field.fromUnicode(record[header])
         except ValidationError, e:
-            raise PeopleImportError(e.doc(), colname=header)
+            raise ContentImportError(e.doc(), colname=header)
         except ValueError, e:
-            raise PeopleImportError(e.message, colname=header)
+            raise ContentImportError(e.message, colname=header)
 
     return values
+
+
+def validate_attribute_values(schema, values):
+    obj = namedtuple('ImportObject', values.keys())(**values)
+
+    for error in getValidationErrors(schema, obj):
+        if isinstance(error[1], SchemaNotFullyImplemented):
+            raise ContentImportError(
+                _(u'Required column is missing'), colname=error[0]
+            )
+        else:
+            raise ContentImportError(
+                error[1].message, colname=error[0]
+            )
