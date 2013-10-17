@@ -78,7 +78,8 @@ class TestSupermodel(tests.IntegrationTestCase):
             <schema>
                 <field  name="first"
                         type="zope.schema.TextLine"
-                        people:column="1">
+                        people:column="1"
+                        people:title="true">
                     <description/>
                     <title>Eins</title>
                 </field>
@@ -122,7 +123,9 @@ class TestSupermodel(tests.IntegrationTestCase):
         # get shorter assertions below
         xml = xml.replace(' type="zope.schema.TextLine"', '')
 
-        self.assertIn('<field name="first" people:column="1">', xml)
+        self.assertIn(
+            '<field name="first" people:title="true" people:column="1">', xml
+        )
         self.assertIn('<field name="second">', xml)
         self.assertIn('<field name="third" people:column="2">', xml)
         self.assertIn('<field name="fourth" people:column="2">', xml)
@@ -136,10 +139,12 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertEqual(columns[0].titles, [u'Eins', u'Zwei'])
         self.assertEqual(columns[0].attributes, ['first', 'second'])
         self.assertFalse(columns[0].single_attribute)
+        self.assertTrue(columns[0].wrap_in_link)
 
         self.assertEqual(columns[1].titles, [u'Vier'])
         self.assertEqual(columns[1].attributes, ['fourth'])
         self.assertTrue(columns[1].single_attribute)
+        self.assertFalse(columns[1].wrap_in_link)
 
     order_xml = """<?xml version='1.0' encoding='utf8'?>
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"

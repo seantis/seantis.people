@@ -77,9 +77,16 @@
             <tbody class="loader-fragment" data-fragment-id="2">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
-                        <span tal:repeat="attribute column/attributes"
-                              tal:content="person/?attribute"
-                        />
+                      <tal:block repeat="attribute column/attributes">
+                        <tal:block condition="column/wrap_in_link">
+                          <a tal:attributes="href python: person.getURL()">
+                            <span tal:content="person/?attribute" />
+                          </a>
+                        </tal:block>
+                        <tal:block condition="not:column/wrap_in_link">
+                          <span tal:content="person/?attribute" />
+                        </tal:block>
+                      </tal:block>
                     </td>
                 </tr>
             </tbody>
