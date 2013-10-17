@@ -24,4 +24,10 @@
     <element value="plone.app.content.interfaces.INameFromTitle" />
   </property>
 
+  <!-- actions -->
+  <action i18n:domain="seantis.people" title="Import" action_id="import" category="object" condition_expr=""
+    url_expr="string:${object_url}/import" visible="True" i18n:attributes="title">
+    <permission value="Modify portal content"/>
+  </action>
+
 </object>

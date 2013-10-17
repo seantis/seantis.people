@@ -37,7 +37,7 @@ class ImportForm(BaseForm):
 
     ignoreContext = True
 
-    template = grok.PageTemplateFile('templates/import.pt')
+    template = grok.PageTemplateFile('templates/import_form.pt')
 
     @property
     def fields(self):
