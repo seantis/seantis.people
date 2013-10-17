@@ -2,7 +2,8 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/main_template/macros/master">
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="seantis.people">
 
 <metal:block fill-slot="javascript_head_slot">
   <script id="list-filter-options" tal:attributes="data-filter-prefix view/filter_prefix">
@@ -23,13 +24,17 @@
     </div>
 
     <div class="loader-fragment" data-fragment-id="1">
-      <a tal:condition="view/filter" tal:attributes="href context/absolute_url" class="filter-reset" i18n:translate="">
-        Filtered by 
-        <span>
+      <a tal:condition="view/filter" tal:attributes="href context/absolute_url" class="filter-reset">
+        <span i18n:translate="">
+          Filtered by 
+        </span>
+        <span class="filter-tag">
           <span class="filter-name" tal:content="view/filter/title"></span>
           <span class="filter-value" tal:content="view/filter/value"></span>
         </span>
-        Click to Reset
+        <span i18n:translate="">
+          Click to Reset
+        </span>
       </a>
     </div>
 

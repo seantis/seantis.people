@@ -1,0 +1,116 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2013-10-17 09:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: seantis.people\n"
+
+#: ./browser/import_form.py:71
+msgid "${format} is not supported, supported are ${formats}"
+msgstr ""
+
+#: ./browser/import_form.py:93
+msgid "Cancel"
+msgstr ""
+
+#: ./browser/templates/list.pt:35
+msgid "Click to Reset"
+msgstr ""
+
+#: ./errors.py:37
+msgid "Column ${column}"
+msgstr ""
+
+#: ./interfaces.py:63
+msgid "End of membership"
+msgstr ""
+
+#: ./browser/import_form.py:26
+msgid "File"
+msgstr ""
+
+#: ./browser/templates/list.pt:28
+msgid "Filtered by"
+msgstr ""
+
+#: ./browser/import_form.py:58
+#: ./profiles/default/types/seantis.people.list.xml
+msgid "Import"
+msgstr ""
+
+#: ./browser/import_form.py:31
+msgid "Import people"
+msgstr ""
+
+#: ./profiles/default/types/seantis.people.list.xml
+msgid "List of People"
+msgstr ""
+
+#: ./profiles/default/types/seantis.people.membership.xml
+msgid "Membership"
+msgstr ""
+
+#: ./interfaces.py:39
+msgid "Name of the list of people"
+msgstr ""
+
+#: ./content/import_content.py:65
+msgid "No column headers were found"
+msgstr ""
+
+#: ./browser/templates/list.pt:22
+msgid "No people in the list."
+msgstr ""
+
+#: ./interfaces.py:44
+msgid "Number of people shown on each page"
+msgstr ""
+
+#: ./interfaces.py:68
+msgid "Person"
+msgstr ""
+
+#: ./content/import_content.py:122
+msgid "Required column is missing"
+msgstr ""
+
+#: ./interfaces.py:53
+msgid "Role inside organization"
+msgstr ""
+
+#: ./errors.py:32
+msgid "Row ${row}"
+msgstr ""
+
+#: ./interfaces.py:58
+msgid "Start of membership"
+msgstr ""
+
+#: ./browser/import_form.py:83
+msgid "Successfully imported ${count} records"
+msgstr ""
+
+#: ./content/import_content.py:86
+msgid "The ${name} column is specified more than once"
+msgstr ""
+
+#: ./interfaces.py:82
+msgid "The membership can't end before it starts"
+msgstr ""
+
+#: ./browser/import_form.py:25
+msgid "Type"
+msgstr ""
+

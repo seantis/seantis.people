@@ -28,7 +28,7 @@ class IImportFormSchema(form.Schema):
 
 class ImportForm(BaseForm):
 
-    label = _(u'Import directory items')
+    label = _(u'Import people')
 
     permission = 'cmf.ManagePortal'
     grok.require(permission)
