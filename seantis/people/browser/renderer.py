@@ -1,5 +1,5 @@
 from zope.schema import getFields
-from seantis.plonetools import Email, Website
+from seantis.plonetools.schemafields import Email, Website
 
 
 class EmailFieldRenderer(object):

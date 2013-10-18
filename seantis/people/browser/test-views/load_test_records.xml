@@ -38,11 +38,11 @@
       <required>False</required>
       <title>Fax</title>
     </field>
-    <field name="email" type="seantis.plonetools.Email" people:column="5">
+    <field name="email" type="seantis.plonetools.schemafields.Email" people:column="5">
       <required>False</required>
       <title>E-Mail</title>
     </field>
-    <field name="web" type="seantis.plonetools.Website">
+    <field name="web" type="seantis.plonetools.schemafields.Website">
       <required>False</required>
       <title>Web</title>
     </field>
