@@ -59,7 +59,7 @@ class ListView(BaseView):
         return int(self.request.get('b_start', 0))
 
     def render_field(self, person, field):
-        return self.renderer.render(field, getattr(person, field))
+        return self.renderer.render(person, field)
 
     def people(self):
         people = self.context.people(
