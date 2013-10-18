@@ -39,7 +39,7 @@
     </div>
 
     <tal:block condition="people">
-        <table tal:define="columns view/columns" class="listing nosort list-filter">
+        <table tal:define="columns view/columns" class="listing nosort list-filter people-list">
             <thead>
                 <tr>
                     <th tal:repeat="column columns">
