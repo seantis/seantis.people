@@ -50,10 +50,10 @@
     />
 
 <adapter factory=".behaviors.NameFromPerson" />
-<adapter factory=".supermodel.sortable_title" name="sortable_title" />
+<adapter factory=".supermodel.indexing.sortable_title" name="sortable_title" />
 
 <utility
-    factory=".supermodel.PeopleSchema"
+    factory=".supermodel.schemahandler.PeopleSchema"
     name="seantis.people.name_from_person"
     />
 

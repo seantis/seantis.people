@@ -8,7 +8,7 @@ from seantis.people.supermodel import (
 )
 from seantis.plonetools import tools
 
-from seantis.people.supermodel import on_type_modified
+from seantis.people.supermodel.indexing import on_type_modified
 from seantis.people.interfaces import IPerson
 from seantis.people import tests
 

@@ -5,7 +5,7 @@
     <subscriber
         for="plone.dexterity.interfaces.IDexterityFTI
              zope.lifecycleevent.interfaces.IObjectModifiedEvent"
-        handler=".supermodel.on_type_modified"
+        handler=".supermodel.indexing.on_type_modified"
         />
 
 </configure>

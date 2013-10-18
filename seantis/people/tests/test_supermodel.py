@@ -4,7 +4,7 @@ from plone.supermodel import loadString, serializeSchema
 from seantis.people.interfaces import IPerson
 from seantis.people import tests
 
-from seantis.people.supermodel import (
+from seantis.people.supermodel.schemahandler import (
     get_title_fields,
     set_title_fields,
     get_table_columns,
@@ -14,6 +14,8 @@ from seantis.people.supermodel import (
     set_table_order_flat,
     get_selectable_fields,
     set_selectable_fields,
+)
+from seantis.people.supermodel.indexing import (
     update_related_indexes
 )
 
