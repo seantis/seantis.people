@@ -3,7 +3,7 @@ from five import grok
 from Products.CMFPlone.PloneBatch import Batch
 
 from seantis.people.interfaces import IList
-from seantis.people.browser import BaseView
+from seantis.people.browser import BaseView, Renderer
 from seantis.people.content.list import ListFilter
 from seantis.people.supermodel import (
     get_schema_columns
@@ -19,6 +19,10 @@ class ListView(BaseView):
 
     template = grok.PageTemplateFile('templates/list.pt')
     filter_prefix = 'filter-'
+
+    def update(self):
+        if self.has_people:
+            self.renderer = Renderer(self.schema)
 
     @property
     def has_people(self):
@@ -53,6 +57,9 @@ class ListView(BaseView):
     @property
     def batch_start(self):
         return int(self.request.get('b_start', 0))
+
+    def render_field(self, person, field):
+        return self.renderer.render(field, getattr(person, field))
 
     def people(self):
         people = self.context.people(
