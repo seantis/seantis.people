@@ -90,29 +90,29 @@ def get_table_columns_merged(schema):
         yield Column(titles, attributes, len(titles) == 1, wrap_in_link)
 
 
-def get_table_order(schema):
+def get_table_order_raw(schema):
     """ Gets the fields which are used as sort order in the table. """
     return schema.queryTaggedValue(PERSON_ORDER, {})
 
 
-def set_table_order(schema, order):
+def set_table_order_raw(schema, order):
     """ Sets the fields used as sort order on the table. """
     schema.setTaggedValue(PERSON_ORDER, order)
 
 
-def get_table_order_flat(schema):
+def get_table_order(schema):
     """ Generates a sorted list out of the raw dictionary of the schema. """
-    order = tools.invert_dictionary(get_table_order(schema))
+    order = tools.invert_dictionary(get_table_order_raw(schema))
 
     for index in sorted(order):
         for item in order[index]:
             yield item
 
 
-def set_table_order_flat(schema, fields):
+def set_table_order(schema, fields):
     """ Stores the given list in the raw dictionary format of the schema. """
     order = dict((field, str(ix+1)) for ix, field in enumerate(fields))
-    set_table_order(schema, order)
+    set_table_order_raw(schema, order)
 
 
 class SchemaHandler(object):
@@ -196,8 +196,8 @@ class ColumnSchemaHandler(DictionarySchemaHandler):
 class OrderSchemaHandler(DictionarySchemaHandler):
 
     attribute = 'order'
-    getter = staticmethod(get_table_order)
-    setter = staticmethod(set_table_order)
+    getter = staticmethod(get_table_order_raw)
+    setter = staticmethod(set_table_order_raw)
 
 
 class SelectableSchemaHandler(FieldListSchemaHandler):

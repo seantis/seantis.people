@@ -5,14 +5,14 @@ from seantis.plonetools import tools
 
 from seantis.people.interfaces import IPerson, IPersonMarker
 from seantis.people.supermodel import (
-    get_selectable_fields, get_table_order_flat
+    get_selectable_fields, get_table_order
 )
 
 
 @indexer(IPersonMarker)
 def sortable_title(obj):
     schema = tools.get_schema_from_portal_type(obj.portal_type)
-    order = list(get_table_order_flat(schema))
+    order = list(get_table_order(schema))
 
     if order:
         return ' '.join((getattr(obj, field, '') for field in order))

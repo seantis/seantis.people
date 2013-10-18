@@ -4,20 +4,18 @@ from plone.supermodel import loadString, serializeSchema
 from seantis.people.interfaces import IPerson
 from seantis.people import tests
 
-from seantis.people.supermodel.schemahandler import (
+from seantis.people.supermodel import (
     get_title_fields,
     set_title_fields,
     get_table_columns,
     set_table_columns,
     get_table_columns_merged,
-    get_table_order_flat,
-    set_table_order_flat,
+    get_table_order,
+    set_table_order,
     get_selectable_fields,
     set_selectable_fields,
 )
-from seantis.people.supermodel.indexing import (
-    update_related_indexes
-)
+from seantis.people.supermodel.indexing import update_related_indexes
 
 
 class TestSupermodel(tests.IntegrationTestCase):
@@ -170,14 +168,14 @@ class TestSupermodel(tests.IntegrationTestCase):
     def test_load_order_schema(self):
         model = loadString(self.order_xml)
         self.assertEqual(
-            list(get_table_order_flat(model.schema)),
+            list(get_table_order(model.schema)),
             ['first', 'second', 'third']
         )
 
     def test_write_order_schema(self):
         model = loadString(self.order_xml)
 
-        set_table_order_flat(
+        set_table_order(
             model.schema, ['third', 'second', 'first']
         )
 

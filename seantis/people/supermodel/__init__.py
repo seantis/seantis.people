@@ -6,8 +6,8 @@ from .schemahandler import (
     get_table_columns,
     set_table_columns,
     get_table_columns_merged,
-    get_table_order_flat,
-    set_table_order_flat
+    get_table_order,
+    set_table_order
 )
 
 from .indexing import (
