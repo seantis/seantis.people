@@ -1,5 +1,3 @@
-from collections import namedtuple
-
 from plone.supermodel.parser import IFieldMetadataHandler
 from plone.supermodel.utils import ns
 
@@ -56,38 +54,6 @@ def set_table_columns(schema, fields):
 
     for column in get_table_columns(schema):
         tools.add_attribute_to_metadata(column)
-
-
-def get_table_columns_merged(schema):
-    """ Returns the columns in the order of appearance in the table with
-    each column having a list of titles, a corresponding list of attributes and
-    a flag indicating wheter the column contains more than one field.
-
-    """
-    Column = namedtuple(
-        'Column',
-        ['titles', 'attributes', 'single_attribute', 'wrap_in_link']
-    )
-    columns = tools.invert_dictionary(get_table_columns(schema))
-    title_fields = get_title_fields(schema)
-
-    for index in sorted(columns):
-        attributes = tools.order_fields_by_schema(
-            columns[index], schema
-        )
-
-        wrap_in_link = False
-
-        titles = []
-        for attribute in attributes:
-            titles.append(schema[attribute].title)
-
-            if attribute in title_fields:
-                wrap_in_link = True
-
-        titles = [schema[attr].title for attr in attributes]
-
-        yield Column(titles, attributes, len(titles) == 1, wrap_in_link)
 
 
 def get_table_order_raw(schema):

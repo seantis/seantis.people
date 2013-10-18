@@ -6,8 +6,7 @@ from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView
 from seantis.people.content.list import ListFilter
 from seantis.people.supermodel import (
-    get_table_columns_merged,
-    get_selectable_fields
+    get_schema_columns
 )
 
 
@@ -64,27 +63,21 @@ class ListView(BaseView):
         return Batch(people, self.batch_size, self.batch_start)
 
     def columns(self):
-        return list(get_table_columns_merged(self.schema))
-
-    def show_combobox(self, column):
-        if not column.single_attribute:
-            return False
-
-        return column.attributes[0] in get_selectable_fields(self.schema)
+        return get_schema_columns(self.schema)
 
     def combobox_values(self, column):
         return sorted(set(
             getattr(
-                brain, column.attributes[0]
+                brain, column.fields[0]
             ) for brain in self.context.people()
         ))
 
     def selected_column_value(self, column):
-        assert self.show_combobox(column)
+        assert column.selectable
 
         filter = self.filter
 
-        if not filter or filter.key != column.attributes[0]:
+        if not filter or filter.key != column.fields[0]:
             return '__all__'
         else:
             return filter.value

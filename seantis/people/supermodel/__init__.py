@@ -5,7 +5,6 @@ from .schemahandler import (
     set_selectable_fields,
     get_table_columns,
     set_table_columns,
-    get_table_columns_merged,
     get_table_order,
     set_table_order
 )
@@ -13,3 +12,5 @@ from .schemahandler import (
 from .indexing import (
     get_selectable_field_ix
 )
+
+from .schema_columns import get_schema_columns

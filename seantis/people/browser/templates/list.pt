@@ -43,33 +43,30 @@
             <thead>
                 <tr>
                     <th tal:repeat="column columns">
-                      <tal:block define="show_combobox python: view.show_combobox(column)">
+                      <tal:comment replace="nothing">
+                        Columns with comboboxes for filtering
+                      </tal:comment>
+                      <tal:block condition="python: people and column.selectable">
+                        <select tal:attributes="data-filter-attribute python: column.fields[0]"
+                                tal:define="selected_value python: view.selected_column_value(column)"
+                        >
+                          <option 
+                            value="__all__" 
+                            tal:attributes="selected python: selected_value == '__all__' and 'selected' or ''" 
+                            tal:content="python: column.titles[0]" 
+                          />
+                          <option 
+                              tal:content="value" tal:repeat="value python: view.combobox_values(column)" 
+                              tal:attributes="selected python: selected_value == value and 'selected' or ''"
+                          />
+                        </select>
+                      </tal:block>
 
-                        <tal:comment replace="nothing">
-                          Columns with comboboxes for filtering
-                        </tal:comment>
-                        <tal:block condition="python: people and show_combobox">
-                          <select tal:attributes="data-filter-attribute python: column.attributes[0]"
-                                  tal:define="selected_value python: view.selected_column_value(column)"
-                          >
-                            <option 
-                              value="__all__" 
-                              tal:attributes="selected python: selected_value == '__all__' and 'selected' or ''" 
-                              tal:content="python: column.titles[0]" 
-                            />
-                            <option 
-                                tal:content="value" tal:repeat="value python: view.combobox_values(column)" 
-                                tal:attributes="selected python: selected_value == value and 'selected' or ''"
-                            />
-                          </select>
-                        </tal:block>
-
-                        <tal:comment replace="nothing">
-                        Normal columns showing the title
-                        </tal:comment>
-                        <tal:block condition="not:show_combobox">
-                          <span tal:repeat="title python: column[0]" tal:content="title" />
-                        </tal:block>
+                      <tal:comment replace="nothing">
+                      Normal columns showing the title
+                      </tal:comment>
+                      <tal:block condition="not:column/selectable">
+                        <span tal:repeat="title column/titles" tal:content="title" />
                       </tal:block>
                     </th>
                 </tr>
@@ -77,14 +74,14 @@
             <tbody class="loader-fragment" data-fragment-id="2">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
-                      <tal:block repeat="attribute column/attributes">
-                        <tal:block condition="column/wrap_in_link">
+                      <tal:block repeat="field column/fields">
+                        <tal:block condition="column/contains_title_field">
                           <a tal:attributes="href python: person.getURL()">
-                            <span tal:content="person/?attribute" />
+                            <span tal:content="person/?field" />
                           </a>
                         </tal:block>
-                        <tal:block condition="not:column/wrap_in_link">
-                          <span tal:content="person/?attribute" />
+                        <tal:block condition="not:column/contains_title_field">
+                          <span tal:content="person/?field" />
                         </tal:block>
                       </tal:block>
                     </td>

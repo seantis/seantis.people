@@ -9,7 +9,6 @@ from seantis.people.supermodel import (
     set_title_fields,
     get_table_columns,
     set_table_columns,
-    get_table_columns_merged,
     get_table_order,
     set_table_order,
     get_selectable_fields,
@@ -78,8 +77,7 @@ class TestSupermodel(tests.IntegrationTestCase):
             <schema>
                 <field  name="first"
                         type="zope.schema.TextLine"
-                        people:column="1"
-                        people:title="true">
+                        people:column="1">
                     <description/>
                     <title>Eins</title>
                 </field>
@@ -123,28 +121,10 @@ class TestSupermodel(tests.IntegrationTestCase):
         # get shorter assertions below
         xml = xml.replace(' type="zope.schema.TextLine"', '')
 
-        self.assertIn(
-            '<field name="first" people:title="true" people:column="1">', xml
-        )
+        self.assertIn('<field name="first" people:column="1">', xml)
         self.assertIn('<field name="second">', xml)
         self.assertIn('<field name="third" people:column="2">', xml)
         self.assertIn('<field name="fourth" people:column="2">', xml)
-
-    def test_get_table_columns_merged(self):
-        model = loadString(self.column_xml)
-        columns = list(get_table_columns_merged(model.schema))
-
-        self.assertEqual(len(columns), 2)
-
-        self.assertEqual(columns[0].titles, [u'Eins', u'Zwei'])
-        self.assertEqual(columns[0].attributes, ['first', 'second'])
-        self.assertFalse(columns[0].single_attribute)
-        self.assertTrue(columns[0].wrap_in_link)
-
-        self.assertEqual(columns[1].titles, [u'Vier'])
-        self.assertEqual(columns[1].attributes, ['fourth'])
-        self.assertTrue(columns[1].single_attribute)
-        self.assertFalse(columns[1].wrap_in_link)
 
     order_xml = """<?xml version='1.0' encoding='utf8'?>
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
