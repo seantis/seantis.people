@@ -74,15 +74,13 @@
             <tbody class="loader-fragment" data-fragment-id="2">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
-                      <tal:block repeat="field column/fields">
-                        <tal:block condition="column/contains_title_field">
-                          <a tal:attributes="href python: person.getURL()">
-                            <span tal:content="person/?field" />
-                          </a>
-                        </tal:block>
-                        <tal:block condition="not:column/contains_title_field">
-                          <span tal:content="person/?field" />
-                        </tal:block>
+                      <tal:block condition="column/contains_title_field">
+                        <a tal:attributes="href python: person.getURL()">
+                           <span tal:repeat="field column/fields" tal:content="person/?field" />
+                        </a>
+                      </tal:block>
+                      <tal:block condition="not:column/contains_title_field">
+                        <span tal:repeat="field column/fields" tal:content="person/?field" />
                       </tal:block>
                     </td>
                 </tr>
