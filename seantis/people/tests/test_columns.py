@@ -3,8 +3,8 @@ from plone import api
 from Missing import MV
 
 from seantis.people.supermodel import (
-    get_table_columns,
-    set_table_columns
+    get_columns,
+    set_columns
 )
 from seantis.plonetools import tools
 
@@ -18,7 +18,7 @@ class TestColumns(tests.IntegrationTestCase):
     def test_add_person_column_first(self):
         new_type = self.new_temporary_type()
 
-        set_table_columns(new_type.lookupSchema(), {'foo': '1'})
+        set_columns(new_type.lookupSchema(), [['foo']])
 
         with self.user('admin'):
             obj = api.content.create(
@@ -39,7 +39,7 @@ class TestColumns(tests.IntegrationTestCase):
     def test_add_person_column_later(self):
         new_type = self.new_temporary_type()
 
-        self.assertEqual(get_table_columns(new_type.lookupSchema()), {})
+        self.assertEqual(get_columns(new_type.lookupSchema()), [])
 
         with self.user('admin'):
             obj = api.content.create(
@@ -51,7 +51,7 @@ class TestColumns(tests.IntegrationTestCase):
             )
 
         # define the metadata after the obj has been created
-        set_table_columns(new_type.lookupSchema(), {'foo': '1'})
+        set_columns(new_type.lookupSchema(), [['foo']])
 
         # which leaves the attribute in a missing value state
         brain = tools.get_brain_by_object(obj)
@@ -65,7 +65,7 @@ class TestColumns(tests.IntegrationTestCase):
     def test_reindex_on_change(self):
         new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
 
-        set_table_columns(new_type.lookupSchema(), {'foo': '1'})
+        set_columns(new_type.lookupSchema(), [['foo']])
 
         with self.user('admin'):
             obj = api.content.create(
@@ -83,7 +83,7 @@ class TestColumns(tests.IntegrationTestCase):
 
         self.assertEqual(brain.foo, 'stop')
 
-        set_table_columns(new_type.lookupSchema(), {'bar': '1'})
+        set_columns(new_type.lookupSchema(), [['bar']])
 
         # usually the dexterity fti modified event does this
         on_type_modified(new_type)

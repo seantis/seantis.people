@@ -23,8 +23,10 @@ class TestImportContent(tests.IntegrationTestCase):
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
                 xmlns:people="http://namespaces.plone.org/supermodel/people">
             <schema>
-                <field name="firstname" type="zope.schema.TextLine"
-                people:title="true">
+                <people:title>
+                    <people:item>firstname</people:item>
+                </people:title>
+                <field name="firstname" type="zope.schema.TextLine">
                     <title>First Name</title>
                 </field>
                 <field name="lastname" type="zope.schema.TextLine">
@@ -60,8 +62,10 @@ class TestImportContent(tests.IntegrationTestCase):
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
                 xmlns:people="http://namespaces.plone.org/supermodel/people">
             <schema>
-                <field name="name" type="zope.schema.TextLine"
-                people:title="true">
+                <people:title>
+                    <people:item>name</people:item>
+                </people:title>
+                <field name="name" type="zope.schema.TextLine">
                     <title>Name</title>
                 </field>
                 <field name="age" type="zope.schema.Int">
@@ -111,12 +115,15 @@ class TestImportContent(tests.IntegrationTestCase):
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
                 xmlns:people="http://namespaces.plone.org/supermodel/people">
             <schema>
-                <field name="name" type="zope.schema.TextLine"
-                people:title="true" required="true">
+                <people:title>
+                    <people:item>name</people:item>
+                </people:title>
+                <field name="name" type="zope.schema.TextLine">
                     <title>Name</title>
                 </field>
                 <field name="age" type="zope.schema.Int" required="false">
                     <title>Age</title>
+                    <required>False</required>
                 </field>
             </schema>
         </model>""")

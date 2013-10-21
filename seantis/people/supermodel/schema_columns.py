@@ -1,20 +1,13 @@
 from seantis.plonetools import tools
 from seantis.people.supermodel import (
-    get_selectable_fields, get_table_columns, get_title_fields
+    get_selectable_fields, get_columns, get_title_fields
 )
 
 
 def get_schema_columns(schema):
     columns = []
 
-    fields_by_columns = (
-        fields for ix, fields in sorted(
-            tools.invert_dictionary(get_table_columns(schema)).items(),
-            key=lambda x: x[0]
-        )
-    )
-
-    for fields in fields_by_columns:
+    for fields in get_columns(schema):
         columns.append(SchemaColumn(schema, fields))
 
     return columns

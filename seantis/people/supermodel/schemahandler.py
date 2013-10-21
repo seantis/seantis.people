@@ -1,6 +1,8 @@
-from plone.supermodel.parser import IFieldMetadataHandler
-from plone.supermodel.utils import ns
+from lxml import etree
 
+from plone.supermodel.parser import ISchemaMetadataHandler
+
+from plone.supermodel.utils import ns
 from zope.interface import implements
 
 from seantis.plonetools import tools
@@ -39,159 +41,163 @@ def set_selectable_fields(schema, fields):
     schema.setTaggedValue(PERSON_SELECTABLE, list(set(fields)))
 
 
-def get_table_columns(schema):
-    """ Gets the people-column fields of the schema. """
-
-    return schema.queryTaggedValue(PERSON_COLUMNS, {})
+def get_columns(schema):
+    return schema.queryTaggedValue(PERSON_COLUMNS, [])
 
 
-def set_table_columns(schema, fields):
-    """ Sets the people-title fields of the schema. The order is defined
-    by the field-order, not the order given by the fields-list.
+def set_columns(schema, columns):
+    for column in columns:
+        assert not isinstance(column, basestring), """
+            A list of list is expected, not a list of strings.
+        """
+    schema.setTaggedValue(PERSON_COLUMNS, columns)
 
-    """
-    schema.setTaggedValue(PERSON_COLUMNS, fields)
-
-    for column in get_table_columns(schema):
-        tools.add_attribute_to_metadata(column)
+    for column in get_columns(schema):
+        for field in column:
+            tools.add_attribute_to_metadata(field)
 
 
-def get_table_order_raw(schema):
+def get_order(schema):
     """ Gets the fields which are used as sort order in the table. """
-    return schema.queryTaggedValue(PERSON_ORDER, {})
+    return schema.queryTaggedValue(PERSON_ORDER, [])
 
 
-def set_table_order_raw(schema, order):
+def set_order(schema, order):
     """ Sets the fields used as sort order on the table. """
     schema.setTaggedValue(PERSON_ORDER, order)
 
 
-def get_table_order(schema):
-    """ Generates a sorted list out of the raw dictionary of the schema. """
-    order = tools.invert_dictionary(get_table_order_raw(schema))
-
-    for index in sorted(order):
-        for item in order[index]:
-            yield item
-
-
-def set_table_order(schema, fields):
-    """ Stores the given list in the raw dictionary format of the schema. """
-    order = dict((field, str(ix+1)) for ix, field in enumerate(fields))
-    set_table_order_raw(schema, order)
-
-
-class SchemaHandler(object):
+class NodeHandler(object):
 
     namespace = PEOPLE_NAMESPACE
     prefix = PEOPLE_PREFIX
 
-    def get_node_value(self, node, default=missing):
-        value = node.get(ns(self.attribute, self.namespace), default)
-        if isinstance(value, basestring):
-            return value.lower()
-        else:
-            return value
+    def __init__(self, tagname):
+        self.tagname = tagname
+        etree.register_namespace(self.prefix, self.namespace)
 
-    def set_node_value(self, node, value):
-        node.set(ns(self.attribute, self.namespace), value)
+    def prefixed(self, name):
+        return ns(name, self.namespace)
 
-    def get_attribute(self, schema, field):
-        raise NotImplementedError
+    def nodes(self, node, name):
+        return node.findall('./{}'.format(self.prefixed(name)))
 
-    def set_attribute(self, schema, field, value):
-        raise NotImplementedError
-
-    def read(self, node, schema, field):
-        value = self.get_node_value(node)
-        if value is not missing:
-            self.set_attribute(schema, field, value)
-
-    def write(self, node, schema, field):
-        value = self.get_attribute(schema, field)
-        if value is not missing:
-            self.set_node_value(node, value)
+    def tags(self, node):
+        return self.nodes(node, self.tagname)
 
 
-class FieldListSchemaHandler(SchemaHandler):
+class ItemListHandler(NodeHandler):
 
-    setter, getter = None, None
+    def __init__(self, tagname, getter, setter):
+        super(ItemListHandler, self).__init__(tagname)
+        self.getter = getter
+        self.setter = setter
 
-    def get_attribute(self, schema, field):
-        if field.__name__ in self.getter(schema):
-            return 'true'
-        else:
-            return missing
+    def parse(self, schema_node, schema):
+        tags = self.tags(schema_node)
 
-    def set_attribute(self, schema, field, value):
-        if value == 'true':
-            fields = self.getter(schema)
-            fields.append(field.__name__)
+        if not tags:
+            return
 
-            self.setter(schema, fields)
+        values = []
 
+        for tag in tags:
+            for item in self.nodes(tag, 'item'):
+                values.append(item.text.strip())
 
-class DictionarySchemaHandler(SchemaHandler):
+        self.setter(schema, values)
 
-    setter, getter = None, None
+    def write(self, schema_node, schema):
+        values = self.getter(schema)
 
-    def get_attribute(self, schema, field):
-        return self.getter(schema).get(field.__name__, missing)
+        if not values:
+            return
 
-    def set_attribute(self, schema, field, value):
-        fields = self.getter(schema)
-        fields[field.__name__] = value
+        element = etree.Element(self.prefixed(self.tagname))
+        for value in values:
+            item = etree.Element(self.prefixed('item'))
+            item.text = value
 
-        self.setter(schema, fields)
+            element.append(item)
 
-
-class TitleSchemaHandler(FieldListSchemaHandler):
-
-    attribute = 'title'
-    getter = staticmethod(get_title_fields)
-    setter = staticmethod(set_title_fields)
+        schema_node.append(element)
 
 
-class ColumnSchemaHandler(DictionarySchemaHandler):
+class ColumnsHandler(NodeHandler):
 
-    attribute = 'column'
-    getter = staticmethod(get_table_columns)
-    setter = staticmethod(set_table_columns)
+    def parse(self, schema_node, schema):
+        tags = self.tags(schema_node)
+
+        if not tags:
+            return
+
+        columns = []
+        selectable_fields = []
+
+        for tag in tags:
+            for column in self.nodes(tag, 'column'):
+                items = self.nodes(column, 'item')
+
+                if len(items) == 1 and column.get('selectable'):
+                    selectable = True
+                else:
+                    selectable = False
+
+                column = []
+                for item in items:
+                    value = item.text.strip()
+                    column.append(value)
+
+                    if selectable:
+                        selectable_fields.append(value)
+
+                columns.append(column)
+
+        set_columns(schema, columns)
+        set_selectable_fields(schema, selectable_fields)
+
+    def write(self, schema_node, schema):
+        columns = get_columns(schema)
+        selectable_fields = get_selectable_fields(schema)
+
+        if not columns:
+            return
+
+        columns_el = etree.Element(self.prefixed(self.tagname))
+
+        for column in columns:
+            column_el = etree.Element(self.prefixed('column'))
+
+            if len(column) == 1 and column[0] in selectable_fields:
+                column_el.set('selectable', 'true')
+
+            for field in column:
+                item_el = etree.Element(self.prefixed('item'))
+                item_el.text = field
+                column_el.append(item_el)
+
+            columns_el.append(column_el)
+
+        schema_node.append(columns_el)
 
 
-class OrderSchemaHandler(DictionarySchemaHandler):
+class PeopleSchemaMetaHandler(object):
 
-    attribute = 'order'
-    getter = staticmethod(get_table_order_raw)
-    setter = staticmethod(set_table_order_raw)
-
-
-class SelectableSchemaHandler(FieldListSchemaHandler):
-
-    attribute = 'selectable'
-    getter = staticmethod(get_selectable_fields)
-    setter = staticmethod(set_selectable_fields)
-
-
-class PeopleSchema(object):
-    """ Handles the people namepsace definitions on the supermodel schema. """
-
-    implements(IFieldMetadataHandler)
+    implements(ISchemaMetadataHandler)
 
     namespace = PEOPLE_NAMESPACE
     prefix = PEOPLE_PREFIX
 
     handlers = [
-        TitleSchemaHandler(),
-        ColumnSchemaHandler(),
-        OrderSchemaHandler(),
-        SelectableSchemaHandler()
+        ItemListHandler('title', get_title_fields, set_title_fields),
+        ItemListHandler('order', get_order, set_order),
+        ColumnsHandler('columns')
     ]
 
-    def read(self, node, schema, field):
+    def read(self, schema_node, schema):
         for handler in self.handlers:
-            handler.read(node, schema, field)
+            handler.parse(schema_node, schema)
 
-    def write(self, node, schema, field):
+    def write(self, schema_node, schema):
         for handler in self.handlers:
-            handler.write(node, schema, field)
+            handler.write(schema_node, schema)

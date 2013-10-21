@@ -1,9 +1,39 @@
 <model xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:people="http://namespaces.plone.org/supermodel/people" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns="http://namespaces.plone.org/supermodel/schema">
   <schema>
-    <field name="lastname" type="zope.schema.TextLine" people:title="true" people:column="1" people:order="1">
+
+    <people:title>
+      <people:item>lastname</people:item>
+      <people:item>firstname</people:item>
+    </people:title>
+
+    <people:order>
+      <people:item>lastname</people:item>
+      <people:item>firstname</people:item>
+    </people:order>
+
+    <people:columns>
+      <people:column>
+        <people:item>lastname</people:item>
+        <people:item>firstname</people:item>
+      </people:column>
+      <people:column selectable="true">
+        <people:item>city</people:item>
+      </people:column>
+      <people:column selectable="true">
+        <people:item>state</people:item>
+      </people:column>
+      <people:column>
+        <people:item>phone</people:item>
+      </people:column>
+      <people:column>
+        <people:item>email</people:item>
+      </people:column>
+    </people:columns>
+
+    <field name="lastname" type="zope.schema.TextLine">
       <title>Last Name</title>
     </field>
-    <field name="firstname" type="zope.schema.TextLine" people:title="true" people:column="1" people:order="2">
+    <field name="firstname" type="zope.schema.TextLine">
       <title>First Name</title>
     </field>
     <field name="company" type="zope.schema.TextLine">
@@ -14,7 +44,7 @@
       <required>False</required>
       <title>Address</title>
     </field>
-    <field name="city" type="zope.schema.TextLine" people:column="2" people:selectable="true">
+    <field name="city" type="zope.schema.TextLine">
       <required>False</required>
       <title>City</title>
     </field>
@@ -26,11 +56,11 @@
       <required>False</required>
       <title>Zip</title>
     </field>
-    <field name="state" type="zope.schema.TextLine" people:column="3" people:selectable="true">
+    <field name="state" type="zope.schema.TextLine">
       <required>False</required>
       <title>State</title>
     </field>
-    <field name="phone" type="zope.schema.TextLine" people:column="4">
+    <field name="phone" type="zope.schema.TextLine">
       <required>False</required>
       <title>Phone</title>
     </field>
@@ -38,7 +68,7 @@
       <required>False</required>
       <title>Fax</title>
     </field>
-    <field name="email" type="seantis.plonetools.schemafields.Email" people:column="5">
+    <field name="email" type="seantis.plonetools.schemafields.Email">
       <required>False</required>
       <title>E-Mail</title>
     </field>

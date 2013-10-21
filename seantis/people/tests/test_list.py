@@ -106,16 +106,18 @@ class TestList(tests.IntegrationTestCase):
             xmlns:people="http://namespaces.plone.org/supermodel/people"
         >
             <schema>
-                <field
-                    name="firstname"
-                    type="zope.schema.TextLine"
-                    people:column="1">
+                <people:columns>
+                    <people:column>
+                        <people:item>firstname</people:item>
+                    </people:column>
+                    <people:column>
+                        <people:item>lastname</people:item>
+                    </people:column>
+                </people:columns>
+                <field name="firstname" type="zope.schema.TextLine">
                     <title>First name</title>
                 </field>
-                <field
-                    name="lastname"
-                    type="zope.schema.TextLine"
-                    people:column="2">
+                <field name="lastname" type="zope.schema.TextLine">
                     <title>Last name</title>
                 </field>
             </schema>
@@ -157,16 +159,15 @@ class TestList(tests.IntegrationTestCase):
     def test_list_view_filter(self):
 
         model = """<?xml version='1.0' encoding='utf8'?>
-        <model
-            xmlns="http://namespaces.plone.org/supermodel/schema"
-            xmlns:people="http://namespaces.plone.org/supermodel/people"
-        >
+        <model xmlns="http://namespaces.plone.org/supermodel/schema"
+               xmlns:people="http://namespaces.plone.org/supermodel/people">
             <schema>
-                <field
-                    name="country"
-                    type="zope.schema.TextLine"
-                    people:column="1"
-                    people:selectable="true">
+                <people:columns>
+                    <people:column selectable="true">
+                        <people:item>country</people:item>
+                    </people:column>
+                </people:columns>
+                <field name="country" type="zope.schema.TextLine">
                     <title>Country</title>
                 </field>
             </schema>

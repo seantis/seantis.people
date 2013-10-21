@@ -1,7 +1,7 @@
 from plone import api
 
 from seantis.people.supermodel import (
-    set_table_order
+    set_order
 )
 from seantis.plonetools import tools
 
@@ -13,7 +13,7 @@ class TestOrder(tests.IntegrationTestCase):
 
     def test_order(self):
         new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
-        set_table_order(new_type.lookupSchema(), ['bar', 'foo'])
+        set_order(new_type.lookupSchema(), ['bar', 'foo'])
 
         with self.user('admin'):
             obj = api.content.create(

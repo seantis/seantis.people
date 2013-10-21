@@ -53,8 +53,8 @@
 <adapter factory=".supermodel.indexing.sortable_title" name="sortable_title" />
 
 <utility
-    factory=".supermodel.schemahandler.PeopleSchema"
-    name="seantis.people.name_from_person"
+    factory=".supermodel.schemahandler.PeopleSchemaMetaHandler"
+    name="seantis.people.people_schema_handler"
     />
 
 </configure>

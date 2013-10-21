@@ -3,7 +3,7 @@ from plone.supermodel import loadString
 from seantis.people import tests
 from seantis.people.supermodel import (
     get_schema_columns,
-    set_table_columns,
+    set_columns,
     set_title_fields
 )
 
@@ -40,7 +40,7 @@ class TestSchemaColumns(tests.IntegrationTestCase):
 
         model = loadString(self.address_model)
 
-        set_table_columns(model.schema, {'lastname': '1'})
+        set_columns(model.schema, [['lastname']])
         columns = get_schema_columns(model.schema)
 
         self.assertEqual(len(columns), 1)
@@ -53,7 +53,7 @@ class TestSchemaColumns(tests.IntegrationTestCase):
 
         model = loadString(self.address_model)
 
-        set_table_columns(model.schema, {'country': '1', 'lastname': '1'})
+        set_columns(model.schema, [['country', 'lastname']])
         columns = get_schema_columns(model.schema)
 
         self.assertEqual(len(columns), 1)
@@ -67,7 +67,7 @@ class TestSchemaColumns(tests.IntegrationTestCase):
 
         model = loadString(self.address_model)
 
-        set_table_columns(model.schema, {'country': '1', 'lastname': '1'})
+        set_columns(model.schema, [['country', 'lastname']])
 
         columns = get_schema_columns(model.schema)
         self.assertEqual(columns[0].contains_title_field, False)
@@ -80,6 +80,6 @@ class TestSchemaColumns(tests.IntegrationTestCase):
         columns = get_schema_columns(model.schema)
         self.assertEqual(columns[0].contains_title_field, False)
 
-        set_table_columns(model.schema, {'firstname': '1'})
+        set_columns(model.schema, [['firstname']])
         columns = get_schema_columns(model.schema)
         self.assertEqual(columns[0].contains_title_field, True)

@@ -3,10 +3,10 @@ from .schemahandler import (
     set_title_fields,
     get_selectable_fields,
     set_selectable_fields,
-    get_table_columns,
-    set_table_columns,
-    get_table_order,
-    set_table_order
+    get_columns,
+    set_columns,
+    get_order,
+    set_order
 )
 
 from .indexing import (
