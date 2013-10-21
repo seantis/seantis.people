@@ -69,7 +69,7 @@ class TestList(tests.IntegrationTestCase):
             self.assertEqual(constrain.allowedContentTypes(), [new_type])
             self.assertEqual(constrain.getLocallyAllowedTypes(), [new_type.id])
             self.assertEqual(
-                constrain.getImmediatelyAddableTypes(), [new_type]
+                constrain.getImmediatelyAddableTypes(), [new_type.id]
             )
 
     def test_add_unsupported_type(self):

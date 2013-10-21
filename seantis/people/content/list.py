@@ -74,4 +74,4 @@ class ListConstrainTypes(grok.Adapter):
         return [t.id for t in self.allowedContentTypes()]
 
     def getImmediatelyAddableTypes(self):
-        return self.allowedContentTypes()
+        return self.getLocallyAllowedTypes()
