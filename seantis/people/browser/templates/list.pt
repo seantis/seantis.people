@@ -80,7 +80,7 @@
                         </a>
                       </tal:block>
                       <tal:block condition="not:column/contains_title_field">
-                        <span tal:repeat="field column/fields" tal:content="structure python: view.render_field(person, field)" />
+                        <span tal:repeat="field column/fields" tal:content="structure python: view.renderer.render(person, field)" />
                       </tal:block>
                     </td>
                 </tr>

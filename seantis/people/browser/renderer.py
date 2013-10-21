@@ -1,33 +1,48 @@
+""" Provides a fast renderer for schema fields. Since this renderer is used
+on lists and tables and therefore called many times in a request the following
+options were not chosen:
+
+z3c.form display mode rendering - too complicated, hard to customize and slow
+zpt templates - quite a bit slower because of features we don't need
+
+The snippets rendered here so simple that string.Template can be used which
+is by far the fastest way of doing templates in python.
+
+"""
+
+import string
+
 from zope.schema import getFields
-from seantis.plonetools.schemafields import Email, Website
 from plone.namedfile.field import NamedBlobImage, NamedImage
+
+from seantis.plonetools.schemafields import Email, Website
 
 
 class EmailFieldRenderer(object):
 
-    template = u'<a href="mailto:{0}">{0}</a>'
+    template = string.Template(u'<a href="mailto:${url}">${url}</a>')
 
     def __call__(self, context, field):
-        return self.template.format(getattr(context, field))
+        return self.template.substitute(url=getattr(context, field))
 
 
 class WebsiteFieldRenderer(object):
 
-    template = u'<a href="{0}" target="_blank">{0}</a>'
+    template = string.Template(u'<a href="${url}" target="_blank">${url}</a>')
 
     def __call__(self, context, field):
-        return self.template.format(getattr(context, field))
+        return self.template.substitute(url=getattr(context, field))
 
 
 class ImageRenderer(object):
 
-    template = u'<img src="{0}" />'
+    template = string.Template(u'<img src="${url}" />')
 
     def __call__(self, context, field):
         img = getattr(context, field)
         if img:
             url = '/'.join((context.getURL(), '@@images', field, 'thumb'))
-            return self.template.format(url)
+            return self.template.substitute(url=url)
         else:
             return u''
 
@@ -47,8 +62,5 @@ class Renderer(object):
         self.fields = getFields(schema)
 
     def render(self, context, field):
-        return self.get_renderer(field)(context, field)
-
-    def get_renderer(self, field):
         fieldtype = type(self.fields[field])
-        return renderers.get(fieldtype, getattr)
+        return renderers.get(fieldtype, getattr)(context, field)
