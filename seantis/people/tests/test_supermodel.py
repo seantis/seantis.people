@@ -56,11 +56,14 @@ class TestSupermodel(tests.IntegrationTestCase):
             <schema>
                 <people:columns>
                     <people:column>
-                        <people:item>first</people:item>
-                        <people:item>second</people:item>
+                        <people:item>
+                            first
+
+                        </people:item>
+                        <people:item>   second </people:item>
                     </people:column>
                     <people:column>
-                        <people:item>fourth</people:item>
+                        <people:item> fourth </people:item>
                     </people:column>
                 </people:columns>
             </schema>
