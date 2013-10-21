@@ -62,5 +62,5 @@ class Renderer(object):
         self.fields = getFields(schema)
 
     def render(self, context, field):
-        fieldtype = type(self.fields[field])
+        fieldtype = type(self.fields.get(field, None))
         return renderers.get(fieldtype, getattr)(context, field)

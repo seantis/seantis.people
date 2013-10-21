@@ -18,7 +18,14 @@ class SchemaColumn(object):
     def __init__(self, schema, fields):
         self.schema = schema
         self.fields = tools.order_fields_by_schema(fields, schema)
-        self.titles = [self.schema[field].title for field in self.fields]
+
+        self.titles = []
+        for field in self.fields:
+            if field in self.schema:
+                self.titles.append(self.schema[field].title)
+            else:
+                self.titles.append(field)
+
         self.contains_title_field = bool(
             set(self.fields) & set(get_title_fields(self.schema))
         )
