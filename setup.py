@@ -50,6 +50,7 @@ setup(name=name, version=version, description=description,
           'plone.app.dexterity [grok, relations]',
           'seantis.plonetools>=0.6',
           'collective.js.underscore',
+          'collective.dexteritytextindexer',
           'tablib'
       ],
       extras_require=dict(
