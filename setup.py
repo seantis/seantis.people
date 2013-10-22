@@ -10,7 +10,8 @@ version = '0.1'
 tests_require = [
     'plone.app.testing',
     'collective.betterbrowser[pyquery]',
-    'seantis.plonetools[tests]'
+    'seantis.plonetools[tests]',
+    'mock'
 ]
 
 

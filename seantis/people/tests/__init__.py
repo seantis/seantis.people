@@ -1,3 +1,5 @@
+from plone import api
+
 from zope.security.management import newInteraction, endInteraction
 
 from seantis.plonetools.testing import TestCase
@@ -19,6 +21,16 @@ class IntegrationTestCase(TestCase):
     def tearDown(self):
         endInteraction()
         super(IntegrationTestCase, self).tearDown()
+
+    def get_import_form(self):
+        with self.user('admin'):
+            obj = api.content.create(
+                id='people',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            return api.content.get_view('import', obj, self.request)
 
 
 # to use with the browser which does its own security interactions

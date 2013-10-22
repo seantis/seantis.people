@@ -53,7 +53,10 @@ class ImportForm(BaseForm):
         return fields
 
     def get_format_from_filename(self, filename):
-        return filename.split('.')[-1]
+        if not '.' in filename:
+            return ''
+        else:
+            return filename.split('.')[-1]
 
     @buttonAndHandler(_(u'Import'), name='import')
     def run_import(self, action):
@@ -88,7 +91,7 @@ class ImportForm(BaseForm):
 
         except ContentImportError, e:
             transaction.abort()
-            self.raise_action_error(e.translate(self.context, self.request))
+            self.raise_action_error(e.translate(self.request))
 
     @buttonAndHandler(_(u'Cancel'), name='cancel')
     def cancel(self, action):
