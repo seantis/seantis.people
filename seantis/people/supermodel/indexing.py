@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone import api
 from plone.indexer import indexer
 
@@ -18,6 +19,12 @@ def sortable_title(obj):
         return ' '.join((getattr(obj, field, '') for field in order))
     else:
         return getattr(obj, 'title', '')
+
+
+@indexer(IPersonMarker)
+def first_letter(obj):
+    title = obj.Title()
+    return title and title[:1].upper() or u''
 
 
 def on_type_modified(fti, event=None):
@@ -43,7 +50,9 @@ def update_related_indexes(fti):
             catalog.reindexIndex(new_index, REQUEST=None)
 
     for brain in catalog(portal_type=fti.id):
-        brain.getObject().reindexObject(idxs=['sortable_title'])
+        brain.getObject().reindexObject(
+            idxs=['sortable_title', 'first_letter']
+        )
 
 
 def get_selectable_prefix(portal_type):

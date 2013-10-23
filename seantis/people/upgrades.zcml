@@ -2,4 +2,11 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
 
+    <genericsetup:upgradeStep 
+        title="Import new 'first_letter' index."
+        source="1000" destination="1001"
+        profile="seantis.people:default"
+        handler=".setuphandler.add_catalog_indexes"
+    />
+
 </configure>

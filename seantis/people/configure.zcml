@@ -27,6 +27,13 @@
     provides="Products.GenericSetup.interfaces.EXTENSION"
 />
 
+<!-- Import step for indexes -->
+<genericsetup:importStep
+    name="seantis.people"
+    description=""
+    title="seantis.people indexes"
+    handler="seantis.people.setuphandler.import_indexes" />
+
 <!-- Upgrades -->
 <include file="upgrades.zcml" />
 
@@ -51,6 +58,7 @@
 
 <adapter factory=".behaviors.NameFromPerson" />
 <adapter factory=".supermodel.indexing.sortable_title" name="sortable_title" />
+<adapter factory=".supermodel.indexing.first_letter" name="first_letter" />
 
 <utility
     factory=".supermodel.schemahandler.PeopleSchemaMetaHandler"

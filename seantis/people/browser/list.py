@@ -20,6 +20,8 @@ class ListView(BaseView):
     template = grok.PageTemplateFile('templates/list.pt')
     filter_prefix = 'filter-'
 
+    letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
     def update(self):
         if self.has_people:
             self.renderer = Renderer(self.schema)
