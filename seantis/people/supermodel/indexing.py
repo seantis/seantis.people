@@ -24,7 +24,7 @@ def sortable_title(obj):
 @indexer(IPersonMarker)
 def first_letter(obj):
     title = obj.Title()
-    return title and title[:1].upper() or u''
+    return title and title.decode('utf-8')[:1].upper() or u''
 
 
 def on_type_modified(fti, event=None):

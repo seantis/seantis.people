@@ -1,7 +1,17 @@
-from seantis.plonetools.setuphandlers import get_sane_index_handler_and_step
+from seantis.plonetools import setuphandlers
 
-add_catalog_indexes, import_indexes = get_sane_index_handler_and_step(
-    'seantis.people', [
-        ('first_letter', 'FieldIndex')
-    ]
-)
+indexes = [
+    ('first_letter', 'FieldIndex')
+]
+
+
+def add_catalog_indexes(context, logger=None):
+    setuphandlers.add_catalog_indexes(
+        'seantis.people', indexes, context, logger
+    )
+
+
+def import_indexes(context):
+    setuphandlers.import_indexes(
+        'seantis.people', indexes, context
+    )

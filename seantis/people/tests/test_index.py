@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+
 from plone import api
+
+from seantis.plonetools import tools
 
 from seantis.people import tests
 from seantis.people.interfaces import IPerson
@@ -57,3 +61,30 @@ class TestIndex(tests.IntegrationTestCase):
         self.assertNotIn(ix.format(new_type.id, 'first'), catalog.indexes())
         self.assertNotIn(ix.format(new_type.id, 'second'), catalog.indexes())
         self.assertIn(ix.format(new_type.id, 'third'), catalog.indexes())
+
+    def test_first_letter_index(self):
+        self.login('admin')
+
+        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+        folder = self.new_temporary_folder()
+
+        create = lambda title: api.content.create(
+            title=title, type=new_type.id, container=folder
+        )
+
+        objects = [create(name) for name in (
+            u'Andrew', u'Beat', u'cesar', u'Dexter', u'', u'ändu', u'Ödipus'
+        )]
+
+        catalog = api.portal.get_tool('portal_catalog')
+        index = catalog._catalog.getIndex('first_letter')
+
+        values = [
+            index.getEntryForObject(
+                tools.get_brain_by_object(obj).getRID()
+            ) for obj in objects
+        ]
+
+        self.assertEqual(sorted(values), [
+            u'', u'A', u'B', u'C', u'D', u'Ä', u'Ö'
+        ])
