@@ -5,7 +5,7 @@ from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 from seantis.people.interfaces import IPerson
 from seantis.people.content import List
 from seantis.people import tests
-from seantis.people.content.list import ListConstrainTypes
+from seantis.people.content.list import ListConstrainTypes, LetterFilter
 
 from pyquery import PyQuery as pq
 
@@ -85,6 +85,27 @@ class TestList(tests.IntegrationTestCase):
             )
 
         self.assertRaises(api.exc.InvalidParameterError, add_invalid_type)
+
+    def test_list_letters(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            person = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__]
+            )
+
+            api.content.create(title='Jessie', type=person.id, container=lst)
+            api.content.create(title='Walt', type=person.id, container=lst)
+
+        self.assertEqual(sorted(lst.letters()), ['J', 'W'])
+
+        filtered = lst.people(filter=LetterFilter('J', None))
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(filtered[0].id, 'jessie')
 
     def test_list_view_empty(self):
         with self.user('admin'):
