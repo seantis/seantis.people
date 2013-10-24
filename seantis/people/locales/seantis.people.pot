@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-10-17 09:20+0000\n"
+"POT-Creation-Date: 2013-10-24 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: seantis.people\n"
 
-#: ./browser/import_form.py:71
+#: ./browser/import_form.py:74
 msgid "${format} is not supported, supported are ${formats}"
 msgstr ""
 
-#: ./browser/import_form.py:93
+#: ./browser/import_form.py:96
 msgid "Cancel"
 msgstr ""
 
-#: ./browser/templates/list.pt:35
+#: ./browser/templates/list.pt:41
 msgid "Click to Reset"
 msgstr ""
 
@@ -41,17 +41,21 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: ./browser/templates/list.pt:28
+#: ./browser/templates/list.pt:34
 msgid "Filtered by"
 msgstr ""
 
-#: ./browser/import_form.py:58
+#: ./browser/import_form.py:61
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Import"
 msgstr ""
 
 #: ./browser/import_form.py:31
 msgid "Import people"
+msgstr ""
+
+#: ./browser/list.py:43
+msgid "Letter"
 msgstr ""
 
 #: ./profiles/default/types/seantis.people.list.xml
@@ -98,7 +102,7 @@ msgstr ""
 msgid "Start of membership"
 msgstr ""
 
-#: ./browser/import_form.py:83
+#: ./browser/import_form.py:86
 msgid "Successfully imported ${count} records"
 msgstr ""
 

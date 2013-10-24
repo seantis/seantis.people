@@ -25,7 +25,7 @@
 
     <div class="loader-fragment" data-fragment-id="letters">
       <div tal:condition="people" class='people-letters'>
-        <a tal:repeat="letter python: view.letters(people)" tal:content="letter"></a>
+        <a tal:repeat="letter view/context/letters" tal:content="letter" tal:attributes="href string:${context/absolute_url}?letter=${letter}; class python: letter == view.letter and 'selected-letter' or ''"></a>
       </div tal:condition>
     </div>
 

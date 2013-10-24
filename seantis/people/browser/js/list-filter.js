@@ -153,6 +153,11 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                 delete params['b_start:int'];
             }
 
+            // reset the letter
+            if (_.has(params, 'letter')) {
+                delete params['letter'];
+            }
+
             return uri.query(params).toString();
         };
 
@@ -215,8 +220,9 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
             e.preventDefault();
         };
 
-        var handle_batch_control = function(e) {
+        var handle_fragment_click = function(e) {
             list_filter.filter_by_url($(this).attr('href'));
+            window.scrollTo(0, 0);
             e.preventDefault();
         };
 
@@ -226,7 +232,8 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
                     acquire_lock('change-box', reset_handler)
                 );
             }
-            $('.listingBar a').click(handle_batch_control);
+            $('.listingBar a').click(handle_fragment_click);
+            $('.people-letters a').click(handle_fragment_click);
         };
 
         setup_fragment_handlers();

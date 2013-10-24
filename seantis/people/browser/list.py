@@ -1,13 +1,11 @@
-from plone import api
 from five import grok
 
 from Products.CMFPlone.PloneBatch import Batch
 
-from seantis.plonetools import tools
-
+from seantis.people import _
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView, Renderer
-from seantis.people.content.list import ListFilter
+from seantis.people.content.list import ListFilter, LetterFilter
 from seantis.people.supermodel import (
     get_schema_columns
 )
@@ -41,6 +39,9 @@ class ListView(BaseView):
 
     @property
     def filter(self):
+        if self.letter:
+            return LetterFilter(self.request['letter'], _(u'Letter'))
+
         for key in self.request.keys():
             if key.startswith(self.filter_prefix):
                 val = self.request[key]
@@ -52,6 +53,10 @@ class ListView(BaseView):
                 return ListFilter(key, val, title)
 
         return None
+
+    @property
+    def letter(self):
+        return self.request.get('letter')
 
     @property
     def batch_size(self):
@@ -69,20 +74,6 @@ class ListView(BaseView):
         )
         return Batch(people, self.batch_size, self.batch_start)
 
-    def letters(self, people):
-        catalog = api.portal.get_tool('portal_catalog')
-        index = catalog._catalog.getIndex('first_letter')
-
-        letters = set()
-
-        for person in people:
-            letter = index.getEntryForObject(person.getRID())
-
-            if letter:
-                letters.add(letter)
-
-        return sorted(letters, key=tools.unicode_collate_sortkey())
-
     def columns(self):
         return get_schema_columns(self.schema)
 
@@ -98,7 +89,7 @@ class ListView(BaseView):
 
         filter = self.filter
 
-        if not filter or filter.key != column.fields[0]:
-            return '__all__'
-        else:
+        if isinstance(filter, ListFilter) and filter.key != column.fields[0]:
             return filter.value
+        else:
+            return '__all__'

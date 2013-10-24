@@ -11,6 +11,7 @@ from seantis.plonetools import tools
 
 
 ListFilter = namedtuple('ListFilter', ['key', 'value', 'title'])
+LetterFilter = namedtuple('LetterFilter', ['value', 'title'])
 
 
 class List(Container):
@@ -33,10 +34,32 @@ class List(Container):
             used_type = self.used_type()
 
             if used_type:
-                field_index = get_selectable_field_ix(used_type.id, filter.key)
+
+                if isinstance(filter, ListFilter):
+                    field_index = get_selectable_field_ix(
+                        used_type.id, filter.key
+                    )
+
+                if isinstance(filter, LetterFilter):
+                    field_index = 'first_letter'
+
                 query[field_index] = filter.value
 
         return catalog(query)
+
+    def letters(self):
+        catalog = api.portal.get_tool('portal_catalog')
+        index = catalog._catalog.getIndex('first_letter')
+
+        letters = set()
+
+        for person in self.people():
+            letter = index.getEntryForObject(person.getRID())
+
+            if letter:
+                letters.add(letter)
+
+        return sorted(letters, key=tools.unicode_collate_sortkey())
 
     def possible_types(self):
         return tools.get_type_info_by_behavior(IPerson.__identifier__)

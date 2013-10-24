@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-10-17 09:20+0000\n"
+"POT-Creation-Date: 2013-10-24 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,15 +14,15 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ./browser/import_form.py:71
+#: ./browser/import_form.py:74
 msgid "${format} is not supported, supported are ${formats}"
 msgstr "${format} wird nicht unterstützt. Unterstützte Formate: ${formats}"
 
-#: ./browser/import_form.py:93
+#: ./browser/import_form.py:96
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ./browser/templates/list.pt:35
+#: ./browser/templates/list.pt:41
 msgid "Click to Reset"
 msgstr "Zurücksetzen"
 
@@ -38,11 +38,11 @@ msgstr "Ende der Mitgliedschaft"
 msgid "File"
 msgstr "Datei"
 
-#: ./browser/templates/list.pt:28
+#: ./browser/templates/list.pt:34
 msgid "Filtered by"
 msgstr "Filter"
 
-#: ./browser/import_form.py:58
+#: ./browser/import_form.py:61
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Import"
 msgstr "Import"
@@ -50,6 +50,10 @@ msgstr "Import"
 #: ./browser/import_form.py:31
 msgid "Import people"
 msgstr "Personen importieren"
+
+#: ./browser/list.py:43
+msgid "Letter"
+msgstr "Buchstabe"
 
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "List of People"
@@ -95,7 +99,7 @@ msgstr "Zeile ${row}"
 msgid "Start of membership"
 msgstr "Beginn der Mitgliedschaft"
 
-#: ./browser/import_form.py:83
+#: ./browser/import_form.py:86
 msgid "Successfully imported ${count} records"
 msgstr "${count} Eintrage erfolgreich importiert"
 
