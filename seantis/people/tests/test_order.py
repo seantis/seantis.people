@@ -29,5 +29,5 @@ class TestOrder(tests.IntegrationTestCase):
 
         self.assertEqual(
             catalog.getIndexDataForRID(brain.getRID())['sortable_title'],
-            'hammertime! stop'
+            tools.unicode_collate_sortkey()('hammertime! stop')
         )

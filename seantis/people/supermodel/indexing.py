@@ -16,9 +16,11 @@ def sortable_title(obj):
     order = list(get_order(schema))
 
     if order:
-        return ' '.join((getattr(obj, field, '') for field in order))
+        text = ' '.join((getattr(obj, field, '') for field in order))
     else:
-        return getattr(obj, 'title', '')
+        text = getattr(obj, 'title', '')
+
+    return tools.unicode_collate_sortkey()(text)
 
 
 @indexer(IPersonMarker)
