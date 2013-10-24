@@ -23,7 +23,13 @@
         No people in the list.
     </div>
 
-    <div class="loader-fragment" data-fragment-id="1">
+    <div class="loader-fragment" data-fragment-id="letters">
+      <div tal:condition="people" class='people-letters'>
+        <a tal:repeat="letter python: view.letters(people)" tal:content="letter"></a>
+      </div tal:condition>
+    </div>
+
+    <div class="loader-fragment" data-fragment-id="reset">
       <a tal:condition="view/filter" tal:attributes="href context/absolute_url" class="filter-reset">
         <span i18n:translate="">
           Filtered by 
@@ -71,7 +77,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="loader-fragment" data-fragment-id="2">
+            <tbody class="loader-fragment" data-fragment-id="people">
                 <tr tal:repeat="person people">
                     <td tal:repeat="column columns">
                       <tal:block condition="column/contains_title_field">
@@ -88,7 +94,7 @@
         </table>
 
         <div tal:define="batch people" class="loader-fragment" 
-             data-fragment-id="3">
+             data-fragment-id="batch">
             <div metal:use-macro="here/batch_macros/macros/navigation" />
         </div>
     </tal:block>

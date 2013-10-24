@@ -1,6 +1,9 @@
+from plone import api
 from five import grok
 
 from Products.CMFPlone.PloneBatch import Batch
+
+from seantis.plonetools import tools
 
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView, Renderer
@@ -19,8 +22,6 @@ class ListView(BaseView):
 
     template = grok.PageTemplateFile('templates/list.pt')
     filter_prefix = 'filter-'
-
-    letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     def update(self):
         if self.has_people:
@@ -67,6 +68,20 @@ class ListView(BaseView):
             batch_size=self.batch_size
         )
         return Batch(people, self.batch_size, self.batch_start)
+
+    def letters(self, people):
+        catalog = api.portal.get_tool('portal_catalog')
+        index = catalog._catalog.getIndex('first_letter')
+
+        letters = set()
+
+        for person in people:
+            letter = index.getEntryForObject(person.getRID())
+
+            if letter:
+                letters.add(letter)
+
+        return sorted(letters, key=tools.unicode_collate_sortkey())
 
     def columns(self):
         return get_schema_columns(self.schema)
