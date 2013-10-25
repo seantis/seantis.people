@@ -7,6 +7,15 @@ from seantis.people.supermodel import get_title_fields
 from seantis.people.interfaces import INameFromPerson
 
 
+def get_name_from_person(obj):
+    schema = tools.get_schema_from_portal_type(obj.portal_type)
+    fields = get_title_fields(schema)
+
+    title = u' '.join((getattr(obj, field, u'') or u'' for field in fields))
+
+    return title.strip()
+
+
 class NameFromPerson(object):
     """ Uses the fields defined as title by seantis.people.supermodel to
     generate a title for a new object.
@@ -19,16 +28,7 @@ class NameFromPerson(object):
         pass
 
     def __new__(cls, context):
-        schema = tools.get_schema_from_portal_type(context.portal_type)
-        fields = tools.order_fields_by_schema(
-            get_title_fields(schema), schema
-        )
-
-        title = ' '.join(
-            [getattr(context, field, '') or '' for field in fields]
-        )
-        title = title.strip()
-
+        title = get_name_from_person(context)
         instance = super(NameFromPerson, cls).__new__(cls)
 
         instance.title = title

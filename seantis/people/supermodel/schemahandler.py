@@ -26,7 +26,9 @@ def get_title_fields(schema):
 
 def set_title_fields(schema, fields):
     """ Sets the people-title fields of the schema. """
-    schema.setTaggedValue(NAME_FROM_PERSON, list(set(fields)))
+    schema.setTaggedValue(NAME_FROM_PERSON, sorted(
+        list(set(fields)), key=fields.index  # unique values, preserving order
+    ))
 
 
 def get_selectable_fields(schema):

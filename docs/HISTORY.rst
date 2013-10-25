@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.3 (unreleased)
+~~~~~~~~~~~~~~~~
+
+- The title attributes order is now independent of the field order.
+  [href]
+
 0.2
 ~~~
 

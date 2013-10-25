@@ -40,7 +40,7 @@ class TestBehavior(tests.IntegrationTestCase):
     def test_person_title_no_influence_if_not_activated(self):
         blank_type = self.new_temporary_type()
         set_title_fields(blank_type.lookupSchema(), ['foo', 'bar'])
-        
+
         with self.user('admin'):
             blank_obj = api.content.create(
                 id='',
@@ -61,7 +61,7 @@ class TestBehavior(tests.IntegrationTestCase):
 
         set_title_fields(new_type.lookupSchema(), ['foo', 'bar'])
 
-        with self.user('admin'):           
+        with self.user('admin'):
             obj = api.content.create(
                 id='',
                 type=new_type.id,
@@ -72,3 +72,43 @@ class TestBehavior(tests.IntegrationTestCase):
 
         self.assertEqual(obj.title, 'stop hammertime!')
         self.assertEqual(obj.id, 'stop-hammertime')
+
+    def test_get_name_from_person(self):
+
+        foobar_xml = """<?xml version='1.0' encoding='utf8'?>
+        <model xmlns="http://namespaces.plone.org/supermodel/schema"
+               xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <field name="bar" type="zope.schema.TextLine">
+                    <title>Bar</title>
+                </field>
+                <field name="foo" type="zope.schema.TextLine">
+                    <title>Foo</title>
+                </field>
+            </schema>
+        </model>"""
+
+        person = self.new_temporary_type(
+            model_source=foobar_xml
+        )
+
+        with self.user('admin'):
+            obj = api.content.create(
+                id='test',
+                type=person.id,
+                container=self.new_temporary_folder(),
+                foo='mic check',
+                bar='one two'
+            )
+
+        schema = person.lookupSchema()
+
+        set_title_fields(schema, ['foo', 'bar'])
+        self.assertEqual(
+            behaviors.get_name_from_person(obj), u'mic check one two'
+        )
+
+        set_title_fields(schema, ['bar', 'foo'])
+        self.assertEqual(
+            behaviors.get_name_from_person(obj), u'one two mic check'
+        )
