@@ -17,6 +17,11 @@ Changelog
 - Fixes a number of unicode issues.
   [href]
 
+0.3
+~~~
+
+(skipped by accident)
+
 0.2
 ~~~
 
