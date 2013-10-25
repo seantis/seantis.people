@@ -73,6 +73,13 @@ class TestBehavior(tests.IntegrationTestCase):
         self.assertEqual(obj.title, 'stop hammertime!')
         self.assertEqual(obj.id, 'stop-hammertime')
 
+        obj.foo = 'start'
+        behaviors.name_from_person.on_object_modified(obj)
+
+        self.assertEqual(obj.title, 'start hammertime!')
+        self.assertEqual(obj.id, 'stop-hammertime')
+
+
     def test_get_name_from_person(self):
 
         foobar_xml = """<?xml version='1.0' encoding='utf8'?>

@@ -8,4 +8,10 @@
         handler=".supermodel.indexing.on_type_modified"
         />
 
+    <subscriber
+        for="seantis.people.interfaces.INameFromPerson
+             zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+        handler=".behaviors.name_from_person.on_object_modified"
+        />
+
 </configure>
