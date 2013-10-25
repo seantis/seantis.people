@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from plone import api
 
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED

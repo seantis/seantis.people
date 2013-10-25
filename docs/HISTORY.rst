@@ -14,6 +14,9 @@ Changelog
 - The title attributes order is now independent of the field order.
   [href]
 
+- Fixes a number of unicode issues.
+  [href]
+
 0.2
 ~~~
 

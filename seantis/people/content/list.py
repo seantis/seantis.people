@@ -1,3 +1,5 @@
+import warnings
+
 from collections import namedtuple
 
 from five import grok

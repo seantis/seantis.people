@@ -2,6 +2,8 @@ from five import grok
 
 from Products.CMFPlone.PloneBatch import Batch
 
+from seantis.plonetools import tools
+
 from seantis.people import _
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView, Renderer
@@ -40,11 +42,11 @@ class ListView(BaseView):
     @property
     def filter(self):
         if self.letter:
-            return LetterFilter(self.request['letter'], _(u'Letter'))
+            return LetterFilter(self.letter, _(u'Letter'))
 
         for key in self.request.keys():
             if key.startswith(self.filter_prefix):
-                val = self.request[key]
+                val = self.request[key].decode('utf-8')
                 key = key.replace(self.filter_prefix, '')
 
                 field = self.has_people and self.schema.get(key, None) or None
@@ -56,7 +58,7 @@ class ListView(BaseView):
 
     @property
     def letter(self):
-        return self.request.get('letter')
+        return self.request.get('letter', '').decode('utf-8')
 
     @property
     def batch_size(self):
@@ -82,7 +84,7 @@ class ListView(BaseView):
             getattr(
                 brain, column.fields[0]
             ) for brain in self.context.people()
-        ))
+        ), key=tools.unicode_collate_sortkey())
 
     def selected_column_value(self, column):
         assert column.selectable
