@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.3 (unreleased)
-~~~~~~~~~~~~~~~~
+0.4
+~~~
 
 - Ensures that the title is updated when the object is modified.
   [href]
