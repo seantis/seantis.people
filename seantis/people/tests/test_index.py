@@ -88,3 +88,48 @@ class TestIndex(tests.IntegrationTestCase):
         self.assertEqual(sorted(values), [
             u'', u'A', u'B', u'C', u'D', u'Ä', u'Ö'
         ])
+
+    def test_first_letter_index_update(self):
+        foobar_xml = """<?xml version='1.0' encoding='utf8'?>
+        <model xmlns="http://namespaces.plone.org/supermodel/schema"
+               xmlns:people="http://namespaces.plone.org/supermodel/people">
+                <schema>
+                    <people:order>
+                        <people:item>foo</people:item>
+                        <people:item>bar</people:item>
+                    </people:order>
+                </schema>
+        </model>"""
+        self.login('admin')
+
+        foobar = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            model_source=foobar_xml
+        )
+
+        obj = api.content.create(
+            title='test',
+            type=foobar.id,
+            container=self.new_temporary_folder()
+        )
+
+        catalog = api.portal.get_tool('portal_catalog')
+        index = catalog._catalog.getIndex('first_letter')
+
+        get_index_value = lambda: index.getEntryForObject(
+            tools.get_brain_by_object(obj).getRID()
+        )
+
+        self.assertEqual(get_index_value(), u'T')
+
+        obj.title = 'asdf'
+        obj.reindexObject()
+        self.assertEqual(get_index_value(), u'A')
+
+        obj.bar = 'bar'
+        obj.reindexObject()
+        self.assertEqual(get_index_value(), u'B')
+
+        obj.foo = u'ähm'
+        obj.reindexObject()
+        self.assertEqual(get_index_value(), u'Ä')

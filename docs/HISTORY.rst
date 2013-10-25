@@ -5,6 +5,9 @@ Changelog
 0.3 (unreleased)
 ~~~~~~~~~~~~~~~~
 
+- The first letters are now taken from the sorted title
+  [href]
+
 - The title attributes order is now independent of the field order.
   [href]
 

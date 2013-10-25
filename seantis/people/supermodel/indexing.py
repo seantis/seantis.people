@@ -10,23 +10,29 @@ from seantis.people.supermodel import (
 )
 
 
-@indexer(IPersonMarker)
-def sortable_title(obj):
+def get_sortable_title_text(obj):
     schema = tools.get_schema_from_portal_type(obj.portal_type)
     order = list(get_order(schema))
 
     if order:
-        text = ' '.join((getattr(obj, field, '') for field in order))
-    else:
-        text = getattr(obj, 'title', '')
+        title = u' '.join((getattr(obj, field, u'') for field in order))
+        title = title.strip()
 
-    return tools.unicode_collate_sortkey()(text)
+    if not order or not title:
+        title = getattr(obj, 'title', u'')
+
+    return title.strip()
+
+
+@indexer(IPersonMarker)
+def sortable_title(obj):
+    return tools.unicode_collate_sortkey()(get_sortable_title_text(obj))
 
 
 @indexer(IPersonMarker)
 def first_letter(obj):
-    title = obj.Title()
-    return title and title.decode('utf-8')[:1].upper() or u''
+    title = get_sortable_title_text(obj)
+    return title and title[:1].upper() or u''
 
 
 def on_type_modified(fti, event=None):
