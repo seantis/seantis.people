@@ -5,7 +5,7 @@ name = 'seantis.people'
 description = (
     "A list of people, optionally organized by organisations and positions."
 )
-version = '0.4'
+version = '0.5'
 
 tests_require = [
     'plone.app.testing',

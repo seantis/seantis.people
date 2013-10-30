@@ -1,14 +1,29 @@
 from seantis.plonetools import tools
+from seantis.people.supermodel.security import has_read_access
 from seantis.people.supermodel import (
     get_selectable_fields, get_columns, get_title_fields
 )
 
 
-def get_schema_columns(schema):
+def unrestricted_get_schema_columns(schema):
+    return _get_schema_columns(schema, None, restricted=False)
+
+
+def get_schema_columns(schema, context):
+    return _get_schema_columns(schema, context, restricted=True)
+
+
+def _get_schema_columns(schema, context, restricted):
     columns = []
 
     for fields in get_columns(schema):
-        columns.append(SchemaColumn(schema, fields))
+        if restricted:
+            fields = [
+                f for f in fields if has_read_access(schema, f, context)
+            ]
+
+        if fields:
+            columns.append(SchemaColumn(schema, fields))
 
     return columns
 

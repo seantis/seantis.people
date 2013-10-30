@@ -77,7 +77,7 @@ class ListView(BaseView):
         return Batch(people, self.batch_size, self.batch_start)
 
     def columns(self):
-        return get_schema_columns(self.schema)
+        return get_schema_columns(self.schema, self.context)
 
     def combobox_values(self, column):
         return sorted(set(
