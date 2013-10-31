@@ -5,8 +5,10 @@ Changelog
 0.5 (unreleased)
 ~~~~~~~~~~~~~~~~
 
-- Support supermodel security permissions in the people's list (giving the
-  ability to hide certain fields in the table depending on the user)
+- Supports supermodel security permissions in the people's list (giving the
+  ability to hide certain fields in the table depending on the user).
+
+- Fixes filter.js being unable to filter for empty values.
 
 0.4
 ~~~

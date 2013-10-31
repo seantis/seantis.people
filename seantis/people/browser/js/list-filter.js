@@ -167,7 +167,7 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
         */
         self.filter = function(field, value) {
             var fieldmap = {};
-            if (field && value) {
+            if (!_.isUndefined(field) && !_.isUndefined(value)) {
                 fieldmap[field] = value;
             }
 
@@ -256,7 +256,7 @@ load_libraries(['_', 'jQuery', 'URI'], function(_, $, URI) {
             var change_handler = function(e) {
                 var value = selected_value();
 
-                if (value) {
+                if (value !== null) {
                     list_filter.filter(attribute, value);
                 } else {
                     list_filter.filter();
