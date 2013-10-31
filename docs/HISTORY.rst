@@ -7,8 +7,10 @@ Changelog
 
 - Supports supermodel security permissions in the people's list (giving the
   ability to hide certain fields in the table depending on the user).
+  [href]
 
 - Fixes filter.js being unable to filter for empty values.
+  [href]
 
 0.4
 ~~~
