@@ -79,7 +79,9 @@ class ListView(BaseView):
     def columns(self):
         return get_schema_columns(self.schema, self.context)
 
-    def combobox_values(self, column):
+    def column_values(self, column):
+        assert column.selectable
+
         return sorted(set(
             getattr(
                 brain, column.fields[0]
@@ -91,7 +93,7 @@ class ListView(BaseView):
 
         filter = self.filter
 
-        if isinstance(filter, ListFilter) and filter.key != column.fields[0]:
+        if isinstance(filter, ListFilter) and filter.key == column.fields[0]:
             return filter.value
         else:
             return '__all__'

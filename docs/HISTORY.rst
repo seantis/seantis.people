@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.6 (unreleased)
+~~~~~~~~~~~~~~~~
+
+- Fixes not showing the selected filter after a refresh.
+  [href]
+
 0.5
 ~~~
 

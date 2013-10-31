@@ -208,19 +208,27 @@ class TestList(tests.IntegrationTestCase):
                 model_source=model
             ).id
 
-            api.content.create(
-                id='CH', type=country, container=lst, country='Switzerland'
-            )
-            api.content.create(
-                id='DE', type=country, container=lst, country='Germany'
-            )
+            countries = ['Germany', 'Switzerland']
+
+            for c in countries:
+                api.content.create(
+                    title=c, type=country, container=lst, country=c
+                )
 
             view = lst.unrestrictedTraverse('@@view')
 
+        columns = view.columns()
+
         self.assertEqual(len(view.people()), 2)
+        self.assertEqual(len(columns), 1)
+        self.assertEqual(view.selected_column_value(columns[0]), '__all__')
+        self.assertEqual(view.column_values(columns[0]), countries)
 
         view.request['filter-country'] = 'Switzerland'
+
         self.assertEqual(len(view.people()), 1)
+        self.assertEqual(view.column_values(columns[0]), countries)
+        self.assertEqual(view.selected_column_value(columns[0]), 'Switzerland')
 
     def test_list_view_schema(self):
         with self.user('admin'):

@@ -62,7 +62,7 @@
                             tal:content="python: column.titles[0]" 
                           />
                           <option 
-                              tal:content="value" tal:repeat="value python: view.combobox_values(column)" 
+                              tal:content="value" tal:repeat="value python: view.column_values(column)" 
                               tal:attributes="selected python: selected_value == value and 'selected' or ''"
                           />
                         </select>
