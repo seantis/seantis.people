@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.5 (unreleased)
-~~~~~~~~~~~~~~~~
+0.5
+~~~
 
 - Supports supermodel security permissions in the people's list (giving the
   ability to hide certain fields in the table depending on the user).
