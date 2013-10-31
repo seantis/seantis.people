@@ -14,6 +14,7 @@ import string
 
 from zope.schema import getFields
 from plone.namedfile.field import NamedBlobImage, NamedImage
+from Products.ZCatalog.interfaces import ICatalogBrain
 
 from seantis.plonetools.schemafields import Email, Website
 
@@ -41,7 +42,13 @@ class ImageRenderer(object):
     def __call__(self, context, field):
         img = getattr(context, field)
         if img:
-            url = '/'.join((context.getURL(), '@@images', field, 'thumb'))
+            if ICatalogBrain.providedBy(context):
+                baseurl = context.getURL()
+            else:
+                baseurl = context.absolute_url()
+
+            url = '/'.join((baseurl, '@@images', field, 'thumb'))
+
             return self.template.substitute(url=url)
         else:
             return u''

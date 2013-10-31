@@ -22,14 +22,30 @@ class ListView(BaseView):
     def schema(self):
         return tools.get_schema_from_portal_type(self.context.portal_type)
 
-    def fields(self):
+    def fields(self, position):
         has_access = lambda field: security.has_read_access(
             self.schema, field, self.context
         )
-        return [f for f in get_detail_fields(self.schema) if has_access(f)]
+        fields = get_detail_fields(self.schema).get(position)
+
+        if not fields:
+            return []
+
+        return [f for f in fields if has_access(f)]
 
     def get_field_title(self, field):
         if field in self.schema:
             return self.schema[field].title
         else:
             return field
+
+    def visible_positions(self):
+        positions = ('top', 'left', 'right', 'bottom')
+        return [
+            p for p in positions if any(
+                getattr(self.context, f) for f in self.fields(p)
+            )
+        ]
+
+    def split_screen(self):
+        return set(('left', 'right')).issubset(set(self.visible_positions()))

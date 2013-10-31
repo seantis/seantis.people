@@ -82,11 +82,16 @@ class ListView(BaseView):
     def column_values(self, column):
         assert column.selectable
 
-        return sorted(set(
-            getattr(
-                brain, column.fields[0]
-            ) for brain in self.context.people()
-        ), key=tools.unicode_collate_sortkey())
+        return sorted(
+            (
+                value for value in set(
+                    getattr(
+                        brain, column.fields[0]
+                    ) for brain in self.context.people()
+                ) if value is not None
+            ), 
+            key=tools.unicode_collate_sortkey()
+        )
 
     def selected_column_value(self, column):
         assert column.selectable

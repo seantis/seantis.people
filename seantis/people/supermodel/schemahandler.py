@@ -63,7 +63,7 @@ def set_order(schema, order):
 
 
 def get_detail_fields(schema):
-    return schema.queryTaggedValue(PERSON_DETAILS, [])
+    return schema.queryTaggedValue(PERSON_DETAILS, {})
 
 
 def set_detail_fields(schema, fields):
@@ -124,6 +124,44 @@ class ItemListHandler(NodeHandler):
             element.append(item)
 
         schema_node.append(element)
+
+
+class DetailsHandler(NodeHandler):
+
+    def parse(self, schema_node, schema):
+        tags = self.tags(schema_node)
+
+        if not tags:
+            return
+
+        detail_fields = {}
+
+        for tag in tags:
+            position = tag.get('position') or 'left'
+            detail_fields[position] = []
+
+            for item in self.nodes(tag, 'item'):
+                detail_fields[position].append(item.text.strip())
+
+        set_detail_fields(schema, detail_fields)
+
+    def write(self, schema_node, schema):
+        detail_fields = get_detail_fields(schema)
+
+        if not detail_fields:
+            return
+
+        for position, fields in detail_fields.items():
+            element = etree.Element(self.prefixed(self.tagname))
+            element.set('position', position)
+
+            for field in fields:
+                item = etree.Element(self.prefixed('item'))
+                item.text = field
+
+                element.append(item)
+
+            schema_node.append(element)
 
 
 class ColumnsHandler(NodeHandler):
@@ -194,7 +232,7 @@ class PeopleSchemaMetaHandler(object):
     handlers = [
         ItemListHandler('title', get_title_fields, set_title_fields),
         ItemListHandler('order', get_order, set_order),
-        ItemListHandler('details', get_detail_fields, set_detail_fields),
+        DetailsHandler('details'),
         ColumnsHandler('columns')
     ]
 
