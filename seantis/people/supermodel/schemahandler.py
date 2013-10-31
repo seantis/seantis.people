@@ -11,6 +11,7 @@ NAME_FROM_PERSON = u'seantis.people.name_from_person'
 PERSON_COLUMNS = u'seantis.people.person_column'
 PERSON_ORDER = u'seantis.people.order'
 PERSON_SELECTABLE = u'seantis.people.selectable'
+PERSON_DETAILS = u'seantis.people.details'
 
 # Supermodel namespace and prefix
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
@@ -20,26 +21,20 @@ missing = object()
 
 
 def get_title_fields(schema):
-    """ Gets the people-title fields of the schema. """
     return schema.queryTaggedValue(NAME_FROM_PERSON, [])
 
 
 def set_title_fields(schema, fields):
-    """ Sets the people-title fields of the schema. """
     schema.setTaggedValue(NAME_FROM_PERSON, sorted(
         list(set(fields)), key=fields.index  # unique values, preserving order
     ))
 
 
 def get_selectable_fields(schema):
-    """ Gets the selectable fields of the schema. Those are displayed
-    on the list view as combo boxes. """
     return schema.queryTaggedValue(PERSON_SELECTABLE, [])
 
 
 def set_selectable_fields(schema, fields):
-    """ Sets the selectable fields of the schema. Those are displayed
-    on the list view as combo boxes. """
     schema.setTaggedValue(PERSON_SELECTABLE, list(set(fields)))
 
 
@@ -60,13 +55,19 @@ def set_columns(schema, columns):
 
 
 def get_order(schema):
-    """ Gets the fields which are used as sort order in the table. """
     return schema.queryTaggedValue(PERSON_ORDER, [])
 
 
 def set_order(schema, order):
-    """ Sets the fields used as sort order on the table. """
     schema.setTaggedValue(PERSON_ORDER, order)
+
+
+def get_detail_fields(schema):
+    return schema.queryTaggedValue(PERSON_DETAILS, [])
+
+
+def set_detail_fields(schema, fields):
+    schema.setTaggedValue(PERSON_DETAILS, fields)
 
 
 class NodeHandler(object):
@@ -193,6 +194,7 @@ class PeopleSchemaMetaHandler(object):
     handlers = [
         ItemListHandler('title', get_title_fields, set_title_fields),
         ItemListHandler('order', get_order, set_order),
+        ItemListHandler('details', get_detail_fields, set_detail_fields),
         ColumnsHandler('columns')
     ]
 

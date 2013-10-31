@@ -6,7 +6,9 @@ from .schemahandler import (
     get_columns,
     set_columns,
     get_order,
-    set_order
+    set_order,
+    get_detail_fields,
+    set_detail_fields
 )
 
 from .indexing import (

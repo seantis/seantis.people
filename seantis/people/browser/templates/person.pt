@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="seantis.people">
+    
+    <metal:block fill-slot="content-core">
+        <div class="person-details">
+            <div class="person-detail" tal:repeat="field view/fields">
+                <tal:block define="value context/?field" condition="value">
+                    <h2 tal:content="python: view.get_field_title(field)" />
+                    <div tal:content="structure python: view.renderer.render(context, field)" />
+                </tal:block>
+            </div>
+        </div>
+    </metal:block>
+
+</html>
