@@ -6,7 +6,7 @@ from seantis.people.interfaces import IPersonMarker
 from seantis.people.browser import BaseView, Renderer
 
 
-class ListView(BaseView):
+class PersonView(BaseView):
 
     permission = 'zope2.View'
     grok.require(permission)
