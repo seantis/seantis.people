@@ -1,4 +1,9 @@
 from collections import namedtuple
+
+from zope.interface import directlyProvides
+
+from Products.ZCatalog.interfaces import ICatalogBrain
+
 from plone.supermodel import loadString
 from plone.namedfile.file import NamedImage
 
@@ -65,21 +70,27 @@ class TestRenderer(tests.IntegrationTestCase):
 
         renderer = Renderer(self.schema)
 
-        # currently, only brains are supported
-        class MockBrain(object):
+        class MockContext(object):
             def getURL(self):
-                return u'http://nohost/mock'
+                return u'http://nohost/mockbrain'
 
-        context = MockBrain()
+            def absolute_url(self):
+                return u'http://nohost/mockobject'
+
+        context = MockContext()
         context.image = None
+        self.assertEqual(renderer.render(context, 'image'), '')
 
-        self.assertEqual(
-            renderer.render(context, 'image'),
-            ''
-        )
-
+        # if the context does not provide ICatalogBrain, absolute_url is used
         context.image = NamedImage()
         self.assertEqual(
             renderer.render(context, 'image'),
-            u'<img src="http://nohost/mock/@@images/image/thumb" />'
+            u'<img src="http://nohost/mockobject/@@images/image/thumb" />'
+        )
+
+        # if it does, getURL is used
+        directlyProvides(context, ICatalogBrain)
+        self.assertEqual(
+            renderer.render(context, 'image'),
+            u'<img src="http://nohost/mockbrain/@@images/image/thumb" />'
         )
