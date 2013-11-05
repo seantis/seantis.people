@@ -12,13 +12,15 @@ from seantis.people.supermodel import (
     set_order,
     get_selectable_fields,
     set_selectable_fields,
+    get_detail_fields,
+    set_detail_fields
 )
 
 
 class TestSupermodel(tests.IntegrationTestCase):
 
     def deprettify(self, xml):
-        return re.sub(' +',' ',xml.replace('\n', '')).replace('> <', '><')
+        return re.sub(' +', ' ', xml.replace('\n', '')).replace('> <', '><')
 
     title_xml = """<?xml version='1.0' encoding='utf8'?>
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
@@ -46,7 +48,7 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn('<people:item>stop</people:item>', xml)
         self.assertIn('<people:item>hammertime</people:item>', xml)
         self.assertTrue(
-            xml.find('<people:item>stop</people:item>') < 
+            xml.find('<people:item>stop</people:item>') <
             xml.find('<people:item>hammertime</people:item>')
         )
 
@@ -72,7 +74,7 @@ class TestSupermodel(tests.IntegrationTestCase):
     def test_load_column_schema(self):
         model = loadString(self.column_xml)
         self.assertEqual(
-            get_columns(model.schema), 
+            get_columns(model.schema),
             [['first', 'second'], ['fourth']]
         )
 
@@ -121,7 +123,7 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn('<people:item>second</people:item>', xml)
         self.assertIn('<people:item>first</people:item>', xml)
         self.assertTrue(
-            xml.find('<people:item>third</people:item>') < 
+            xml.find('<people:item>third</people:item>') <
             xml.find('<people:item>second</people:item>') <
             xml.find('<people:item>first</people:item>')
         )
@@ -141,7 +143,7 @@ class TestSupermodel(tests.IntegrationTestCase):
                     <people:column>
                         <people:item>spare</people:item>
                     </people:column>
-                </people:columns>                
+                </people:columns>
             </schema>
         </model>"""
 
@@ -162,3 +164,47 @@ class TestSupermodel(tests.IntegrationTestCase):
         self.assertIn(
             '<people:column selectable="true"><people:item>spare', xml
         )
+
+    details_schema = """<?xml version='1.0' encoding='utf8'?>
+        <model  xmlns="http://namespaces.plone.org/supermodel/schema"
+                xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <people:details>
+                    <people:item>image</people:item>
+                </people:details>
+                <people:details position="right">
+                    <people:item>lastname</people:item>
+                    <people:item>firstname</people:item>
+                </people:details>
+            </schema>
+        </model>"""
+
+    def test_load_details_schema(self):
+        model = loadString(self.details_schema)
+
+        self.assertEqual(
+            get_detail_fields(model.schema),
+            {
+                'left': ['image'],
+                'right': ['lastname', 'firstname']
+            }
+        )
+
+    def test_write_details_schema(self):
+        model = loadString(self.details_schema)
+        set_detail_fields(model.schema, {
+            'top': ['image', 'lastname', 'firstname']
+        })
+
+        xml = self.deprettify(serializeSchema(model.schema))
+
+        self.assertIn('<people:details position="top">', xml)
+        self.assertIn('<people:item>lastname</people:item>', xml)
+        self.assertIn('<people:item>firstname</people:item>', xml)
+
+        self.assertTrue(
+            xml.find('<people:item>lastname</people:item>') <
+            xml.find('<people:item>firstname</people:item>')
+        )
+
+        self.assertEqual(xml.count('<people:details'), 1)
