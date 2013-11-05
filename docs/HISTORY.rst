@@ -2,8 +2,11 @@
 Changelog
 ---------
 
-0.6 (unreleased)
-~~~~~~~~~~~~~~~~
+0.6
+~~~
+
+- Adds detail view with configurable positioning through schema attributes.
+  [href]
 
 - Fixes not showing the selected filter after a refresh.
   [href]
