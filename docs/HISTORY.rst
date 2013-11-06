@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+0.7 (unreleased)
+~~~~~~~~~~~~~~~~
+
+- Hide label of images in the detail view.
+
 0.6
 ~~~
 

@@ -1,5 +1,7 @@
 from five import grok
 
+from plone.namedfile.field import NamedBlobImage, NamedImage
+
 from seantis.plonetools import tools
 from seantis.people.supermodel import security, get_detail_fields
 from seantis.people.interfaces import IPersonMarker
@@ -14,6 +16,11 @@ class PersonView(BaseView):
     grok.name('view')
 
     template = grok.PageTemplateFile('templates/person.pt')
+
+    types_without_label = (
+        NamedBlobImage,
+        NamedImage
+    )
 
     def update(self):
         self.renderer = Renderer(self.schema)
@@ -35,6 +42,9 @@ class PersonView(BaseView):
 
     def get_field_title(self, field):
         if field in self.schema:
+            if type(self.schema[field]) in self.types_without_label:
+                return u''
+
             return self.schema[field].title
         else:
             return field
