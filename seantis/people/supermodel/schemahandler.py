@@ -43,12 +43,21 @@ def set_order(schema, order):
     schema.setTaggedValue(PERSON_ORDER, order)
 
 
-def get_selectable_fields(schema):
-    return schema.queryTaggedValue(PERSON_SELECTABLE, [])
+def get_detail_fields(schema):
+    """ Gets the fields shown in the detail view by position. E.g.
+
+    {
+        'left': ['firstname', 'lastname'],
+        'right': ['image']
+    }
+
+    """
+    return schema.queryTaggedValue(PERSON_DETAILS, {})
 
 
-def set_selectable_fields(schema, fields):
-    schema.setTaggedValue(PERSON_SELECTABLE, list(set(fields)))
+def set_detail_fields(schema, fields):
+    """ Sets the fields shown in the detail view by position. """
+    schema.setTaggedValue(PERSON_DETAILS, fields)
 
 
 def get_columns(schema):
@@ -67,12 +76,12 @@ def set_columns(schema, columns):
             tools.add_attribute_to_metadata(field)
 
 
-def get_detail_fields(schema):
-    return schema.queryTaggedValue(PERSON_DETAILS, {})
+def get_selectable_fields(schema):
+    return schema.queryTaggedValue(PERSON_SELECTABLE, [])
 
 
-def set_detail_fields(schema, fields):
-    schema.setTaggedValue(PERSON_DETAILS, fields)
+def set_selectable_fields(schema, fields):
+    schema.setTaggedValue(PERSON_SELECTABLE, list(set(fields)))
 
 
 class NodeHandler(object):
