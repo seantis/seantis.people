@@ -22,13 +22,25 @@ missing = object()
 
 
 def get_title_fields(schema):
+    """ Get the fields used by INameFromPerson. """
     return schema.queryTaggedValue(NAME_FROM_PERSON, [])
 
 
 def set_title_fields(schema, fields):
+    """ Sets the fields used by INameFromPerson. """
     schema.setTaggedValue(NAME_FROM_PERSON, sorted(
         list(set(fields)), key=fields.index  # unique values, preserving order
     ))
+
+
+def get_order(schema):
+    """ Gets the fields by which the person list is ordered. """
+    return schema.queryTaggedValue(PERSON_ORDER, [])
+
+
+def set_order(schema, order):
+    """ Sets the fields by which the person list is ordered. """
+    schema.setTaggedValue(PERSON_ORDER, order)
 
 
 def get_selectable_fields(schema):
@@ -46,21 +58,13 @@ def get_columns(schema):
 def set_columns(schema, columns):
     for column in columns:
         assert not isinstance(column, basestring), """
-            A list of list is expected, not a list of strings.
+            A list of lists is expected, not a list of strings.
         """
     schema.setTaggedValue(PERSON_COLUMNS, columns)
 
     for column in get_columns(schema):
         for field in column:
             tools.add_attribute_to_metadata(field)
-
-
-def get_order(schema):
-    return schema.queryTaggedValue(PERSON_ORDER, [])
-
-
-def set_order(schema, order):
-    schema.setTaggedValue(PERSON_ORDER, order)
 
 
 def get_detail_fields(schema):
