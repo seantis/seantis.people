@@ -1,5 +1,3 @@
-from itertools import chain
-
 from lxml import etree
 
 from plone.supermodel.parser import ISchemaMetadataHandler
@@ -120,12 +118,8 @@ class ItemListHandler(NodeHandler):
         self.setter = setter
 
     def parse(self, schema_node, schema):
-        tags = self.tags(schema_node)
-
-        if not tags:
-            return
-
-        self.setter(schema, list(chain(*(self.items(tag) for tag in tags))))
+        expression = 'people:{}/people:item'.format(self.tagname)
+        self.setter(schema, self.text(self.xpath(schema_node, expression)))
 
     def write(self, schema_node, schema):
         values = self.getter(schema)
