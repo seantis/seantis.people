@@ -1,6 +1,6 @@
-from lxml import etree
-
 from itertools import chain
+
+from lxml import etree
 
 from plone.supermodel.parser import ISchemaMetadataHandler
 from plone.supermodel.utils import ns
@@ -93,6 +93,9 @@ class NodeHandler(object):
         self.tagname = tagname
         etree.register_namespace(self.prefix, self.namespace)
 
+    def xpath(self, node, expression):
+        return node.xpath(expression, namespaces={'people': self.namespace})
+
     def prefixed(self, name):
         return ns(name, self.namespace)
 
@@ -103,12 +106,10 @@ class NodeHandler(object):
         return self.nodes(node, self.tagname)
 
     def items(self, node):
-        items = []
+        return self.text(self.nodes(node, 'item'))
 
-        for item in self.nodes(node, 'item'):
-            items.append(item.text.strip())
-
-        return items
+    def text(self, nodes):
+        return [n.text.strip() for n in nodes]
 
 
 class ItemListHandler(NodeHandler):
