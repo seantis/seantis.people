@@ -1,7 +1,8 @@
 from lxml import etree
 
-from plone.supermodel.parser import ISchemaMetadataHandler
+from itertools import chain
 
+from plone.supermodel.parser import ISchemaMetadataHandler
 from plone.supermodel.utils import ns
 from zope.interface import implements
 
@@ -88,6 +89,14 @@ class NodeHandler(object):
     def tags(self, node):
         return self.nodes(node, self.tagname)
 
+    def items(self, node):
+        items = []
+
+        for item in self.nodes(node, 'item'):
+            items.append(item.text.strip())
+
+        return items
+
 
 class ItemListHandler(NodeHandler):
 
@@ -102,13 +111,7 @@ class ItemListHandler(NodeHandler):
         if not tags:
             return
 
-        values = []
-
-        for tag in tags:
-            for item in self.nodes(tag, 'item'):
-                values.append(item.text.strip())
-
-        self.setter(schema, values)
+        self.setter(schema, list(chain(*(self.items(tag) for tag in tags))))
 
     def write(self, schema_node, schema):
         values = self.getter(schema)
@@ -137,11 +140,7 @@ class DetailsHandler(NodeHandler):
         detail_fields = {}
 
         for tag in tags:
-            position = tag.get('position') or 'left'
-            detail_fields[position] = []
-
-            for item in self.nodes(tag, 'item'):
-                detail_fields[position].append(item.text.strip())
+            detail_fields[tag.get('position') or 'left'] = self.items(tag)
 
         set_detail_fields(schema, detail_fields)
 
@@ -177,22 +176,12 @@ class ColumnsHandler(NodeHandler):
 
         for tag in tags:
             for column in self.nodes(tag, 'column'):
-                items = self.nodes(column, 'item')
+                column_items = self.items(column)
 
-                if len(items) == 1 and column.get('selectable'):
-                    selectable = True
-                else:
-                    selectable = False
+                if len(column_items) == 1 and column.get('selectable'):
+                    selectable_fields.append(column_items[0])
 
-                column = []
-                for item in items:
-                    value = item.text.strip()
-                    column.append(value)
-
-                    if selectable:
-                        selectable_fields.append(value)
-
-                columns.append(column)
+                columns.append(column_items)
 
         set_columns(schema, columns)
         set_selectable_fields(schema, selectable_fields)
