@@ -179,6 +179,53 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(page.find('thead').text(), 'First name Last name')
         self.assertEqual(page.find('tbody').text(), 'Miriam Linky Zack Brown')
 
+    def test_list_view_filter_multiple_values(self):
+        model = """<?xml version='1.0' encoding='utf8'?>
+        <model xmlns="http://namespaces.plone.org/supermodel/schema"
+               xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <people:columns>
+                    <people:column selectable="true">
+                        <people:item>countries</people:item>
+                    </people:column>
+                </people:columns>
+            </schema>
+        </model>"""
+
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            group = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                model_source=model
+            ).id
+
+            countries = api.content.create(
+                title='countries', type=group, container=lst, countries=[
+                    'Germany', 'Switzerland'
+                ]
+            )
+
+            view = lst.unrestrictedTraverse('@@view')
+
+        columns = view.columns()
+
+        view.request['filter-countries'] = 'Switzerland'
+
+        self.assertEqual(len(view.people()), 1)
+        self.assertEqual(view.column_values(columns[0]), countries.countries)
+        self.assertEqual(view.selected_column_value(columns[0]), 'Switzerland')
+
+        view.request['filter-countries'] = 'France'
+
+        self.assertEqual(len(view.people()), 0)
+        self.assertEqual(view.column_values(columns[0]), countries.countries)
+        self.assertEqual(view.selected_column_value(columns[0]), 'France')
+
     def test_list_view_filter(self):
 
         model = """<?xml version='1.0' encoding='utf8'?>

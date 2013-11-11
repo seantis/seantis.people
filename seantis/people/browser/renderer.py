@@ -50,15 +50,8 @@ class RichTextRenderer(object):
 
 class ListRenderer(object):
 
-    template = string.Template(u'<ul>${items}</ul>')
-    item_template = string.Template(u'<li>${value}</li>')
-
     def __call__(self, context, field):
-        values = getattr(context, field, tuple())
-
-        return self.template.substitute(items=u''.join(
-            self.item_template.substitute(value=v) for v in values
-        ))
+        return u', '.join(getattr(context, field, tuple()))
 
 
 class ImageRenderer(object):
@@ -94,7 +87,10 @@ renderers = {
     Tuple: ListRenderer(),
     List: ListRenderer(),
     Set: ListRenderer(),
-    FrozenSet: ListRenderer()
+    FrozenSet: ListRenderer(),
+    list: ListRenderer(),
+    set: ListRenderer(),
+    tuple: ListRenderer()
 }
 
 
@@ -105,5 +101,5 @@ class Renderer(object):
         self.fields = getFields(schema)
 
     def render(self, context, field):
-        fieldtype = type(self.fields.get(field, None))
+        fieldtype = type(self.fields.get(field, getattr(context, field, None)))
         return renderers.get(fieldtype, getattr)(context, field)

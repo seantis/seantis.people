@@ -106,7 +106,7 @@ class TestRenderer(tests.IntegrationTestCase):
     def test_list(self):
         self.assertEqual(
             self.render_value('list', ['one', 'two']),
-            u'<ul><li>one</li><li>two</li></ul>'
+            u'one, two'
         )
 
     def test_image(self):

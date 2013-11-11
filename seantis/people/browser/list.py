@@ -82,16 +82,20 @@ class ListView(BaseView):
     def column_values(self, column):
         assert column.selectable
 
-        return sorted(
-            (
-                value for value in set(
-                    getattr(
-                        brain, column.fields[0]
-                    ) for brain in self.context.people()
-                ) if value is not None
-            ), 
-            key=tools.unicode_collate_sortkey()
-        )
+        people = self.context.people()
+        
+        unique_values = set()
+
+        for value in (getattr(brain, column.fields[0]) for brain in people):
+            if value is None:
+                continue
+
+            if isinstance(value, list):
+                map(unique_values.add, value)
+            else:
+                unique_values.add(value)
+                
+        return sorted(unique_values, key=tools.unicode_collate_sortkey())
 
     def selected_column_value(self, column):
         assert column.selectable

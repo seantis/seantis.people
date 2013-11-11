@@ -1,5 +1,3 @@
-import warnings
-
 from collections import namedtuple
 
 from five import grok
@@ -38,14 +36,14 @@ class List(Container):
             if used_type:
 
                 if isinstance(filter, ListFilter):
-                    field_index = get_selectable_field_ix(
+                    keyword_index = get_selectable_field_ix(
                         used_type.id, filter.key
                     )
 
                 if isinstance(filter, LetterFilter):
-                    field_index = 'first_letter'
+                    keyword_index = 'first_letter'
 
-                query[field_index] = filter.value
+                query[keyword_index] = {'query':filter.value}
 
         return catalog(query)
 

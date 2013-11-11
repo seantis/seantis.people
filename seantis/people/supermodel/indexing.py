@@ -103,7 +103,7 @@ def update_selectable_field_indexes(fti):
     for field in fields:
         index_name = get_selectable_field_ix(fti.id, field)
         if index_name not in catalog.indexes():
-            catalog.addIndex(index_name, 'FieldIndex', extra={
+            catalog.addIndex(index_name, 'KeywordIndex', extra={
                 'indexed_attrs': field
             })
             new_indexes.append(index_name)
