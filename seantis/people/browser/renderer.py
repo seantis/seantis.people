@@ -14,6 +14,7 @@ import string
 
 from zope.schema import getFields, Text
 from plone.namedfile.field import NamedBlobImage, NamedImage
+from plone.app.textfield import RichText
 from Products.ZCatalog.interfaces import ICatalogBrain
 
 from seantis.plonetools.schemafields import Email, Website
@@ -41,6 +42,12 @@ class TextRenderer(object):
         return '<br />'.join(getattr(context, field, u'').splitlines())
 
 
+class RichTextRenderer(object):
+
+    def __call__(self, context, field):
+        return getattr(context, field).output
+
+
 class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
@@ -60,12 +67,17 @@ class ImageRenderer(object):
             return u''
 
 
+# This is not the best way to match objects to classes, but it sure is the
+# fastest. Checking through isinstance would require going through a list.
+# Since that can easily happen more than a thousand times in a request it's
+# better to be fast than to be right.
 renderers = {
     Email: EmailFieldRenderer(),
     Website: WebsiteFieldRenderer(),
     NamedBlobImage: ImageRenderer(),
     NamedImage: ImageRenderer(),
-    Text: TextRenderer()
+    Text: TextRenderer(),
+    RichText: RichTextRenderer()
 }
 
 

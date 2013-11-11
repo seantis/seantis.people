@@ -6,6 +6,7 @@ from Products.ZCatalog.interfaces import ICatalogBrain
 
 from plone.supermodel import loadString
 from plone.namedfile.file import NamedImage
+from plone.app.textfield.value import RichTextValue
 
 from seantis.people.browser.renderer import Renderer
 from seantis.people import tests
@@ -27,6 +28,10 @@ class TestRenderer(tests.IntegrationTestCase):
             <field name="email"
                    type="seantis.plonetools.schemafields.Email">
                 <title>Email</title>
+            </field>
+            <field name="richtext"
+                    type="plone.app.textfield.RichText">
+                <title>Richtext</title>
             </field>
             <field name="website"
                    type="seantis.plonetools.schemafields.Website">
@@ -78,6 +83,14 @@ class TestRenderer(tests.IntegrationTestCase):
         self.assertEqual(
             self.render_value('text', 'One\r\nTwo'),
             u'One<br />Two'
+        )
+
+    def test_richtext(self):
+        text = RichTextValue(raw="<b>This is important</b>")
+
+        self.assertEqual(
+            self.render_value('richtext', text),
+            u'<b>This is important</b>'
         )
 
     def test_image(self):
