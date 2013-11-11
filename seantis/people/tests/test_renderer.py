@@ -45,6 +45,16 @@ class TestRenderer(tests.IntegrationTestCase):
                    type="plone.namedfile.field.NamedImage">
                 <title>Image</title>
             </field>
+            <field name="list" type="zope.schema.Set">
+              <title>List</title>
+              <value_type type="zope.schema.Choice">
+                <values>
+                  <element>One</element>
+                  <element>Two</element>
+                  <element>Three</element>
+                </values>
+              </value_type>
+            </field>
         </schema>
     </model>"""
 
@@ -91,6 +101,12 @@ class TestRenderer(tests.IntegrationTestCase):
         self.assertEqual(
             self.render_value('richtext', text),
             u'<b>This is important</b>'
+        )
+
+    def test_list(self):
+        self.assertEqual(
+            self.render_value('list', ['one', 'two']),
+            u'<ul><li>one</li><li>two</li></ul>'
         )
 
     def test_image(self):

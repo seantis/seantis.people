@@ -7,7 +7,7 @@ Changelog
 
 - Hide label of images in the detail view.
 
-- Adds rendering support for these field types: Text, RichText
+- Adds rendering support for these field types: Text, RichText, Lists
 
 0.6
 ~~~

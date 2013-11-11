@@ -12,7 +12,7 @@ is by far the fastest way of doing templates in python.
 
 import string
 
-from zope.schema import getFields, Text
+from zope.schema import getFields, Text, Tuple, List, Set, FrozenSet
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from plone.app.textfield import RichText
 from Products.ZCatalog.interfaces import ICatalogBrain
@@ -48,6 +48,19 @@ class RichTextRenderer(object):
         return getattr(context, field).output
 
 
+class ListRenderer(object):
+
+    template = string.Template(u'<ul>${items}</ul>')
+    item_template = string.Template(u'<li>${value}</li>')
+
+    def __call__(self, context, field):
+        values = getattr(context, field, tuple())
+
+        return self.template.substitute(items=u''.join(
+            self.item_template.substitute(value=v) for v in values
+        ))
+
+
 class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
@@ -77,7 +90,11 @@ renderers = {
     NamedBlobImage: ImageRenderer(),
     NamedImage: ImageRenderer(),
     Text: TextRenderer(),
-    RichText: RichTextRenderer()
+    RichText: RichTextRenderer(),
+    Tuple: ListRenderer(),
+    List: ListRenderer(),
+    Set: ListRenderer(),
+    FrozenSet: ListRenderer()
 }
 
 
