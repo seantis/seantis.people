@@ -6,12 +6,16 @@ Changelog
 ~~~~~~~~~~~~~~~~
 
 - Hide label of images in the detail view.
+  [href]
 
 - Adds rendering support for these field types: Text, RichText, Lists.
+  [href]
 
 - Adds custom type for Pädagogische Hochschule Zug.
+  [href]
 
 - Adds ability to filter attributes returning lists in the table.
+  [href]
 
 0.6
 ~~~
