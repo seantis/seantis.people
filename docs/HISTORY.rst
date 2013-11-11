@@ -7,6 +7,8 @@ Changelog
 
 - Hide label of images in the detail view.
 
+- Adds rendering support for these field types: Text, 
+
 0.6
 ~~~
 

@@ -20,6 +20,10 @@ class TestRenderer(tests.IntegrationTestCase):
                    type="zope.schema.TextLine">
                 <title>Textline</title>
             </field>
+            <field name="text"
+                   type="zope.schema.Text">
+                <title>Text</title>
+            </field>
             <field name="email"
                    type="seantis.plonetools.schemafields.Email">
                 <title>Email</title>
@@ -64,6 +68,16 @@ class TestRenderer(tests.IntegrationTestCase):
                 u'<a href="http://example.com" '
                 u'target="_blank">http://example.com</a>'
             )
+        )
+
+    def test_text(self):
+        self.assertEqual(
+            self.render_value('text', 'One\nTwo'),
+            u'One<br />Two'
+        )
+        self.assertEqual(
+            self.render_value('text', 'One\r\nTwo'),
+            u'One<br />Two'
         )
 
     def test_image(self):

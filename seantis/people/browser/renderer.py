@@ -12,7 +12,7 @@ is by far the fastest way of doing templates in python.
 
 import string
 
-from zope.schema import getFields
+from zope.schema import getFields, Text
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from Products.ZCatalog.interfaces import ICatalogBrain
 
@@ -33,6 +33,12 @@ class WebsiteFieldRenderer(object):
 
     def __call__(self, context, field):
         return self.template.substitute(url=getattr(context, field))
+
+
+class TextRenderer(object):
+
+    def __call__(self, context, field):
+        return '<br />'.join(getattr(context, field, u'').splitlines())
 
 
 class ImageRenderer(object):
@@ -58,7 +64,8 @@ renderers = {
     Email: EmailFieldRenderer(),
     Website: WebsiteFieldRenderer(),
     NamedBlobImage: ImageRenderer(),
-    NamedImage: ImageRenderer()
+    NamedImage: ImageRenderer(),
+    Text: TextRenderer()
 }
 
 
