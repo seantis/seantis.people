@@ -80,7 +80,11 @@ class ImportForm(BaseForm):
                 ))
 
             count = import_people(
-                self.context, portal_type, format, import_file.data
+                self.request,
+                self.context,
+                portal_type,
+                format,
+                import_file.data
             )
 
             self.status = _(

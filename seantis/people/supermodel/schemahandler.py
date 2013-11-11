@@ -4,8 +4,6 @@ from plone.supermodel.parser import ISchemaMetadataHandler
 from plone.supermodel.utils import ns
 from zope.interface import implements
 
-from seantis.plonetools import tools
-
 NAME_FROM_PERSON = u'seantis.people.name_from_person'
 PERSON_COLUMNS = u'seantis.people.person_column'
 PERSON_ORDER = u'seantis.people.order'
@@ -68,10 +66,6 @@ def set_columns(schema, columns):
             A list of lists is expected, not a list of strings.
         """
     schema.setTaggedValue(PERSON_COLUMNS, columns)
-
-    for column in get_columns(schema):
-        for field in column:
-            tools.add_attribute_to_metadata(field)
 
 
 def get_selectable_fields(schema):

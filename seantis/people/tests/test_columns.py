@@ -1,7 +1,5 @@
 from plone import api
 
-from Missing import MV
-
 from seantis.people.supermodel import (
     get_columns,
     set_columns
@@ -16,9 +14,10 @@ from seantis.people import tests
 class TestColumns(tests.IntegrationTestCase):
 
     def test_add_person_column_first(self):
-        new_type = self.new_temporary_type()
+        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
 
         set_columns(new_type.lookupSchema(), [['foo']])
+        on_type_modified(new_type)
 
         with self.user('admin'):
             obj = api.content.create(
@@ -37,7 +36,7 @@ class TestColumns(tests.IntegrationTestCase):
         self.assertEqual(brain.foo, 'stop')
 
     def test_add_person_column_later(self):
-        new_type = self.new_temporary_type()
+        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
 
         self.assertEqual(get_columns(new_type.lookupSchema()), [])
 
@@ -55,10 +54,10 @@ class TestColumns(tests.IntegrationTestCase):
 
         # which leaves the attribute in a missing value state
         brain = tools.get_brain_by_object(obj)
-        self.assertEqual(brain.foo, MV)
+        self.assertFalse(hasattr(brain, 'foo'))
 
         # until reindexing happens
-        obj.reindexObject()
+        on_type_modified(new_type)
         brain = tools.get_brain_by_object(obj)
         self.assertEqual(brain.foo, 'stop')
 
@@ -66,6 +65,7 @@ class TestColumns(tests.IntegrationTestCase):
         new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
 
         set_columns(new_type.lookupSchema(), [['foo']])
+        on_type_modified(new_type)
 
         with self.user('admin'):
             obj = api.content.create(

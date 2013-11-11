@@ -18,14 +18,8 @@
 <!-- Translation -->
 <i18n:registerTranslations directory="locales" />
 
-<!-- Profiles -->
-<genericsetup:registerProfile 
-    name="default"
-    title="Seantis People"
-    description="Default Profile for Seantis People"
-    directory="profiles/default"
-    provides="Products.GenericSetup.interfaces.EXTENSION"
-/>
+<!-- Profiles / Types -->
+<include file="profiles.zcml" />
 
 <!-- Import step for indexes -->
 <genericsetup:importStep

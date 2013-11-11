@@ -19,15 +19,21 @@ from seantis.plonetools import tools
 supported_formats = ('csv', )
 
 
-def import_people(container, portal_type, format, data):
+def import_people(request, container, portal_type, format, data):
     dataset = get_dataset(format, data)
-    attribute_map = get_attribute_map(dataset.headers, portal_type)
+    attribute_map = get_attribute_map(request, dataset.headers, portal_type)
 
     schema = tools.get_schema_from_portal_type(portal_type)
 
     for ix, record in enumerate(dataset.dict):
         try:
             values = get_attribute_values(record, attribute_map)
+
+            # add None for missing values
+            for field in getFields(schema).keys():
+                if field not in values:
+                    values[field] = None
+
             validate_attribute_values(schema, values)
 
             api.content.create(
@@ -59,7 +65,7 @@ def get_dataset(format, data):
     return locals()['get_dataset_from_{}'.format(format)]()
 
 
-def get_attribute_map(headers, portal_type):
+def get_attribute_map(request, headers, portal_type):
 
     if not headers:
         raise ContentImportError(_(u'No column headers were found'))
@@ -72,9 +78,16 @@ def get_attribute_map(headers, portal_type):
     known_titles = dict((field.title, field) for field in fields.values())
     known_fields = dict((key, field) for key, field in fields.items())
 
+    translate = tools.translator(request)
+    known_translated_titles = dict(
+        (translate(field.title), field) for field in fields.values()
+    )
+
     for header in headers:
 
-        if header in known_fields:
+        if header in known_translated_titles:
+            field = known_translated_titles[header]
+        elif header in known_fields:
             field = known_fields[header]
         elif header in known_titles:
             field = known_titles[header]
@@ -85,6 +98,15 @@ def get_attribute_map(headers, portal_type):
             raise ContentImportError(
                 _(
                     u'The ${name} column is specified more than once',
+                    mapping=dict(name=header)
+                )
+            )
+
+        if field in ('title', 'id'):
+            raise ContentImportError(
+                _(
+                    u'The ${name} column is invalid. "title" and "id" are '
+                    u'reserved fieldnames which may not be used.',
                     mapping=dict(name=header)
                 )
             )
@@ -117,11 +139,11 @@ def validate_attribute_values(schema, values):
     obj = namedtuple('ImportObject', values.keys())(**values)
 
     for error in getValidationErrors(schema, obj):
+        column = schema[error[0]].title
+
         if isinstance(error[1], SchemaNotFullyImplemented):
             raise ContentImportError(
-                _(u'Required column is missing'), colname=error[0]
+                _(u'Required column is missing'), colname=column
             )
         else:
-            raise ContentImportError(
-                error[1].message, colname=error[0]
-            )
+            raise ContentImportError(error[1].message, colname=column)

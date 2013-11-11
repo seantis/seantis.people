@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-10-24 14:05+0000\n"
+"POT-Creation-Date: 2013-11-11 12:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,10 @@ msgstr ""
 msgid "${format} is not supported, supported are ${formats}"
 msgstr "${format} wird nicht unterstützt. Unterstützte Formate: ${formats}"
 
+#: ./types/phz.xml
+msgid "Academic Title"
+msgstr "Akademischer Titel"
+
 #: ./browser/import_form.py:96
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -29,6 +33,10 @@ msgstr "Zurücksetzen"
 #: ./errors.py:37
 msgid "Column ${column}"
 msgstr "Spalte ${column}"
+
+#: ./types/phz.xml
+msgid "E-Mail"
+msgstr "E-Mail"
 
 #: ./interfaces.py:63
 msgid "End of membership"
@@ -42,8 +50,17 @@ msgstr "Datei"
 msgid "Filtered by"
 msgstr "Filter"
 
+#: ./types/phz.xml
+msgid "First Name"
+msgstr "Vorname"
+
+#: ./types/phz.xml
+msgid "Function"
+msgstr "Funktion"
+
 #: ./browser/import_form.py:61
 #: ./profiles/default/types/seantis.people.list.xml
+#: ./profiles/phz/types/seantis.people.phz.xml
 msgid "Import"
 msgstr "Import"
 
@@ -51,7 +68,11 @@ msgstr "Import"
 msgid "Import people"
 msgstr "Personen importieren"
 
-#: ./browser/list.py:43
+#: ./types/phz.xml
+msgid "Last Name"
+msgstr "Nachname"
+
+#: ./browser/list.py:45
 msgid "Letter"
 msgstr "Buchstabe"
 
@@ -79,9 +100,29 @@ msgstr "Keine Personen in der Liste."
 msgid "Number of people shown on each page"
 msgstr "Anzahl Personen pro Seite"
 
+#: ./types/phz.xml
+msgid "Organisation Unit"
+msgstr "Organisationseinheit"
+
+#: ./types/phz.xml
+msgid "Organisation Unit 2"
+msgstr "Organisationseinheit 2"
+
+#: ./profiles/phz/types/seantis.people.phz.xml
+msgid "PHZ Employees"
+msgstr "PHZ Angestellte"
+
 #: ./interfaces.py:68
 msgid "Person"
 msgstr "Person"
+
+#: ./types/phz.xml
+msgid "Phone"
+msgstr "Telefon"
+
+#: ./types/phz.xml
+msgid "Picture"
+msgstr "Bild"
 
 #: ./content/import_content.py:122
 msgid "Required column is missing"
@@ -94,6 +135,10 @@ msgstr "Rolle in der Organisation"
 #: ./errors.py:32
 msgid "Row ${row}"
 msgstr "Zeile ${row}"
+
+#: ./types/phz.xml
+msgid "Shortcode"
+msgstr "Kurzzeichen"
 
 #: ./interfaces.py:58
 msgid "Start of membership"

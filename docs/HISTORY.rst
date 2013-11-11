@@ -9,6 +9,8 @@ Changelog
 
 - Adds rendering support for these field types: Text, RichText, Lists
 
+- Adds custom type for Pädagogische Hochschule Zug
+
 0.6
 ~~~
 

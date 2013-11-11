@@ -41,7 +41,7 @@ class TestImportContent(tests.IntegrationTestCase):
         ).id
 
         with self.user('admin'):
-            import_people(folder, portal_type, 'csv', dedent("""
+            import_people(self.request, folder, portal_type, 'csv', dedent("""
                 First Name,Last Name,Town
                 Peter,Griffin,Quahog
                 Glenn,Quagmire,Quahog
@@ -83,7 +83,7 @@ class TestImportContent(tests.IntegrationTestCase):
 
         # error with a column avaiable
         try:
-            import_people(folder, portal_type, 'csv', dedent("""
+            import_people(self.request, folder, portal_type, 'csv', dedent("""
                 Name,Age
                 Macallan,15
                 Glenmorangie,Sixteen
@@ -98,7 +98,7 @@ class TestImportContent(tests.IntegrationTestCase):
         # error without column available
         try:
             # no folder is given
-            import_people(None, portal_type, 'csv', dedent("""
+            import_people(self.request, None, portal_type, 'csv', dedent("""
                 Name,Age
                 Macallan,15
             """.lstrip('\n')))
@@ -110,7 +110,6 @@ class TestImportContent(tests.IntegrationTestCase):
             assert False, "The exception should have occurred."
 
     def test_import_people_schema_validation(self):
-        folder = self.new_temporary_folder()
         model = loadString("""<?xml version='1.0' encoding='utf8'?>
         <model  xmlns="http://namespaces.plone.org/supermodel/schema"
                 xmlns:people="http://namespaces.plone.org/supermodel/people">
@@ -132,7 +131,7 @@ class TestImportContent(tests.IntegrationTestCase):
             validate_attribute_values(model.schema, {'age': 1})
         except ContentImportError, e:
             self.assertIs(type(e), ContentImportError)
-            self.assertEqual(e.colname, 'name')
+            self.assertEqual(e.colname, u'Name')
             self.assertEqual('Required column is missing', e.message)
         else:
             assert False, "The exception should have occurred."
@@ -204,27 +203,34 @@ class TestImportContent(tests.IntegrationTestCase):
         portal_type = self.new_temporary_type(model_source=model).id
 
         self.assertRaises(
-            ContentImportError, get_attribute_map, [], portal_type
+            ContentImportError,
+            get_attribute_map, self.request, [], portal_type
         )
 
         try:
-            get_attribute_map(['firstname', 'First Name'], portal_type)
+            get_attribute_map(
+                self.request, ['firstname', 'First Name'], portal_type
+            )
         except ContentImportError, e:
             self.assertIn('column is specified more than once', e.message)
         else:
             assert False, "The exception should have occured."
 
-        attrmap = get_attribute_map(['firstname', 'lastname'], portal_type)
+        attrmap = get_attribute_map(
+            self.request, ['firstname', 'lastname'], portal_type
+        )
 
         self.assertEqual(len(attrmap), 2)
         self.assertEqual(attrmap['firstname'].__name__, 'firstname')
         self.assertEqual(attrmap['lastname'].__name__, 'lastname')
 
-        attrmap = get_attribute_map(['First Name', 'Last Name'], portal_type)
+        attrmap = get_attribute_map(
+            self.request, ['First Name', 'Last Name'], portal_type
+        )
 
         self.assertEqual(len(attrmap), 2)
         self.assertEqual(attrmap['First Name'].__name__, 'firstname')
         self.assertEqual(attrmap['Last Name'].__name__, 'lastname')
 
-        attrmap = get_attribute_map(['foo', 'bar'], portal_type)
+        attrmap = get_attribute_map(self.request, ['foo', 'bar'], portal_type)
         self.assertEqual(len(attrmap), 0)

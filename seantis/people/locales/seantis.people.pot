@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-10-24 14:05+0000\n"
+"POT-Creation-Date: 2013-11-11 12:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,6 +21,10 @@ msgstr ""
 msgid "${format} is not supported, supported are ${formats}"
 msgstr ""
 
+#: ./types/phz.xml
+msgid "Academic Title"
+msgstr ""
+
 #: ./browser/import_form.py:96
 msgid "Cancel"
 msgstr ""
@@ -31,6 +35,10 @@ msgstr ""
 
 #: ./errors.py:37
 msgid "Column ${column}"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "E-Mail"
 msgstr ""
 
 #: ./interfaces.py:63
@@ -45,8 +53,17 @@ msgstr ""
 msgid "Filtered by"
 msgstr ""
 
+#: ./types/phz.xml
+msgid "First Name"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "Function"
+msgstr ""
+
 #: ./browser/import_form.py:61
 #: ./profiles/default/types/seantis.people.list.xml
+#: ./profiles/phz/types/seantis.people.phz.xml
 msgid "Import"
 msgstr ""
 
@@ -54,7 +71,11 @@ msgstr ""
 msgid "Import people"
 msgstr ""
 
-#: ./browser/list.py:43
+#: ./types/phz.xml
+msgid "Last Name"
+msgstr ""
+
+#: ./browser/list.py:45
 msgid "Letter"
 msgstr ""
 
@@ -82,8 +103,28 @@ msgstr ""
 msgid "Number of people shown on each page"
 msgstr ""
 
+#: ./types/phz.xml
+msgid "Organisation Unit"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "Organisation Unit 2"
+msgstr ""
+
+#: ./profiles/phz/types/seantis.people.phz.xml
+msgid "PHZ Employees"
+msgstr ""
+
 #: ./interfaces.py:68
 msgid "Person"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "Phone"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "Picture"
 msgstr ""
 
 #: ./content/import_content.py:122
@@ -96,6 +137,10 @@ msgstr ""
 
 #: ./errors.py:32
 msgid "Row ${row}"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "Shortcode"
 msgstr ""
 
 #: ./interfaces.py:58

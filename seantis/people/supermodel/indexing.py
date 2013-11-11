@@ -6,7 +6,7 @@ from seantis.plonetools import tools
 
 from seantis.people.interfaces import IPerson, IPersonMarker
 from seantis.people.supermodel import (
-    get_selectable_fields, get_order
+    get_selectable_fields, get_order, get_columns
 )
 
 
@@ -50,6 +50,8 @@ def update_related_indexes(fti):
     if IPerson.__identifier__ not in fti.behaviors:
         return
 
+    update_metadata(fti)
+
     catalog = api.portal.get_tool('portal_catalog')
     new_indexes = update_selectable_field_indexes(fti)
 
@@ -75,6 +77,12 @@ def get_selectable_field_indexes(fti):
     prefix = get_selectable_prefix(fti.id)
     zcatalog = api.portal.get_tool('portal_catalog')._catalog
     return [ix for ix in zcatalog.indexes if ix.startswith(prefix)]
+
+
+def update_metadata(fti):
+    for column in get_columns(fti.lookupSchema()):
+        for field in column:
+            tools.add_attribute_to_metadata(field)
 
 
 def update_selectable_field_indexes(fti):

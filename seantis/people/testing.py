@@ -23,13 +23,17 @@ class TestLayer(PloneSandboxLayer):
         app.REQUEST['SESSION'] = self.Session()
         ZopeTestCase.utils.setupCoreSessions(app)
 
+        import seantis.plonetools
+        self.loadZCML(package=seantis.plonetools)
+
         import seantis.people
+        self.loadZCML(package=seantis.people)
+
         xmlconfig.file(
             'configure.zcml',
             seantis.people,
             context=configurationContext
         )
-        self.loadZCML(package=seantis.people)
 
     def setUpPloneSite(self, portal):
         quickInstallProduct(portal, 'seantis.people')

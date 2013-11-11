@@ -48,4 +48,4 @@ class ContentImportError(TranslatableException):
         if not position:
             return message
         else:
-            return '{} ({})'.format(message, position)
+            return u'{} ({})'.format(message, position)

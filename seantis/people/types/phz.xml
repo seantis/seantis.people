@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf8'?>
+<model xmlns="http://namespaces.plone.org/supermodel/schema" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:people="http://namespaces.plone.org/supermodel/people" xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="seantis.people">
+  <schema>
+    <field name="academic_title" type="zope.schema.TextLine" indexer:searchable="true">
+      <required>False</required>
+      <title i18n:translate="">Academic Title</title>
+    </field>
+    <field name="lastname" type="zope.schema.TextLine" indexer:searchable="true">
+      <title i18n:translate="">Last Name</title>
+    </field>
+    <field name="firstname" type="zope.schema.TextLine" indexer:searchable="true">
+      <title i18n:translate="">First Name</title>
+    </field>
+    <field name="function" type="zope.schema.TextLine" indexer:searchable="true">
+      <title i18n:translate="">Function</title>
+    </field>
+    <field name="org_unit_1" type="zope.schema.TextLine" indexer:searchable="true">
+      <description/>
+      <title i18n:translate="">Organisation Unit</title>
+    </field>
+    <field name="org_unit_2" type="zope.schema.TextLine" indexer:searchable="true">
+      <description/>
+      <required>False</required>
+      <title i18n:translate="">Organisation Unit 2</title>
+    </field>
+    <field name="email" type="seantis.plonetools.schemafields.Email" indexer:searchable="true">
+      <title i18n:translate="">E-Mail</title>
+    </field>
+    <field name="phone" type="zope.schema.TextLine" indexer:searchable="true">
+      <title i18n:translate="">Phone</title>
+    </field>
+    <field name="shortcode" type="zope.schema.TextLine" indexer:searchable="true" security:read-permission="cmf.ModifyPortalContent">
+      <title i18n:translate="">Shortcode</title>
+    </field>
+    <field name="picture" type="plone.namedfile.field.NamedBlobImage">
+      <description/>
+      <required>False</required>
+      <title i18n:translate="">Picture</title>
+    </field>
+    <people:title>
+      <people:item>lastname</people:item>
+      <people:item>firstname</people:item>
+    </people:title>
+    <people:order>
+      <people:item>lastname</people:item>
+      <people:item>firstname</people:item>
+    </people:order>
+    <people:columns>
+      <people:column>
+        <people:item>lastname</people:item>
+      </people:column>
+      <people:column>
+        <people:item>firstname</people:item>
+      </people:column>
+      <people:column selectable="true">
+        <people:item>org_unit_1</people:item>
+      </people:column>
+      <people:column selectable="true">
+        <people:item>org_unit_2</people:item>
+      </people:column>
+      <people:column>
+        <people:item>email</people:item>
+      </people:column>
+      <people:column>
+        <people:item>phone</people:item>
+      </people:column>
+    </people:columns>
+    <people:details position="left">
+        <people:item>picture</people:item>
+    </people:details>
+    <people:details position="right">
+        <people:item>academic_title</people:item>
+        <people:item>lastname</people:item>
+        <people:item>firstname</people:item>
+        <people:item>function</people:item>
+        <people:item>org_unit_1</people:item>
+        <people:item>org_unit_2</people:item>
+        <people:item>email</people:item>
+        <people:item>phone</people:item>
+        <people:item>shortcode</people:item>
+    </people:details>
+  </schema>
+</model>
