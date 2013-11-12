@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-11 12:52+0000\n"
+"POT-Creation-Date: 2013-11-12 08:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr "${format} wird nicht unterstützt. Unterstützte Formate: ${formats}"
 msgid "Academic Title"
 msgstr "Akademischer Titel"
 
-#: ./browser/import_form.py:96
+#: ./browser/import_form.py:100
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -88,7 +88,7 @@ msgstr "Mitgliedschaft"
 msgid "Name of the list of people"
 msgstr "Name der Personenliste"
 
-#: ./content/import_content.py:65
+#: ./content/import_content.py:71
 msgid "No column headers were found"
 msgstr "Es wurden keine Spaltentitel gefunden"
 
@@ -124,7 +124,7 @@ msgstr "Telefon"
 msgid "Picture"
 msgstr "Bild"
 
-#: ./content/import_content.py:122
+#: ./content/import_content.py:146
 msgid "Required column is missing"
 msgstr "Benötigte Spalte fehlt"
 
@@ -144,11 +144,15 @@ msgstr "Kurzzeichen"
 msgid "Start of membership"
 msgstr "Beginn der Mitgliedschaft"
 
-#: ./browser/import_form.py:86
+#: ./browser/import_form.py:90
 msgid "Successfully imported ${count} records"
 msgstr "${count} Eintrage erfolgreich importiert"
 
-#: ./content/import_content.py:86
+#: ./content/import_content.py:107
+msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
+msgstr "Die ${name} Spalte ist ungültig. \"title\" and \"id\" sind reservierte Feldnamen und dürfen nicht verwendet werden."
+
+#: ./content/import_content.py:99
 msgid "The ${name} column is specified more than once"
 msgstr "Die ${name} Spalte ist mehr als einmal vorhanden"
 

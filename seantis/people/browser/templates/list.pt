@@ -59,7 +59,7 @@
                           <option 
                             value="__all__" 
                             tal:attributes="selected python: selected_value == '__all__' and 'selected' or ''" 
-                            tal:content="python: column.titles[0]" 
+                            tal:content="python: view.translate(column.titles[0])" 
                           />
                           <option 
                               tal:content="value" tal:repeat="value python: view.column_values(column)" 
@@ -72,7 +72,7 @@
                       Normal columns showing the title
                       </tal:comment>
                       <tal:block condition="not:column/selectable">
-                        <span tal:repeat="title column/titles" tal:content="title" />
+                        <span tal:repeat="title column/titles" tal:content="python: view.translate(title)" />
                       </tal:block>
                     </th>
                 </tr>

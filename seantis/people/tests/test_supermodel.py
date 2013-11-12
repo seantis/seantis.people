@@ -13,7 +13,9 @@ from seantis.people.supermodel import (
     get_selectable_fields,
     set_selectable_fields,
     get_detail_fields,
-    set_detail_fields
+    set_detail_fields,
+    get_custom_column_titles,
+    set_custom_column_titles
 )
 
 
@@ -64,7 +66,7 @@ class TestSupermodel(tests.IntegrationTestCase):
                         </people:item>
                         <people:item>   second </people:item>
                     </people:column>
-                    <people:column>
+                    <people:column title="test">
                         <people:item> fourth </people:item>
                     </people:column>
                 </people:columns>
@@ -77,16 +79,23 @@ class TestSupermodel(tests.IntegrationTestCase):
             get_columns(model.schema),
             [['first', 'second'], ['fourth']]
         )
+        self.assertEqual(
+            get_custom_column_titles(model.schema),
+            [None, 'test']
+        )
 
     def test_write_column_schema(self):
         model = loadString(self.column_xml)
         set_columns(
             model.schema, [['first'], ['third', 'fourth']]
         )
+        set_custom_column_titles(
+            model.schema, ['one', 'two']
+        )
         xml = self.deprettify(serializeSchema(model.schema))
 
-        self.assertIn('<people:column><people:item>first</people:item>', xml)
-        self.assertIn('<people:column><people:item>third</people:item>', xml)
+        self.assertIn('<people:column title="one"><people:item>first<', xml)
+        self.assertIn('<people:column title="two"><people:item>third<', xml)
         self.assertIn('</people:item><people:item>fourth</people:item>', xml)
 
         self.assertTrue(

@@ -8,7 +8,9 @@ from .schemahandler import (
     get_order,
     set_order,
     get_detail_fields,
-    set_detail_fields
+    set_detail_fields,
+    get_custom_column_titles,
+    set_custom_column_titles
 )
 
 from .indexing import (

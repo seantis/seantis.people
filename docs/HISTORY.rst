@@ -17,6 +17,9 @@ Changelog
 - Adds ability to filter attributes returning lists in the table.
   [href]
 
+- Adds ability to use custom titles on columns.
+  [href]
+
 0.6
 ~~~
 

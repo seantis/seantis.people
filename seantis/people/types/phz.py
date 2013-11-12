@@ -7,4 +7,7 @@ class IPHZ(form.Schema):
 
 
 class PHZ(Container):
-    pass
+
+    @property
+    def org_units(self):
+        return [org for org in (self.org_unit_1, self.org_unit_2) if org]

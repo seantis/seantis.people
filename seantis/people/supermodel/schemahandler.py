@@ -9,6 +9,7 @@ PERSON_COLUMNS = u'seantis.people.person_column'
 PERSON_ORDER = u'seantis.people.order'
 PERSON_SELECTABLE = u'seantis.people.selectable'
 PERSON_DETAILS = u'seantis.people.details'
+PERSON_COLUMN_TITLE = u'senatis.people.column_title'
 
 # Supermodel namespace and prefix
 PEOPLE_NAMESPACE = 'http://namespaces.plone.org/supermodel/people'
@@ -74,6 +75,16 @@ def get_selectable_fields(schema):
 
 def set_selectable_fields(schema, fields):
     schema.setTaggedValue(PERSON_SELECTABLE, list(set(fields)))
+
+
+def get_custom_column_titles(schema):
+    return schema.queryTaggedValue(
+        PERSON_COLUMN_TITLE, [None for col in get_columns(schema)]
+    )
+
+
+def set_custom_column_titles(schema, titles):
+    schema.setTaggedValue(PERSON_COLUMN_TITLE, titles)
 
 
 class NodeHandler(object):
@@ -173,8 +184,7 @@ class ColumnsHandler(NodeHandler):
         if not tags:
             return
 
-        columns = []
-        selectable_fields = []
+        columns, selectable_fields, titles = [], [], []
 
         for tag in tags:
             for column in self.nodes(tag, 'column'):
@@ -183,25 +193,31 @@ class ColumnsHandler(NodeHandler):
                 if len(column_items) == 1 and column.get('selectable'):
                     selectable_fields.append(column_items[0])
 
+                titles.append(column.get('title'))
                 columns.append(column_items)
 
         set_columns(schema, columns)
         set_selectable_fields(schema, selectable_fields)
+        set_custom_column_titles(schema, titles)
 
     def write(self, schema_node, schema):
         columns = get_columns(schema)
         selectable_fields = get_selectable_fields(schema)
+        titles = get_custom_column_titles(schema)
 
         if not columns:
             return
 
         columns_el = etree.Element(self.prefixed(self.tagname))
 
-        for column in columns:
+        for ix, column in enumerate(columns):
             column_el = etree.Element(self.prefixed('column'))
 
             if len(column) == 1 and column[0] in selectable_fields:
                 column_el.set('selectable', 'true')
+
+            if titles[ix]:
+                column_el.set('title', titles[ix])
 
             for field in column:
                 item_el = etree.Element(self.prefixed('item'))

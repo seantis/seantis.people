@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-11 12:52+0000\n"
+"POT-Creation-Date: 2013-11-12 08:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Academic Title"
 msgstr ""
 
-#: ./browser/import_form.py:96
+#: ./browser/import_form.py:100
 msgid "Cancel"
 msgstr ""
 
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Name of the list of people"
 msgstr ""
 
-#: ./content/import_content.py:65
+#: ./content/import_content.py:71
 msgid "No column headers were found"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
-#: ./content/import_content.py:122
+#: ./content/import_content.py:146
 msgid "Required column is missing"
 msgstr ""
 
@@ -147,11 +147,15 @@ msgstr ""
 msgid "Start of membership"
 msgstr ""
 
-#: ./browser/import_form.py:86
+#: ./browser/import_form.py:90
 msgid "Successfully imported ${count} records"
 msgstr ""
 
-#: ./content/import_content.py:86
+#: ./content/import_content.py:107
+msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
+msgstr ""
+
+#: ./content/import_content.py:99
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
