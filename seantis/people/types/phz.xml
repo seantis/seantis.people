@@ -49,6 +49,11 @@
       <title i18n:translate="">Phone</title>
     </field>
 
+    <field name="biographie" type="plone.app.textfield.RichText" indexer:searchable="true">
+      <title i18n:translate="">Biography</title>
+      <required>False</required>
+    </field>
+
     <!-- Visible only to people with write access -->
     <field name="shortcode" type="zope.schema.TextLine" indexer:searchable="true" security:read-permission="cmf.ModifyPortalContent">
       <title i18n:translate="">Shortcode</title>
@@ -92,9 +97,6 @@
 
     <!-- The fields displayed in the detail view -->
     <people:details position="left">
-        <people:item>picture</people:item>
-    </people:details>
-    <people:details position="right">
         <people:item>academic_title</people:item>
         <people:item>lastname</people:item>
         <people:item>firstname</people:item>
@@ -104,6 +106,10 @@
         <people:item>email</people:item>
         <people:item>phone</people:item>
         <people:item>shortcode</people:item>
+    </people:details>
+    <people:details position="right">
+        <people:item>picture</people:item>
+        <people:item>biographie</people:item>
     </people:details>
 
   </schema>

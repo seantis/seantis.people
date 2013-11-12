@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-12 08:55+0000\n"
+"POT-Creation-Date: 2013-11-12 13:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,6 +21,10 @@ msgstr "${format} wird nicht unterstützt. Unterstützte Formate: ${formats}"
 #: ./types/phz.xml
 msgid "Academic Title"
 msgstr "Akademischer Titel"
+
+#: ./types/phz.xml
+msgid "Biography"
+msgstr "Biographie"
 
 #: ./browser/import_form.py:100
 msgid "Cancel"

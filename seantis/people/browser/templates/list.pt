@@ -79,7 +79,7 @@
             </thead>
             <tbody class="loader-fragment" data-fragment-id="people">
                 <tr tal:repeat="person people">
-                    <td tal:repeat="column columns">
+                    <td tal:repeat="column columns" tal:attributes="data-title python: ' '.join(map(view.translate, column.titles))">
                       <tal:block condition="column/contains_title_field">
                         <a tal:attributes="href python: person.getURL()">
                            <span tal:repeat="field column/fields" tal:content="person/?field" />
