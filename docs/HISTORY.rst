@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.7 (unreleased)
-~~~~~~~~~~~~~~~~
+0.7
+~~~
 
 - Hide label of images in the detail view.
   [href]
