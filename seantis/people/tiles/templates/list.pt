@@ -10,9 +10,10 @@
     Please drag&amp;drop people into this tile to make them members.
   </p>
 
-  <div tal:condition="not:is_empty" class="tile-content">
+  <div tal:condition="not:is_empty" class=" cover-list-tile tile-content sortable-tile">
     <tal:block repeat="member view/results">
-      <div tal:content="member/title"></div>
+      <div tal:content="member/title" class="list-item" style="position:relative"
+           tal:attributes="data-uid python:view.get_uid(member)"></div>
     </tal:block>
     <div class="visualClear"><!-- --></div>
   </div>
