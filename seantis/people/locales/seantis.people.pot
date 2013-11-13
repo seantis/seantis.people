@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-12 13:56+0000\n"
+"POT-Creation-Date: 2013-11-13 15:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,6 +87,15 @@ msgstr ""
 msgid "List of People"
 msgstr ""
 
+#: ./tiles/list.py:28
+msgid "Memberlist"
+msgstr ""
+
+#: ./tiles/list.py:15
+#: ./tiles/templates/list.pt:14
+msgid "Members"
+msgstr ""
+
 #: ./profiles/default/types/seantis.people.membership.xml
 msgid "Membership"
 msgstr ""
@@ -129,6 +138,10 @@ msgstr ""
 
 #: ./types/phz.xml
 msgid "Picture"
+msgstr ""
+
+#: ./tiles/templates/list.pt:9
+msgid "Please drag&amp;drop people into this tile to make them members."
 msgstr ""
 
 #: ./content/import_content.py:146
