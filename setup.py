@@ -5,13 +5,17 @@ name = 'seantis.people'
 description = (
     "A list of people, optionally organized by organisations and positions."
 )
-version = '0.7'
+version = '0.8'
 
 tests_require = [
     'plone.app.testing',
     'collective.betterbrowser[pyquery]',
     'seantis.plonetools[tests]',
     'mock'
+]
+
+cover_require = [
+    'collective.cover'
 ]
 
 
@@ -57,7 +61,8 @@ setup(
         'tablib'
     ],
     extras_require=dict(
-        tests=tests_require
+        tests=tests_require,
+        cover=cover_require
     ),
     entry_points="""
     # -*- Entry points: -*-
