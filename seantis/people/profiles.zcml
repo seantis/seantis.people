@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
@@ -9,6 +10,15 @@
         title="Seantis People"
         description="Default Profile for Seantis People"
         directory="profiles/default"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+    <!-- Collective Cover Support -->
+    <genericsetup:registerProfile zcml:condition="installed collective.cover"
+        name="cover"
+        title="Seantis People - Collective.Cover Support"
+        description="Enables Tiles for Collective.Cover"
+        directory="profiles/cover"
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
