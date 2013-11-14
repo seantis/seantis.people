@@ -21,11 +21,8 @@ class IPersonMarker(Interface):
 class IPerson(Interface):
 
     def memberships(self):
-        """ A list of membership belonging to this person. """
-
-    def memberships_by_organizations(self, organizations=None):
-        """ A dictionary of memberships belonging to this person. They key
-        of the dictionary is the title of the organization. """
+        """ A dictionary of membership belonging to this person, keyed by
+        organization (brain or object with a title and an url)."""
 
 
 class INameFromPerson(Interface):
@@ -47,11 +44,31 @@ class IList(form.Schema):
     )
 
 
+class IMembershipSource(Interface):
+
+    def memberships(self, person=None):
+        """ Return a dictionary of objects providing IMembership. The key
+        of the dictionary is an object or brain with a title and an url. 
+
+        If a person object (not a brain) is given, only the memberships
+        of that person are returned.
+        """
+
+
+
 class IMembership(form.Schema):
+
+    person = RelationChoice(
+        title=_(u"Person"),
+        source=ObjPathSourceBinder(
+            object_provides=IPersonMarker.__identifier__
+        ),
+        required=True,
+    )
 
     title = schema.TextLine(
         title=_(u"Role inside organization"),
-        required=True
+        required=False
     )
 
     start = schema.Date(
@@ -62,12 +79,6 @@ class IMembership(form.Schema):
     end = schema.Date(
         title=_(u"End of membership"),
         required=False
-    )
-
-    person = RelationChoice(
-        title=_(u"Person"),
-        source=ObjPathSourceBinder(object_provides=IPerson.__identifier__),
-        required=True,
     )
 
     @invariant

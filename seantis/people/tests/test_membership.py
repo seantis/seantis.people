@@ -53,20 +53,38 @@ class TestMembership(tests.IntegrationTestCase):
         with self.user('admin'):
             organization = self.new_temporary_folder('S.H.I.E.L.D')
 
-            nick_fury = IPerson(api.content.create(
+            nick_fury = api.content.create(
                 title='Nick Fury',
                 type=person_type.id,
                 container=self.new_temporary_folder()
-            ))
+            )
+
+            tony_stark = api.content.create(
+                title='Tony Stark',
+                type=person_type.id,
+                container=self.new_temporary_folder()
+            )
 
             api.content.create(
-                title='Leader',
+                title='Director',
                 type='seantis.people.membership',
                 container=organization,
                 person=nick_fury
             )
 
-        self.assertEqual(len(nick_fury.memberships()), 1)
+            api.content.create(
+                title='Head',
+                type='seantis.people.membership',
+                container=organization,
+                person=tony_stark
+            )
+
+        memberships = IPerson(nick_fury).memberships()
+
+        self.assertEqual(len(memberships), 1)
+        self.assertEqual(memberships.keys(), [organization])
+        self.assertEqual(len(memberships[organization]), 1)
+        self.assertEqual(memberships[organization][0].Title, 'Director')
 
         with self.user('admin'):
             api.content.create(
@@ -76,39 +94,10 @@ class TestMembership(tests.IntegrationTestCase):
                 person=nick_fury
             )
 
-        self.assertEqual(len(nick_fury.memberships()), 2)
+        memberships = IPerson(nick_fury).memberships()
 
-    def test_membership_by_organization(self):
-        person_type = self.new_temporary_type(
-            behaviors=[IPerson.__identifier__]
-        )
-
-        with self.user('admin'):
-            uno = self.new_temporary_folder('UNO')
-            nato = self.new_temporary_folder('NATO')
-
-            john = IPerson(api.content.create(
-                title='John Doe',
-                type=person_type.id,
-                container=self.new_temporary_folder()
-            ))
-
-            api.content.create(
-                title='Janitor',
-                type='seantis.people.membership',
-                container=uno,
-                person=john
-            )
-
-            api.content.create(
-                title='Janitor',
-                type='seantis.people.membership',
-                container=nato,
-                person=john
-            )
-
-        self.assertEqual(len(john.memberships()), 2)
-        self.assertEqual(len(john.memberships_by_organization()), 2)
-        self.assertEqual(len(john.memberships_by_organization(['UNO'])), 1)
-        self.assertEqual(len(john.memberships_by_organization(['NATO'])), 1)
-        self.assertEqual(len(john.memberships_by_organization(['ASDF'])), 0)
+        self.assertEqual(len(memberships), 1)
+        self.assertEqual(memberships.keys(), [organization])
+        self.assertEqual(len(memberships[organization]), 2)
+        self.assertEqual(memberships[organization][0].Title, 'Director')
+        self.assertEqual(memberships[organization][1].Title, 'Leutenant')

@@ -8,6 +8,10 @@ Changelog
 - Adds collective.cover support as an extra
   [href]
 
+- Memberships can now be defined dynamically through the MembershipSource 
+  adapter.
+  [href]
+
 0.7
 ~~~
 

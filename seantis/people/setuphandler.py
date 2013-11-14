@@ -1,7 +1,8 @@
 from seantis.plonetools import setuphandlers
 
 indexes = [
-    ('first_letter', 'FieldIndex')
+    ('first_letter', 'FieldIndex'),
+    ('membership_person', 'FieldIndex')
 ]
 
 
