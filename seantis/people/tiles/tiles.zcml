@@ -9,7 +9,7 @@
       name="seantis.people.memberlist"
       title="Memberlist Tile"
       description="A tile that shows members."
-      icon="++resource++collective.cover/tile-banner.png"
+      icon="++resource++collective.cover/tile-list.png"
       add_permission="cmf.ModifyPortalContent"
       schema=".list.IMemberListTile"
       class=".list.MemberListTile"
