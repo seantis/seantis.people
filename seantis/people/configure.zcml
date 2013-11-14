@@ -12,7 +12,7 @@
 
 <!-- Dependencies -->
 <includeDependencies package="." />
-<grok:grok package="." exclude="tiles"/>
+<grok:grok package="." />
 <include package=".browser" />
 
 <!-- Translation -->
@@ -33,9 +33,6 @@
 
 <!-- Events -->
 <include file="events.zcml" />
-
-<!-- Collective Cover Tiles -->
-<include zcml:condition="installed collective.cover" package=".tiles" />
 
 <!-- Behaviours -->
 <plone:behavior

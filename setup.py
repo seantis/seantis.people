@@ -15,7 +15,7 @@ tests_require = [
 ]
 
 cover_require = [
-    'collective.cover'
+    'seantis.cover.people'
 ]
 
 

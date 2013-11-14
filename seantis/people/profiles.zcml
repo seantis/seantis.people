@@ -13,15 +13,6 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
-    <!-- Collective Cover Support -->
-    <genericsetup:registerProfile zcml:condition="installed collective.cover"
-        name="cover"
-        title="Seantis People - Collective.Cover Support"
-        description="Enables Tiles for Collective.Cover"
-        directory="profiles/cover"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-    />
-
     <!-- PHZ Specific Type -->
     <genericsetup:registerProfile 
         name="phz"
