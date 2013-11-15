@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-15 10:47+0000\n"
+"POT-Creation-Date: 2013-11-15 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Membership"
 msgstr ""
 
-#: ./browser/templates/person.pt:19
+#: ./browser/templates/macros.pt:16
 msgid "Memberships"
 msgstr ""
 
