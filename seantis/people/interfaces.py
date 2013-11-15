@@ -48,7 +48,8 @@ class IMembershipSource(Interface):
 
     def memberships(self, person=None):
         """ Return a dictionary of objects providing IMembership. The key
-        of the dictionary is an object or brain with a title and an url. 
+        of the dictionary is the uuid of the organization (object with url and
+        title).
 
         If a person object (not a brain) is given, only the memberships
         of that person are returned.

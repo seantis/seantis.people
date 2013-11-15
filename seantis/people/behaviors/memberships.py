@@ -20,6 +20,13 @@ def get_memberships(person=None):
 
     organizations = {}
     for name, source in getAdapters((context, ), IMembershipSource):
+        for organization, memberships in source.memberships(person).items():
+
+            if organization not in organizations:
+                organizations[organization] = []
+
+            organizations[organization].extend(memberships)
+
         organizations.update(source.memberships(person))
 
     return organizations
@@ -43,7 +50,7 @@ class ZodbMembershipSource(grok.Adapter):
         result = {}
 
         for membership in memberships:
-            organization = tools.get_parent(membership)
+            organization = tools.get_parent(membership).UID
             result.setdefault(organization, []).append(membership)
 
         return result

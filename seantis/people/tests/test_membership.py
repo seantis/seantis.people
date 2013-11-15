@@ -1,5 +1,6 @@
 from datetime import date
 from plone import api
+from plone.uuid.interfaces import IUUID
 from zope.interface import Invalid
 
 from seantis.people.interfaces import IMembership, IPerson
@@ -81,10 +82,12 @@ class TestMembership(tests.IntegrationTestCase):
 
         memberships = IPerson(nick_fury).memberships()
 
+        org = IUUID(organization)
+
         self.assertEqual(len(memberships), 1)
-        self.assertEqual(memberships.keys(), [organization])
-        self.assertEqual(len(memberships[organization]), 1)
-        self.assertEqual(memberships[organization][0].Title, 'Director')
+        self.assertEqual(memberships.keys(), [org])
+        self.assertEqual(len(memberships[org]), 1)
+        self.assertEqual(memberships[org][0].Title, 'Director')
 
         with self.user('admin'):
             api.content.create(
@@ -97,7 +100,7 @@ class TestMembership(tests.IntegrationTestCase):
         memberships = IPerson(nick_fury).memberships()
 
         self.assertEqual(len(memberships), 1)
-        self.assertEqual(memberships.keys(), [organization])
-        self.assertEqual(len(memberships[organization]), 2)
-        self.assertEqual(memberships[organization][0].Title, 'Director')
-        self.assertEqual(memberships[organization][1].Title, 'Leutenant')
+        self.assertEqual(memberships.keys(), [org])
+        self.assertEqual(len(memberships[org]), 2)
+        self.assertEqual(memberships[org][0].Title, 'Director')
+        self.assertEqual(memberships[org][1].Title, 'Leutenant')
