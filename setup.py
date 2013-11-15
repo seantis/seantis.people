@@ -55,7 +55,7 @@ setup(
         'five.grok',
         'plone.behavior',
         'plone.app.dexterity [grok, relations]',
-        'seantis.plonetools>=0.7',
+        'seantis.plonetools>=0.8',
         'collective.js.underscore',
         'collective.dexteritytextindexer',
         'tablib'

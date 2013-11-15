@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.8 (unreleased)
-~~~~~~~~~~~~~~~~
+0.8
+~~~
 
 - Adds collective.cover support as an extra
   [href]
