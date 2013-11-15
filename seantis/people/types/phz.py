@@ -1,12 +1,12 @@
-from plone.dexterity.content import Container
 from plone.directives import form
+from seantis.people.types.base import PersonBase
 
 
 class IPHZ(form.Schema):
     form.model("phz.xml")
 
 
-class PHZ(Container):
+class PHZ(PersonBase):
 
     @property
     def org_units(self):

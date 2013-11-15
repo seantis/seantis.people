@@ -62,17 +62,3 @@ class PersonView(BaseView):
 
     def split_screen(self):
         return set(('left', 'right')).issubset(set(self.visible_positions()))
-
-    def get_organizations(self):
-        catalog = api.portal.get_tool('portal_catalog')
-
-        Organization = namedtuple('Organization', ['title', 'url'])
-
-        organizations = []
-        for uuid in IPerson(self.context).memberships():
-            brain = catalog(UID=uuid)[0]
-            organizations.append(Organization(brain.Title, brain.getURL()))
-
-        sortkey = lambda org: tools.unicode_collate_sortkey()(org.title)
-
-        return sorted(organizations, key=sortkey)

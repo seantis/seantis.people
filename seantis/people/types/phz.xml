@@ -109,6 +109,7 @@
     </people:details>
     <people:details position="right">
         <people:item>picture</people:item>
+        <people:item>memberships</people:item>
         <people:item>biographie</people:item>
     </people:details>
 
