@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.9
+~~~
+
+- Adds membership rendering to detail view.
+  [href]
+
 0.8
 ~~~
 

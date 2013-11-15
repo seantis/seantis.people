@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-13 15:47+0000\n"
+"POT-Creation-Date: 2013-11-15 10:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Spalte ${column}"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ./interfaces.py:63
+#: ./interfaces.py:81
 msgid "End of membership"
 msgstr "Ende der Mitgliedschaft"
 
@@ -84,20 +84,15 @@ msgstr "Buchstabe"
 msgid "List of People"
 msgstr "Personenliste"
 
-#: ./tiles/list.py:28
-msgid "Memberlist"
-msgstr "Mitgliederliste"
-
-#: ./tiles/list.py:15
-#: ./tiles/templates/list.pt:14
-msgid "Members"
-msgstr "Mitglieder"
-
 #: ./profiles/default/types/seantis.people.membership.xml
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
-#: ./interfaces.py:39
+#: ./browser/templates/person.pt:19
+msgid "Memberships"
+msgstr "Mitgliedschaften"
+
+#: ./interfaces.py:36
 msgid "Name of the list of people"
 msgstr "Name der Personenliste"
 
@@ -109,7 +104,7 @@ msgstr "Es wurden keine Spaltentitel gefunden"
 msgid "No people in the list."
 msgstr "Keine Personen in der Liste."
 
-#: ./interfaces.py:44
+#: ./interfaces.py:41
 msgid "Number of people shown on each page"
 msgstr "Anzahl Personen pro Seite"
 
@@ -125,7 +120,7 @@ msgstr "Organisationseinheit 2"
 msgid "PHZ Employees"
 msgstr "PHZ Angestellte"
 
-#: ./interfaces.py:68
+#: ./interfaces.py:63
 msgid "Person"
 msgstr "Person"
 
@@ -137,15 +132,11 @@ msgstr "Telefon"
 msgid "Picture"
 msgstr "Bild"
 
-#: ./tiles/templates/list.pt:9
-msgid "Please drag&amp;drop people into this tile to make them members."
-msgstr ""
-
 #: ./content/import_content.py:146
 msgid "Required column is missing"
 msgstr "Benötigte Spalte fehlt"
 
-#: ./interfaces.py:53
+#: ./interfaces.py:71
 msgid "Role inside organization"
 msgstr "Rolle in der Organisation"
 
@@ -157,7 +148,7 @@ msgstr "Zeile ${row}"
 msgid "Shortcode"
 msgstr "Kurzzeichen"
 
-#: ./interfaces.py:58
+#: ./interfaces.py:76
 msgid "Start of membership"
 msgstr "Beginn der Mitgliedschaft"
 
@@ -173,7 +164,7 @@ msgstr "Die ${name} Spalte ist ungültig. \"title\" and \"id\" sind reservierte 
 msgid "The ${name} column is specified more than once"
 msgstr "Die ${name} Spalte ist mehr als einmal vorhanden"
 
-#: ./interfaces.py:82
+#: ./interfaces.py:94
 msgid "The membership can't end before it starts"
 msgstr "Die Mitgliedschaft kann nicht enden bevor sie begonnen hat"
 

@@ -14,7 +14,16 @@
                             <div tal:content="structure python: view.renderer.render(context, field)" />
                         </tal:block>
                     </div>
-                
+                </div>
+                <div class="person-details" tal:define="organizations view/get_organizations" tal:condition="organizations">
+                  <div class="person-detail person-memberships">
+                    <h2 i18n:translate="">Memberships</h2>
+                      <ul class="dense">
+                        <li tal:repeat="organization organizations">
+                          <a tal:attributes="href organization/url" tal:content="organization/title" />
+                        </li>
+                      </ul>
+                  </div>
                 </div>
             </tal:block>
         </metal:block>

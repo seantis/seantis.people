@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-13 15:47+0000\n"
+"POT-Creation-Date: 2013-11-15 10:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./interfaces.py:63
+#: ./interfaces.py:81
 msgid "End of membership"
 msgstr ""
 
@@ -87,20 +87,15 @@ msgstr ""
 msgid "List of People"
 msgstr ""
 
-#: ./tiles/list.py:28
-msgid "Memberlist"
-msgstr ""
-
-#: ./tiles/list.py:15
-#: ./tiles/templates/list.pt:14
-msgid "Members"
-msgstr ""
-
 #: ./profiles/default/types/seantis.people.membership.xml
 msgid "Membership"
 msgstr ""
 
-#: ./interfaces.py:39
+#: ./browser/templates/person.pt:19
+msgid "Memberships"
+msgstr ""
+
+#: ./interfaces.py:36
 msgid "Name of the list of people"
 msgstr ""
 
@@ -112,7 +107,7 @@ msgstr ""
 msgid "No people in the list."
 msgstr ""
 
-#: ./interfaces.py:44
+#: ./interfaces.py:41
 msgid "Number of people shown on each page"
 msgstr ""
 
@@ -128,7 +123,7 @@ msgstr ""
 msgid "PHZ Employees"
 msgstr ""
 
-#: ./interfaces.py:68
+#: ./interfaces.py:63
 msgid "Person"
 msgstr ""
 
@@ -140,15 +135,11 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
-#: ./tiles/templates/list.pt:9
-msgid "Please drag&amp;drop people into this tile to make them members."
-msgstr ""
-
 #: ./content/import_content.py:146
 msgid "Required column is missing"
 msgstr ""
 
-#: ./interfaces.py:53
+#: ./interfaces.py:71
 msgid "Role inside organization"
 msgstr ""
 
@@ -160,7 +151,7 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: ./interfaces.py:58
+#: ./interfaces.py:76
 msgid "Start of membership"
 msgstr ""
 
@@ -176,7 +167,7 @@ msgstr ""
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
-#: ./interfaces.py:82
+#: ./interfaces.py:94
 msgid "The membership can't end before it starts"
 msgstr ""
 

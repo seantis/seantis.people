@@ -1,10 +1,13 @@
+from collections import namedtuple
+
 from five import grok
 
+from plone import api
 from plone.namedfile.field import NamedBlobImage, NamedImage
 
 from seantis.plonetools import tools
 from seantis.people.supermodel import security, get_detail_fields
-from seantis.people.interfaces import IPersonMarker
+from seantis.people.interfaces import IPersonMarker, IPerson
 from seantis.people.browser import BaseView, Renderer
 
 
@@ -59,3 +62,17 @@ class PersonView(BaseView):
 
     def split_screen(self):
         return set(('left', 'right')).issubset(set(self.visible_positions()))
+
+    def get_organizations(self):
+        catalog = api.portal.get_tool('portal_catalog')
+
+        Organization = namedtuple('Organization', ['title', 'url'])
+
+        organizations = []
+        for uuid in IPerson(self.context).memberships():
+            brain = catalog(UID=uuid)[0]
+            organizations.append(Organization(brain.Title, brain.getURL()))
+
+        sortkey = lambda org: tools.unicode_collate_sortkey()(org.title)
+
+        return sorted(organizations, key=sortkey)
