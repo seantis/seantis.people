@@ -49,14 +49,14 @@ class Person(object):
                 return membership.end
             else:
                 return date(MAXYEAR, 12, 31)
-                
+
         today = date.today()
         active = [m for m in memberships if m.end is None or m.end >= today]
         return sorted(active, key=sortkey)
 
     def current_role(self, memberships):
         """ Goes through the given memberships and returns the current role.
-        The current role is the latest active membership's role. 
+        The current role is the latest active membership's role.
 
         """
         active = self.active_memberships(memberships)
