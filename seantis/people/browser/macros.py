@@ -21,15 +21,18 @@ class View(BaseView):
         return self.template._template.macros[key]
 
     def organizations(self, person):
-        Organization = namedtuple('Organization', ['title', 'url'])
-
+        Organization = namedtuple('Organization', ['title', 'url', 'role'])
         catalog = api.portal.get_tool('portal_catalog')
 
         organizations = []
-        for uuid in IPerson(self.context).memberships():
+        person = IPerson(self.context)
+        for uuid, memberships in person.memberships().items():
+            current_role = person.current_role(memberships)
+
             brain = catalog(UID=uuid)[0]
-            organizations.append(Organization(brain.Title, brain.getURL()))
+            organizations.append(
+                Organization(brain.Title, brain.getURL(), current_role)
+            )
 
         sortkey = lambda org: tools.unicode_collate_sortkey()(org.title)
-
         return sorted(organizations, key=sortkey)

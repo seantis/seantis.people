@@ -17,6 +17,10 @@
           <ul class="dense">
             <li tal:repeat="organization organizations">
               <a tal:attributes="href organization/url" tal:content="organization/title" />
+              <tal:block condition="organization/role">
+                <span class="seantis-role-separator">-</span>
+                <span class="seantis-role" tal:content="organization/role"></span>
+              </tal:block>
             </li>
           </ul>
         </div>

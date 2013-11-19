@@ -67,7 +67,7 @@ class IMembership(form.Schema):
         required=True,
     )
 
-    title = schema.TextLine(
+    role = schema.TextLine(
         title=_(u"Role inside organization"),
         required=False
     )
