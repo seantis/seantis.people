@@ -61,7 +61,6 @@ class TestMemberships(tests.IntegrationTestCase):
 
         return person
 
-
     def test_membership_adapter_registration(self):
 
         class Source(TestAdapter):
