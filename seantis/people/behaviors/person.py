@@ -1,6 +1,9 @@
 from datetime import date, MAXYEAR
+
+from plone import api
 from zope.interface import implements
 
+from seantis.plonetools import tools
 from seantis.people.interfaces import IPerson
 from seantis.people.behaviors.memberships import get_memberships
 
@@ -13,6 +16,24 @@ class Person(object):
 
     def memberships(self):
         return get_memberships(self.context)
+
+    def organizations(self):
+        """ Returns a list of organizations this person is active in. The list
+        is sorted by uca collation. This is mainly used for the organizations
+        metadata field of all person objects (to show in the list).
+
+        """
+
+        catalog = api.portal.get_tool('portal_catalog')
+        organizations = []
+
+        for organization, memberships in self.memberships().items():
+            if not self.active_memberships(memberships):
+                continue
+
+            organizations.append(catalog(UID=organization)[0].Title)
+
+        return sorted(organizations, key=tools.unicode_collate_sortkey())
 
     def active_memberships(self, memberships):
         """ Goes through the given memberships and returns the active ones.
