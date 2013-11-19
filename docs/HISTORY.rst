@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.9 (unreleased)
+0.9
 ~~~
 
 - Adds membership rendering to detail view.
