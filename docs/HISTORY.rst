@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.10 (unreleased)
+0.10
 ~~~~
 
 - Changes German translation of "Organisation Unit 2" for PHZ.
