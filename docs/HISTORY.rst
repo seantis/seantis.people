@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+0.12
+~~~~
+- PHZ portrait should be optional.
+  [href]
+
 0.11
 ~~~~
 
