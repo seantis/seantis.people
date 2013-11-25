@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.11 (unreleased)
-~~~~~~~~~~~~~~~~~
+0.11
+~~~~
 
 - Supports new responsive-table helper in plonetheme.onegov.
   [href]
