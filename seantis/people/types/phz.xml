@@ -98,8 +98,6 @@
     <!-- The fields displayed in the detail view -->
     <people:details position="left">
         <people:item>academic_title</people:item>
-        <people:item>lastname</people:item>
-        <people:item>firstname</people:item>
         <people:item>function</people:item>
         <people:item>org_unit_1</people:item>
         <people:item>org_unit_2</people:item>
