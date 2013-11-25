@@ -64,6 +64,11 @@
       <required>False</required>
     </field>
 
+    <field name="portrait" type="seantis.plonetools.schemafields.Website" indexer:searchable="true">
+      <title i18n:translate="">Portrait</title>
+      <description i18n:translate="">Link to a more detailed portrait of the employee</description>
+    </field>
+
     <!-- Define the title and the id (path) of the object -->
     <people:title>
       <people:item>lastname</people:item>
@@ -107,6 +112,7 @@
     </people:details>
     <people:details position="right">
         <people:item>picture</people:item>
+        <people:item>portrait</people:item>
         <people:item>memberships</people:item>
         <people:item>biographie</people:item>
     </people:details>

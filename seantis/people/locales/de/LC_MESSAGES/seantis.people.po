@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-19 15:47+0000\n"
+"POT-Creation-Date: 2013-11-25 08:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,6 +80,10 @@ msgstr "Nachname"
 msgid "Letter"
 msgstr "Buchstabe"
 
+#: ./types/phz.xml
+msgid "Link to a more detailed portrait of the employee"
+msgstr "Link zum detailierten Portrait"
+
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "List of People"
 msgstr "Personenliste"
@@ -131,6 +135,10 @@ msgstr "Telefon"
 #: ./types/phz.xml
 msgid "Picture"
 msgstr "Bild"
+
+#: ./types/phz.xml
+msgid "Portrait"
+msgstr ""
 
 #: ./content/import_content.py:146
 msgid "Required column is missing"

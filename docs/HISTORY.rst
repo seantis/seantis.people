@@ -8,7 +8,10 @@ Changelog
 - Supports new responsive-table helper in plonetheme.onegov.
   [href]
 
-- Hides first-/lastname on detail view for PHZ.
+- Hides first-/lastname on PHZ detail view.
+  [href]
+
+- Adds link to a detailed portrait of the employee for the PHZ.
   [href]
 
 0.10
