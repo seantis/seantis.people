@@ -2,8 +2,16 @@
 Changelog
 ---------
 
+0.13 (unreleased)
+~~~~~~~~~~~~~~~~
+
+- Adds the ability to install and upgrade profiles with custom people types.
+  This can be done using the new seantis people controlpanel.
+  [href]
+
 0.12
 ~~~~
+
 - PHZ portrait should be optional.
   [href]
 

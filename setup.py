@@ -5,7 +5,7 @@ name = 'seantis.people'
 description = (
     "A list of people, optionally organized by organisations and positions."
 )
-version = '0.12'
+version = '0.13'
 
 tests_require = [
     'plone.app.testing',
@@ -55,6 +55,7 @@ setup(
         'five.grok',
         'plone.behavior',
         'plone.app.dexterity [grok, relations]',
+        'plone.app.registry',
         'seantis.plonetools>=0.8',
         'collective.js.underscore',
         'collective.dexteritytextindexer',

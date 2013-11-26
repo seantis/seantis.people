@@ -16,4 +16,11 @@
         handler=".setuphandler.add_catalog_indexes"
     />
 
+    <genericsetup:upgradeStep
+        title="Install new controlpanel."
+        source="1002" destination="1003"
+        profile="seantis.people:default"
+        handler=".upgrades.install_custom_controlpanel"
+    />
+
 </configure>
