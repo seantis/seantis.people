@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-25 08:27+0000\n"
+"POT-Creation-Date: 2013-11-26 13:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,10 @@ msgstr ""
 
 #: ./types/phz.xml
 msgid "Academic Title"
+msgstr ""
+
+#: ./browser/templates/controlpanel.pt:31
+msgid "Available Profiles"
 msgstr ""
 
 #: ./types/phz.xml
@@ -75,6 +79,14 @@ msgstr ""
 msgid "Import people"
 msgstr ""
 
+#: ./browser/templates/controlpanel.pt:38
+msgid "Install"
+msgstr ""
+
+#: ./browser/templates/controlpanel.pt:79
+msgid "Installed Profiles"
+msgstr ""
+
 #: ./types/phz.xml
 msgid "Last Name"
 msgstr ""
@@ -91,6 +103,10 @@ msgstr ""
 msgid "List of People"
 msgstr ""
 
+#: ./browser/templates/controlpanel.pt:24
+msgid "Lists profiles containing types with IPerson behavior enabled. Only install profiles you know and understand. This is mostly a GenericSetup shim working around the fact that only the first profile in an add-on can actually be upgraded by GenericSetup using the Plone controlpanel."
+msgstr ""
+
 #: ./profiles/default/types/seantis.people.membership.xml
 msgid "Membership"
 msgstr ""
@@ -103,12 +119,24 @@ msgstr ""
 msgid "Name of the list of people"
 msgstr ""
 
+#: ./browser/templates/controlpanel.pt:50
+msgid "No available profiles."
+msgstr ""
+
 #: ./content/import_content.py:71
 msgid "No column headers were found"
 msgstr ""
 
+#: ./browser/templates/controlpanel.pt:87
+msgid "No installed profiles."
+msgstr ""
+
 #: ./browser/templates/list.pt:22
 msgid "No people in the list."
+msgstr ""
+
+#: ./browser/templates/controlpanel.pt:74
+msgid "No upgradeable profiles."
 msgstr ""
 
 #: ./interfaces.py:41
@@ -124,7 +152,7 @@ msgid "Organisation Unit 2"
 msgstr ""
 
 #: ./profiles/phz/types/seantis.people.phz.xml
-msgid "PHZ Employees"
+msgid "PH Zug Employees"
 msgstr ""
 
 #: ./interfaces.py:63
@@ -155,6 +183,14 @@ msgstr ""
 msgid "Row ${row}"
 msgstr ""
 
+#: ./profiles/default/controlpanel.xml
+msgid "Seantis People"
+msgstr ""
+
+#: ./browser/templates/controlpanel.pt:16
+msgid "Seantis People Controlpanel"
+msgstr ""
+
 #: ./types/phz.xml
 msgid "Shortcode"
 msgstr ""
@@ -181,5 +217,13 @@ msgstr ""
 
 #: ./browser/import_form.py:25
 msgid "Type"
+msgstr ""
+
+#: ./browser/templates/controlpanel.pt:62
+msgid "Upgrade"
+msgstr ""
+
+#: ./browser/templates/controlpanel.pt:55
+msgid "Upgradeable Profiles"
 msgstr ""
 

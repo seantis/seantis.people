@@ -12,6 +12,9 @@ Changelog
 - Removes import action from PHZ type.
   [href]
 
+- Renames PHZ to PH Zug.
+  [href]
+
 0.12
 ~~~~
 
