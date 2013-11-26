@@ -94,7 +94,7 @@ msgstr "Buchstabe"
 
 #: ./types/phz.xml
 msgid "Link to a more detailed portrait of the employee"
-msgstr "Link zum detailierten Portrait"
+msgstr "Link zum detaillierten Portrait"
 
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "List of People"
