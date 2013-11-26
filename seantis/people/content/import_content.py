@@ -126,7 +126,11 @@ def get_attribute_values(record, attribute_map):
         """.format(field)
 
         try:
-            values[field.__name__] = field.fromUnicode(record[header]).strip()
+            values[field.__name__] = field.fromUnicode(record[header])
+
+            if isinstance(values[field.__name__], basestring):
+                values[field.__name__] = values[field.__name__].strip()
+
         except ValidationError, e:
             raise ContentImportError(e.doc(), colname=header)
         except ValueError, e:
