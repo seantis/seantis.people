@@ -92,10 +92,11 @@ class ImportForm(BaseForm):
                     count=count
                 )
             )
-
         except ContentImportError, e:
             transaction.abort()
             self.raise_action_error(e.translate(self.request))
+        else:
+            self.request.response.redirect(self.context.absolute_url())
 
     @buttonAndHandler(_(u'Cancel'), name='cancel')
     def cancel(self, action):

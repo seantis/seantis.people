@@ -19,6 +19,9 @@ Changelog
   at the end.
   [href]
 
+- Redirect to person list after succesful import.
+  [href]
+
 0.12
 ~~~~
 
