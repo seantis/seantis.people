@@ -136,6 +136,15 @@ class TestImportContent(tests.IntegrationTestCase):
         else:
             assert False, "The exception should have occurred."
 
+        try:
+            validate_attribute_values(model.schema, {'age': None})
+        except ContentImportError, e:
+            self.assertIs(type(e), ContentImportError)
+            self.assertEqual(e.colname, u'Name')
+            self.assertEqual('Required column is missing', e.message)
+        else:
+            assert False, "The exception should have occurred."
+
         validate_attribute_values(model.schema, {'name': u'one', 'age': 1})
 
     def test_get_attribute_values(self):

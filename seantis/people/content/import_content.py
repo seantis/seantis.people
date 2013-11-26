@@ -8,6 +8,7 @@ import tablib
 from plone import api
 
 from zope.schema import getFields, getValidationErrors
+from zope.schema._bootstrapinterfaces import RequiredMissing
 from zope.schema.interfaces import (
     IFromUnicode, ValidationError, SchemaNotFullyImplemented
 )
@@ -145,9 +146,10 @@ def validate_attribute_values(schema, values):
     for error in getValidationErrors(schema, obj):
         column = schema[error[0]].title
 
-        if isinstance(error[1], SchemaNotFullyImplemented):
+        if isinstance(error[1], (SchemaNotFullyImplemented, RequiredMissing)):
             raise ContentImportError(
                 _(u'Required column is missing'), colname=column
             )
         else:
+            import pdb; pdb.set_trace()
             raise ContentImportError(error[1].message, colname=column)

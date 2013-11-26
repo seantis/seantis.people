@@ -22,6 +22,9 @@ Changelog
 - Redirect to person list after succesful import.
   [href]
 
+- Fixes required fields error not showing up on import.
+  [href]
+
 0.12
 ~~~~
 
