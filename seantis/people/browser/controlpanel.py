@@ -51,7 +51,6 @@ class ControlPanel(BaseView):
             version = self.installer.getLatestUpgradeStep(profile['id'])
         self.set_last_version(profile, version)
 
-
     def install_profile(self, profile):
         pid = 'profile-{}'.format(profile['id'])
         self.setup.runAllImportStepsFromProfile(pid)
