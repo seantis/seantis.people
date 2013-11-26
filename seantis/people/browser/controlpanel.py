@@ -66,8 +66,7 @@ class ControlPanel(BaseView):
         return None
 
     def get_last_version(self, profile):
-        pid = 'profile-{}'.format(profile['id'])
-        version = self.setup.getLastVersionForProfile(pid)
+        version = self.setup.getLastVersionForProfile(profile['id'])
 
         if version == 'unknown':
             return None
@@ -75,10 +74,9 @@ class ControlPanel(BaseView):
             return version[0]
 
     def set_last_version(self, profile, version=None):
-        pid = 'profile-{}'.format(profile['id'])
         version = version or profile['version']
 
-        self.setup.setLastVersionForProfile(pid, version)
+        self.setup.setLastVersionForProfile(profile['id'], version)
 
     def relevant_profiles(self):
         return [
