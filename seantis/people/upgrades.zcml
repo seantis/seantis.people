@@ -23,4 +23,12 @@
         handler=".upgrades.install_custom_controlpanel"
     />
 
+    <!-- PHZ Upgrades -->
+    <genericsetup:upgradeStep
+        title="Remove import action from detail view."
+        source="1000" destination="1001"
+        profile="seantis.people:phz"
+        handler=".upgrades.upgrade_phz_type_info"
+    />
+
 </configure>

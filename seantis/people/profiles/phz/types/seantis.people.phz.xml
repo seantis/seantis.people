@@ -26,8 +26,10 @@
   </property>
 
   <!-- actions -->
-  <action i18n:domain="seantis.people" title="Import" action_id="import" category="object" condition_expr=""
-    url_expr="string:${object_url}/import" visible="True" i18n:attributes="title">
+
+  <!-- not really used but can't be removed yet because it is out in the wild, so for now it's hidden -->
+  <action i18n:domain="seantis.people" title="Import" action_id="import" category="object" condition_expr="False"
+    url_expr="string:${object_url}/import" visible="False" i18n:attributes="title">
     <permission value="Modify portal content"/>
   </action>
 

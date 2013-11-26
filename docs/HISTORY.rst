@@ -9,6 +9,9 @@ Changelog
   This can be done using the new seantis people controlpanel.
   [href]
 
+- Removes import action from PHZ type.
+  [href]
+
 0.12
 ~~~~
 

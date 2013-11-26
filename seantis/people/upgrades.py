@@ -11,3 +11,7 @@ def run_import_step_from_profile(
 
 def install_custom_controlpanel(context):
     run_import_step_from_profile(context, 'controlpanel')
+
+
+def upgrade_phz_type_info(context):
+    run_import_step_from_profile(context, 'typeinfo', 'seantis.people', 'phz')
