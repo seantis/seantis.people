@@ -43,8 +43,8 @@ class TestImportContent(tests.IntegrationTestCase):
         with self.user('admin'):
             import_people(self.request, folder, portal_type, 'csv', dedent("""
                 First Name,Last Name,Town
-                Peter,Griffin,Quahog
-                Glenn,Quagmire,Quahog
+                Peter,Griffin ,Quahog
+                Glenn,  Quagmire   ,Quahog
             """.lstrip('\n')))
 
         self.assertEqual(folder['peter'].firstname, 'Peter')

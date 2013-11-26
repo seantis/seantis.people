@@ -126,7 +126,7 @@ def get_attribute_values(record, attribute_map):
         """.format(field)
 
         try:
-            values[field.__name__] = field.fromUnicode(record[header])
+            values[field.__name__] = field.fromUnicode(record[header]).strip()
         except ValidationError, e:
             raise ContentImportError(e.doc(), colname=header)
         except ValueError, e:

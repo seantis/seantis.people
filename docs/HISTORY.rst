@@ -15,6 +15,10 @@ Changelog
 - Renames PHZ to PH Zug.
   [href]
 
+- Ensures that imported strings are stripped of their whitespace in front and
+  at the end.
+  [href]
+
 0.12
 ~~~~
 
