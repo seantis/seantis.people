@@ -2,6 +2,13 @@
 Changelog
 ---------
 
+0.14 (unreleased)
+~~~~~~~~~~~~~~~~~
+
+- Rename responsive-table to responsive to be compatible with latest
+  plonetheme.onegov release.
+  [href]
+
 0.13
 ~~~~
 

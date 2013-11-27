@@ -45,7 +45,7 @@
     </div>
 
     <tal:block condition="people">
-        <table tal:define="columns view/columns" class="listing nosort list-filter people-list responsive-table">
+        <table tal:define="columns view/columns" class="listing nosort list-filter people-list responsive">
             <thead>
                 <tr>
                     <th tal:repeat="column columns">
