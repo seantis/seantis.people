@@ -9,6 +9,9 @@ Changelog
   plonetheme.onegov release.
   [href]
 
+- Adds custom event to signal changes in memberships.
+  [href]
+
 0.13
 ~~~~
 
