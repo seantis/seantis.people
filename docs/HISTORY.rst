@@ -12,6 +12,9 @@ Changelog
 - Adds custom event to signal changes in memberships.
   [href]
 
+- Updates German translation.
+  [href]
+
 0.13
 ~~~~
 
