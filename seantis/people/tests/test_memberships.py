@@ -3,11 +3,15 @@ from datetime import date
 
 from zope.component import getGlobalSiteManager, getAdapters
 from zope.interface import Interface
+from zope.event import notify
 
 from plone import api
 from plone.uuid.interfaces import IUUID
 
+from seantis.plonetools import tools
+
 from seantis.people import tests
+from seantis.people.events import MembershipChangedEvent
 from seantis.people.interfaces import IMembershipSource, IPerson
 
 
@@ -49,7 +53,8 @@ class TestMemberships(tests.IntegrationTestCase):
 
     def get_test_person(self):
         person_type = self.new_temporary_type(
-            behaviors=[IPerson.__identifier__]
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
         )
 
         with self.user('admin'):
@@ -146,3 +151,31 @@ class TestMemberships(tests.IntegrationTestCase):
             role = IPerson(person).current_role(memberships)
 
             self.assertEqual(role, 'president')
+
+    def test_membership_changed(self):
+        tools.add_attribute_to_metadata('organizations')
+
+        organization = self.new_temporary_folder()
+
+        person = self.get_test_person()
+        memberships = [Membership(person, 'vice-president')]
+
+        class Source(TestAdapter):
+
+            def memberships(self, person=None):
+                return { IUUID(organization): memberships }
+
+        with self.custom_source(Source):
+            catalog = api.portal.get_tool('portal_catalog')
+            rid = tools.get_brain_by_object(person).getRID()
+
+            get_orgs = lambda: catalog.getMetadataForRID(rid)['organizations']
+
+            # because the membership source was added after the person
+            # was created, the organizations metadata column is empty
+            self.assertEqual(get_orgs(), [])
+
+            # after signalling that the membership has changed, the
+            # organizations should be available
+            notify(MembershipChangedEvent(person))
+            self.assertEqual(get_orgs(), [organization.id])

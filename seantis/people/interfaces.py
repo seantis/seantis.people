@@ -5,7 +5,7 @@ from plone.directives import form
 from z3c.relationfield.schema import RelationChoice
 
 from zope import schema
-from zope.interface import Interface, invariant, Invalid
+from zope.interface import Interface, invariant, Invalid, Attribute
 
 from seantis.people import _
 
@@ -55,6 +55,14 @@ class IMembershipSource(Interface):
         of that person are returned.
         """
 
+class IMembershipChangedEvent(Interface):
+    """ This event needs to be signaled when the membership in a
+    IMembershipSource object changed. That means if a membership was added,
+    removed or an attribute it was changed (start, end, role).
+
+    """
+
+    person = Attribute("The person whose membership has changed.")
 
 
 class IMembership(form.Schema):
