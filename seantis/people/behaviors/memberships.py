@@ -2,6 +2,8 @@ from five import grok
 
 from zope.component import getAdapters
 from zope.interface import Interface
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 from plone import api
 from plone.uuid.interfaces import IUUID
 from plone.indexer.decorator import indexer
@@ -12,7 +14,16 @@ from seantis.people.interfaces import IMembershipSource, IMembership
 
 @indexer(IMembership)
 def membership_person(membership, **kw):
+    """ Stores the person on each membership object for faster lookups. """
     return IUUID(membership.person)
+
+
+def on_membership_changed(event):
+    """ Listens to IMembershipChanged events relaying them to the Catalog
+    for reindexing of the person whose membership changed.
+
+    """
+    notify(ObjectModifiedEvent(event.person))
 
 
 def get_memberships(person=None):
