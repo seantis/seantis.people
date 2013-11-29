@@ -22,10 +22,14 @@ from seantis.plonetools.schemafields import Email, Website
 
 class EmailFieldRenderer(object):
 
-    template = string.Template(u'<a href="mailto:${url}">${url}</a>')
+    template = string.Template(u'<a href="mailto:${mail}">${mail}</a>')
 
     def __call__(self, context, field):
-        return self.template.substitute(url=getattr(context, field))
+        mail = getattr(context, field)
+        if mail:
+            return self.template.substitute(mail=mail)
+        else:
+            return u''
 
 
 class WebsiteFieldRenderer(object):
@@ -33,7 +37,11 @@ class WebsiteFieldRenderer(object):
     template = string.Template(u'<a href="${url}" target="_blank">${url}</a>')
 
     def __call__(self, context, field):
-        return self.template.substitute(url=getattr(context, field))
+        url = getattr(context, field)
+        if url:
+            return self.template.substitute(url=url)
+        else:
+            return u''
 
 
 class TextRenderer(object):

@@ -75,6 +75,7 @@ class TestRenderer(tests.IntegrationTestCase):
             self.render_value('email', u'test@example.com'),
             u'<a href="mailto:test@example.com">test@example.com</a>'
         )
+        self.assertEqual(self.render_value('email', None), u'')
 
     def test_website(self):
         self.assertEqual(
@@ -84,6 +85,7 @@ class TestRenderer(tests.IntegrationTestCase):
                 u'target="_blank">http://example.com</a>'
             )
         )
+        self.assertEqual(self.render_value('website', None), u'')
 
     def test_text(self):
         self.assertEqual(

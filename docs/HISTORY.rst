@@ -5,6 +5,9 @@ Changelog
 0.14 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds a standard profile which is more or less compatible with 
+  egov.contactdirectory. Fixes #6.
+
 - Rename responsive-table to responsive to be compatible with latest
   plonetheme.onegov release.
   [href]

@@ -13,6 +13,15 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+    <!-- Standard Type -->
+    <genericsetup:registerProfile
+        name="standard"
+        title="Seantis People - Standard"
+        description="General Person type with often used fields"
+        directory="profiles/standard"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
     <!-- PHZ Specific Type -->
     <genericsetup:registerProfile 
         name="phz"
