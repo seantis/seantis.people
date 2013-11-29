@@ -14,19 +14,22 @@ class TestControlpanel(tests.IntegrationTestCase):
                 request=self.request
             )
 
-    def test_install_profile(self):
-        profile = self.panel.available_profiles()[0]
-        self.panel.install_profile(profile)
+    def test_install_profiles(self):
+        profiles = self.panel.available_profiles()
+        map(self.panel.install_profile, profiles)
         
         ids = [p['id'] for p in self.panel.installed_profiles()]
-        self.assertEqual(ids, [profile['id']])
+        self.assertEqual(ids, [p['id'] for p in profiles])
         self.assertEqual(self.panel.available_profiles(), [])
         self.assertEqual(self.panel.upgradeable_profiles(), [])
 
     def test_included_profiles(self):
         # we should see the profiles included with seantis.people
         ids = [p['id'] for p in self.panel.available_profiles()]
-        self.assertEqual(ids, [u'seantis.people:phz'])
+        self.assertEqual(sorted(ids), [
+            u'seantis.people:phz',
+            u'seantis.people:standard'
+        ])
 
         # they are not installed
         ids = [p['id'] for p in self.panel.installed_profiles()]
