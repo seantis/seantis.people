@@ -1,3 +1,4 @@
+from collections import MutableSequence
 from five import grok
 
 from Products.CMFPlone.PloneBatch import Batch
@@ -90,7 +91,7 @@ class ListView(BaseView):
             if value is None:
                 continue
 
-            if isinstance(value, list):
+            if isinstance(value, (list, MutableSequence)):
                 map(unique_values.add, value)
             else:
                 unique_values.add(value)

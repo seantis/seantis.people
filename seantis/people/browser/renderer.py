@@ -19,6 +19,7 @@ from plone.app.uuid.utils import uuidToCatalogBrain
 from Products.ZCatalog.interfaces import ICatalogBrain
 
 from seantis.plonetools.schemafields import Email, Website
+from seantis.plonetools import tools
 
 from seantis.people.utils import UUIDList
 
@@ -75,10 +76,17 @@ class UUIDListRenderer(object):
         if not uuids:
             return u''
 
-        brains = (uuidToCatalogBrain(uid.hex) for uid in uuids)
+        unicode_sortkey = tools.unicode_collate_sortkey()
+
+        brains = (uuidToCatalogBrain(uid) for uid in uuids)
+        items = sorted(
+            ((b.getURL(), b.Title) for b in brains),
+            key=lambda i: unicode_sortkey(i[1])
+        )
+
         return '\n'.join(
-            self.template.substitute(url=b.getURL(), title=b.Title)
-            for b in brains
+            self.template.substitute(url=url, title=title) 
+            for url, title in items
         )
 
 

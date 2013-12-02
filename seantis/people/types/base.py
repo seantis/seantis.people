@@ -1,6 +1,7 @@
 from plone.dexterity.content import Container
 from seantis.people.interfaces import IPerson
 
+
 class PersonBase(Container):
 
     @property
@@ -10,3 +11,7 @@ class PersonBase(Container):
     @property
     def organizations(self):
         return IPerson(self).organizations()
+
+    @property
+    def organization_uuids(self):
+        return IPerson(self).organization_uuids()
