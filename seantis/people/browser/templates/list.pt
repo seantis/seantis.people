@@ -53,7 +53,7 @@
                         Columns with comboboxes for filtering
                       </tal:comment>
                       <tal:block condition="python: people and column.selectable">
-                        <select tal:attributes="data-filter-attribute python: column.fields[0]"
+                        <select tal:attributes="data-filter-attribute python: column.filter_key"
                                 tal:define="selected_value python: view.selected_column_value(column)"
                         >
                           <option 

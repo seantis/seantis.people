@@ -56,3 +56,4 @@ class SchemaColumn(object):
                 self.schema
             )
         )
+        self.filter_key = self.selectable and self.fields[0] or None
