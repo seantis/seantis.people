@@ -16,9 +16,9 @@ class UUIDList(MutableSequence):
 
     def get_uuid(self, item):
         if not isinstance(item, UUID):
-            return UUID(item)
+            return UUID(item).hex
         else:
-            return item
+            return item.hex
 
     def __len__(self):
         return len(self._list)

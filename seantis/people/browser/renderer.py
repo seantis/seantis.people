@@ -15,9 +15,12 @@ import string
 from zope.schema import getFields, Text, Tuple, List, Set, FrozenSet
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from plone.app.textfield import RichText
+from plone.app.uuid.utils import uuidToCatalogBrain
 from Products.ZCatalog.interfaces import ICatalogBrain
 
 from seantis.plonetools.schemafields import Email, Website
+
+from seantis.people.utils import UUIDList
 
 
 class EmailFieldRenderer(object):
@@ -62,6 +65,23 @@ class ListRenderer(object):
         return u', '.join(getattr(context, field, tuple()))
 
 
+class UUIDListRenderer(object):
+
+    template = string.Template(u'<a href="${url}">${title}</a>')
+
+    def __call__(self, context, field):
+        uuids = getattr(context, field, None)
+
+        if not uuids:
+            return u''
+
+        brains = (uuidToCatalogBrain(uid.hex) for uid in uuids)
+        return '\n'.join(
+            self.template.substitute(url=b.getURL(), title=b.Title)
+            for b in brains
+        )
+
+
 class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
@@ -98,7 +118,8 @@ renderers = {
     FrozenSet: ListRenderer(),
     list: ListRenderer(),
     set: ListRenderer(),
-    tuple: ListRenderer()
+    tuple: ListRenderer(),
+    UUIDList: UUIDListRenderer(),
 }
 
 
