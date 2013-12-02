@@ -8,6 +8,16 @@ from seantis.people.supermodel import (
 )
 
 
+# Compound columns are columns where the key is used for filtering and the
+# value is used for display. For example, the organizations column contains
+# the name of the organizations a person belongs to, but to render these
+# in the list, the organization_uuids attribute is used which being rendered
+# with links to the actual organizations.
+compound_columns = {
+    'organizations': 'organization_uuids'
+}
+
+
 def unrestricted_get_schema_columns(schema):
     return _get_schema_columns(schema, None, restricted=False)
 

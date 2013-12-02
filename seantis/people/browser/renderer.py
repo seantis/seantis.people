@@ -133,10 +133,12 @@ renderers = {
 
 class Renderer(object):
 
-    def __init__(self, schema):
+    def __init__(self, schema, redirects=None):
         self.schema = schema
         self.fields = getFields(schema)
+        self.redirects = redirects or {}
 
     def render(self, context, field):
+        field = self.redirects.get(field, field)
         fieldtype = type(self.fields.get(field, getattr(context, field, None)))
         return renderers.get(fieldtype, getattr)(context, field)

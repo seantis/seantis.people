@@ -1,4 +1,3 @@
-from collections import MutableSequence
 from five import grok
 
 from Products.CMFPlone.PloneBatch import Batch
@@ -10,7 +9,7 @@ from seantis.people.interfaces import IList
 from seantis.people.browser import BaseView, Renderer
 from seantis.people.content.list import ListFilter, LetterFilter
 from seantis.people.supermodel import (
-    get_schema_columns
+    get_schema_columns, compound_columns
 )
 
 
@@ -26,7 +25,7 @@ class ListView(BaseView):
 
     def update(self):
         if self.has_people:
-            self.renderer = Renderer(self.schema)
+            self.renderer = Renderer(self.schema, redirects=compound_columns)
 
     @property
     def has_people(self):
@@ -91,7 +90,7 @@ class ListView(BaseView):
             if value is None:
                 continue
 
-            if isinstance(value, (list, MutableSequence)):
+            if isinstance(value, list):
                 map(unique_values.add, value)
             else:
                 unique_values.add(value)
