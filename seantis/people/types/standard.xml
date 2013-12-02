@@ -13,57 +13,57 @@
 
   -->
  <schema>
-    <field name="academic_title" type="zope.schema.TextLine">
+    <field name="academic_title" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Academic Title</title>
     </field>
-    <field name="firstname" type="zope.schema.TextLine">
+    <field name="firstname" type="zope.schema.TextLine" indexer:searchable="true">
       <title i18n:translate="">First Name</title>
     </field>
-    <field name="lastname" type="zope.schema.TextLine">
+    <field name="lastname" type="zope.schema.TextLine" indexer:searchable="true">
       <title i18n:translate="">Last Name</title>
     </field>
     <field name="picture" type="plone.namedfile.field.NamedBlobImage">
       <required>False</required>
       <title i18n:translate="">Picture</title>
     </field>
-    <field name="email" type="seantis.plonetools.schemafields.Email">
+    <field name="email" type="seantis.plonetools.schemafields.Email" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">E-Mail</title>
     </field>
-    <field name="address" type="zope.schema.Text">
+    <field name="address" type="zope.schema.Text" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Address</title>
     </field>
-    <field name="phone" type="zope.schema.TextLine">
+    <field name="phone" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Phone</title>
     </field>
-    <field name="website" type="seantis.plonetools.schemafields.Website">
+    <field name="website" type="seantis.plonetools.schemafields.Website" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Website</title>
     </field>
-    <field name="political_party" type="zope.schema.TextLine">
+    <field name="political_party" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Political Party</title>
     </field>
-    <field name="department" type="zope.schema.TextLine">
+    <field name="department" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Department</title>
     </field>
-    <field name="function" type="zope.schema.TextLine">
+    <field name="function" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Function</title>
     </field>
-    <field name="office" type="zope.schema.TextLine">
+    <field name="office" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Office</title>
     </field>
-    <field name="attendance_time" type="zope.schema.TextLine">
+    <field name="attendance_time" type="zope.schema.TextLine" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Attendance Time</title>
     </field>
-    <field name="miscellaneous" type="plone.app.textfield.RichText">
+    <field name="miscellaneous" type="plone.app.textfield.RichText" indexer:searchable="true">
       <required>False</required>
       <title i18n:translate="">Miscellaneous</title>
     </field>
