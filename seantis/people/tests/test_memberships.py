@@ -14,6 +14,7 @@ from seantis.people import tests
 from seantis.people.events import MembershipChangedEvent
 from seantis.people.interfaces import IMembershipSource, IPerson
 
+from seantis.people.utils import UUIDList
 
 class TestAdapter(object):
 
@@ -110,6 +111,10 @@ class TestMemberships(tests.IntegrationTestCase):
             self.assertEqual(IPerson(person).organizations(), [
                 organization.title
             ])
+
+            self.assertEqual(IPerson(person).organization_uuids(), UUIDList([
+                IUUID(organization)
+            ]))
 
     def test_active_memberships(self):
         person = self.get_test_person()

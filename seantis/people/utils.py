@@ -20,6 +20,11 @@ class UUIDList(MutableSequence):
         else:
             return item.hex
 
+    def __eq__(self, other):
+        if not hasattr(other, '_list'):
+            return False
+        return self._list == other._list
+
     def __len__(self):
         return len(self._list)
 
@@ -36,7 +41,7 @@ class UUIDList(MutableSequence):
         return str(self._list)
 
     def __repr__(self):
-        return repr(self._list)
+        return 'UUIDList({})'.format(repr(self._list))
 
     def insert(self, i, item):
         self._list.insert(i, self.get_uuid(item))
