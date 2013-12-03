@@ -2,12 +2,14 @@
 
 from plone import api
 
+from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
 from seantis.people.interfaces import IPerson
 from seantis.people.content import List
 from seantis.people import tests
 from seantis.people.content.list import ListConstrainTypes, LetterFilter
+from seantis.people.utils import UUIDList
 
 from pyquery import PyQuery as pq
 
@@ -276,6 +278,80 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(len(view.people()), 1)
         self.assertEqual(view.column_values(columns[0]), countries)
         self.assertEqual(view.selected_column_value(columns[0]), 'Switzerland')
+
+    def test_list_view_compound_column_organizations(self):
+
+        model = """<?xml version='1.0' encoding='utf8'?>
+        <model xmlns="http://namespaces.plone.org/supermodel/schema"
+               xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <people:columns>
+                    <people:column selectable="true">
+                        <people:item>organizations</people:item>
+                    </people:column>
+                </people:columns>
+            </schema>
+        </model>"""
+
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder(),
+            )
+
+            person = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                model_source=model
+            ).id
+
+            organizations = [
+                self.new_temporary_folder(),
+                self.new_temporary_folder()
+            ]
+            
+            # normally organizations are defined through memberships,
+            # but it's easier here to just use class properties
+            api.content.create(
+                title='test', type=person, container=lst, 
+                organizations=list(
+                    o.title for o in organizations
+                ),
+                organization_uuids=UUIDList(
+                    IUUID(o) for o in organizations
+                )
+            )
+            api.content.create(
+                title='loner', type=person, container=lst,
+                organizations=[], organization_uuids=UUIDList()
+            )
+
+            view = lst.unrestrictedTraverse('@@view')
+
+        columns = view.columns()
+
+        # no filter applied, both people shown
+        self.assertEqual(len(view.people()), 2)
+
+        # the select element contains the organizations
+        self.assertEqual(
+            view.column_values(columns[0]),
+            sorted([o.title for o in organizations])
+        )
+        self.assertEqual(columns[0].filter_key, 'organizations')
+
+        # the table contains the links to the organizations (from the uuids)
+        page = pq(view())
+
+        for org in organizations:
+            link = page.find('.people-list a[href="{}"]'.format(
+                org.absolute_url())
+            )
+            self.assertEqual(link.text(), org.title)
+
+        # filtering the organizations happen without the uuids
+        view.request['filter-organizations'] = organizations[0].title
+        self.assertEqual(len(view.people()), 1)
 
     def test_list_view_schema(self):
         with self.user('admin'):

@@ -6,7 +6,7 @@ from zope.interface import implements
 from seantis.plonetools import tools
 from seantis.people.interfaces import IPerson
 from seantis.people.behaviors.memberships import get_memberships
-
+from seantis.people.utils import UUIDList
 
 class Person(object):
     implements(IPerson)
@@ -24,16 +24,27 @@ class Person(object):
 
         """
 
-        catalog = api.portal.get_tool('portal_catalog')
-        organizations = []
+        organizations = self.organization_uuids()
 
-        for organization, memberships in self.memberships().items():
+        catalog = api.portal.get_tool('portal_catalog')
+        titles = (catalog(UID=uid)[0].Title for uid in organizations)
+
+        return sorted(titles, key=tools.unicode_collate_sortkey())
+
+    def organization_uuids(self):
+        """ Returns the organizations as uuid references which are be rendered
+        as links in the list view.
+
+        """
+        organizations = UUIDList()
+
+        for uuid, memberships in self.memberships().items():
             if not self.active_memberships(memberships):
                 continue
 
-            organizations.append(catalog(UID=organization)[0].Title)
+            organizations.append(uuid)
 
-        return sorted(organizations, key=tools.unicode_collate_sortkey())
+        return organizations
 
     def active_memberships(self, memberships):
         """ Goes through the given memberships and returns the active ones.

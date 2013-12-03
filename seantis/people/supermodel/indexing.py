@@ -6,7 +6,7 @@ from seantis.plonetools import tools
 
 from seantis.people.interfaces import IPerson, IPersonMarker
 from seantis.people.supermodel import (
-    get_selectable_fields, get_order, get_columns
+    get_selectable_fields, get_order, get_columns, compound_columns
 )
 
 
@@ -83,6 +83,9 @@ def update_metadata(fti):
     for column in get_columns(fti.lookupSchema()):
         for field in column:
             tools.add_attribute_to_metadata(field)
+
+            if field in compound_columns:
+                tools.add_attribute_to_metadata(compound_columns[field])
 
 
 def update_selectable_field_indexes(fti):

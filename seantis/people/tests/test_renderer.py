@@ -7,8 +7,10 @@ from Products.ZCatalog.interfaces import ICatalogBrain
 from plone.supermodel import loadString
 from plone.namedfile.file import NamedImage
 from plone.app.textfield.value import RichTextValue
+from plone.uuid.interfaces import IUUID
 
 from seantis.people.browser.renderer import Renderer
+from seantis.people.utils import UUIDList
 from seantis.people import tests
 
 
@@ -138,4 +140,19 @@ class TestRenderer(tests.IntegrationTestCase):
         self.assertEqual(
             renderer.render(context, 'image'),
             u'<img src="http://nohost/mockbrain/@@images/image/thumb" />'
+        )
+
+    def test_uuid_list(self):
+        self.assertEqual(self.render_value('uuids', UUIDList()), u'')
+
+        folders = (self.new_temporary_folder(), self.new_temporary_folder())
+        uuids = UUIDList(IUUID(folder) for folder in folders)
+
+        self.assertIn(folders[0].title, self.render_value('uuids', uuids))
+        self.assertIn(folders[1].title, self.render_value('uuids', uuids))
+        self.assertIn(
+            folders[0].absolute_url(), self.render_value('uuids', uuids)
+        )
+        self.assertIn(
+            folders[1].absolute_url(), self.render_value('uuids', uuids)
         )

@@ -13,8 +13,12 @@ from .schemahandler import (
     set_custom_column_titles
 )
 
+from .schema_columns import (
+    get_schema_columns,
+    unrestricted_get_schema_columns,
+    compound_columns
+)
+
 from .indexing import (
     get_selectable_field_ix
 )
-
-from .schema_columns import get_schema_columns, unrestricted_get_schema_columns

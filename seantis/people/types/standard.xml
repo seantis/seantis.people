@@ -104,7 +104,7 @@
         <people:item>function</people:item>
       </people:column>
       <people:column selectable="true" title="Organizations" i18n:attributes="title">
-        <people:item>organizations</people:item> <!-- defined in base.py -->
+        <people:item>organizations</people:item><!-- defined in base.py -->
       </people:column>
       <people:column>
         <people:item>email</people:item>

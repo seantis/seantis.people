@@ -15,9 +15,13 @@ import string
 from zope.schema import getFields, Text, Tuple, List, Set, FrozenSet
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from plone.app.textfield import RichText
+from plone.app.uuid.utils import uuidToCatalogBrain
 from Products.ZCatalog.interfaces import ICatalogBrain
 
 from seantis.plonetools.schemafields import Email, Website
+from seantis.plonetools import tools
+
+from seantis.people.utils import UUIDList
 
 
 class EmailFieldRenderer(object):
@@ -62,6 +66,30 @@ class ListRenderer(object):
         return u', '.join(getattr(context, field, tuple()))
 
 
+class UUIDListRenderer(object):
+
+    template = string.Template(u'<a href="${url}">${title}</a>')
+
+    def __call__(self, context, field):
+        uuids = getattr(context, field, None)
+
+        if not uuids:
+            return u''
+
+        unicode_sortkey = tools.unicode_collate_sortkey()
+
+        brains = (uuidToCatalogBrain(uid) for uid in uuids)
+        items = sorted(
+            ((b.getURL(), b.Title) for b in brains),
+            key=lambda i: unicode_sortkey(i[1])
+        )
+
+        return '\n'.join(
+            self.template.substitute(url=url, title=title) 
+            for url, title in items
+        )
+
+
 class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
@@ -98,16 +126,19 @@ renderers = {
     FrozenSet: ListRenderer(),
     list: ListRenderer(),
     set: ListRenderer(),
-    tuple: ListRenderer()
+    tuple: ListRenderer(),
+    UUIDList: UUIDListRenderer(),
 }
 
 
 class Renderer(object):
 
-    def __init__(self, schema):
+    def __init__(self, schema, redirects=None):
         self.schema = schema
         self.fields = getFields(schema)
+        self.redirects = redirects or {}
 
     def render(self, context, field):
+        field = self.redirects.get(field, field)
         fieldtype = type(self.fields.get(field, getattr(context, field, None)))
         return renderers.get(fieldtype, getattr)(context, field)

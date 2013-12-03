@@ -6,9 +6,14 @@ from seantis.plonetools import tools
 
 from seantis.people import tests
 from seantis.people.interfaces import IPerson
-from seantis.people.supermodel import set_selectable_fields
+from seantis.people.supermodel import (
+    set_selectable_fields, set_columns, compound_columns
+)
 
-from seantis.people.supermodel.indexing import update_related_indexes
+from seantis.people.supermodel.indexing import (
+    update_related_indexes,
+    update_metadata
+)
 
 
 class TestIndex(tests.IntegrationTestCase):
@@ -133,3 +138,33 @@ class TestIndex(tests.IntegrationTestCase):
         obj.foo = u'ähm'
         obj.reindexObject()
         self.assertEqual(get_index_value(), u'Ä')
+
+    def test_compound_columns_metadata(self):
+        # Both key and value of a compound_column is added to the metadata
+        # if the key alone is added.
+
+        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+
+        columns = [[key] for key in compound_columns]
+        set_columns(new_type.lookupSchema(), columns)
+
+        catalog = api.portal.get_tool('portal_catalog')
+
+        # the sets are completely different, the compound keys/values are not
+        # part of the catalog columns
+        self.assertFalse(
+            set(compound_columns.keys()) & set(catalog._catalog.names)
+        )
+        self.assertFalse(
+            set(compound_columns.values()) & set(catalog._catalog.names)
+        )
+        
+        update_metadata(new_type)
+
+        # the compound keys/values are a subset of the catalog columns
+        self.assertTrue(
+            set(compound_columns.keys()) <= set(catalog._catalog.names)
+        )
+        self.assertTrue(
+            set(compound_columns.values()) <= set(catalog._catalog.names)
+        )

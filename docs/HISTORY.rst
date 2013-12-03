@@ -5,8 +5,13 @@ Changelog
 0.14 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Organizations defined through memberships are now clickable in the list
+  view. This is the default in the standard type.
+  [href]
+
 - Adds a standard profile which is more or less compatible with 
   egov.contactdirectory. Fixes #6.
+  [href]
 
 - Rename responsive-table to responsive to be compatible with latest
   plonetheme.onegov release.
