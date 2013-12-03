@@ -43,7 +43,7 @@ class List(Container):
                 if isinstance(filter, LetterFilter):
                     keyword_index = 'first_letter'
 
-                query[keyword_index] = {'query':filter.value}
+                query[keyword_index] = {'query': filter.value.encode('utf-8')}
 
         return catalog(query)
 

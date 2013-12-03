@@ -84,8 +84,8 @@ class UUIDListRenderer(object):
             key=lambda i: unicode_sortkey(i[1])
         )
 
-        return '\n'.join(
-            self.template.substitute(url=url, title=title) 
+        return ', '.join(
+            self.template.substitute(url=url, title=title.decode('utf-8'))
             for url, title in items
         )
 
