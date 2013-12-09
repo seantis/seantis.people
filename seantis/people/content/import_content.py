@@ -119,17 +119,19 @@ def get_attribute_map(request, headers, portal_type):
     return attribute_map
 
 
-def download_value(field, url):
+def download_field_from_url(field, url):
+    """ Download the field from the given url if supported by the field.
+    Returns False if the download does not apply to the given field. If None
+    is returned, the value of the field actually is None.
 
-    url = url.strip()
-
-    if not url:
-        return None
+    """
 
     downloadables = {
         namedfile.field.NamedImage: field._type,
         namedfile.field.NamedBlobImage: field._type
     }
+
+    url = url.strip()
 
     # images are fetched through their url if possible
     for fieldtype, klass in downloadables.items():
@@ -151,8 +153,8 @@ def get_attribute_values(record, attribute_map):
 
     for header, field in attribute_map.items():
 
-        downloaded = download_value(field, record[header])
-        if downloaded != False:
+        downloaded = download_field_from_url(field, record[header])
+        if downloaded is not False:
             values[field.__name__] = downloaded
             continue
 
