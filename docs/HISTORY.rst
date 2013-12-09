@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.14 (unreleased)
-~~~~~~~~~~~~~~~~~
+0.14
+~~~~
 
 - Adds the ability to import images through urls.
   [href]
