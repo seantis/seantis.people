@@ -83,7 +83,7 @@ class ListView(BaseView):
         assert column.selectable
 
         people = self.context.people()
-        
+
         unique_values = set()
 
         for value in (getattr(brain, column.fields[0]) for brain in people):
@@ -94,7 +94,7 @@ class ListView(BaseView):
                 map(unique_values.add, value)
             else:
                 unique_values.add(value)
-                
+
         return sorted(unique_values, key=tools.unicode_collate_sortkey())
 
     def selected_column_value(self, column):

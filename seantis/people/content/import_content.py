@@ -1,13 +1,15 @@
 import logging
 log = logging.getLogger('seantis.people')
 
+from urllib import urlopen
 from collections import namedtuple
 
 import tablib
 
 from plone import api
+from plone import namedfile
 
-from zope.schema import getFields, getValidationErrors
+from zope.schema import getFields, getValidationErrors, Text
 from zope.schema._bootstrapinterfaces import RequiredMissing
 from zope.schema.interfaces import (
     IFromUnicode, ValidationError, SchemaNotFullyImplemented
@@ -117,10 +119,42 @@ def get_attribute_map(request, headers, portal_type):
     return attribute_map
 
 
+def download_value(field, url):
+
+    url = url.strip()
+
+    if not url:
+        return None
+
+    downloadables = {
+        namedfile.field.NamedImage: field._type,
+        namedfile.field.NamedBlobImage: field._type
+    }
+
+    # images are fetched through their url if possible
+    for fieldtype, klass in downloadables.items():
+        if isinstance(field, fieldtype):
+            try:
+                image = klass(urlopen(url).read())
+                if -1 in image.getImageSize():
+                    return None
+                else:
+                    return image
+            except IOError:
+                pass
+
+    return False
+
+
 def get_attribute_values(record, attribute_map):
     values = {}
 
     for header, field in attribute_map.items():
+
+        downloaded = download_value(field, record[header])
+        if downloaded != False:
+            values[field.__name__] = downloaded
+            continue
 
         assert IFromUnicode.providedBy(field), """
             {} does not support fromUnicode
@@ -131,6 +165,10 @@ def get_attribute_values(record, attribute_map):
 
             if isinstance(values[field.__name__], basestring):
                 values[field.__name__] = values[field.__name__].strip()
+            if isinstance(field, Text):
+                values[field.__name__] = values[field.__name__].replace(
+                    '<br />', '\n'
+                )
 
         except ValidationError, e:
             raise ContentImportError(e.doc(), colname=header)
@@ -151,5 +189,4 @@ def validate_attribute_values(schema, values):
                 _(u'Required column is missing'), colname=column
             )
         else:
-            import pdb; pdb.set_trace()
-            raise ContentImportError(error[1].message, colname=column)
+            raise ContentImportError(error, colname=column)
