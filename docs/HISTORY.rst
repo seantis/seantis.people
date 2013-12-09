@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+0.16 (unreleased)
+~~~~~~~~~~~~~~~~~
+
+- Nothing yet.
+
 0.15
 ~~~~
 
