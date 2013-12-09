@@ -5,6 +5,9 @@ Changelog
 0.14 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds the ability to import images through urls.
+  [href]
+
 - Organizations defined through memberships are now clickable in the list
   view. This is the default in the standard type.
   [href]
