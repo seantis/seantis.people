@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-0.15 (unreleased)
-~~~~~~~~~~~~~~~~~
+0.15
+~~~~
 
 - Adds very basic json export people list.
   [href]
