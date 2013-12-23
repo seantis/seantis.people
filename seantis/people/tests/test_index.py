@@ -7,7 +7,7 @@ from seantis.plonetools import tools
 from seantis.people import tests
 from seantis.people.interfaces import IPerson
 from seantis.people.supermodel import (
-    set_selectable_fields, set_columns, compound_columns
+    set_selectable_fields, set_columns, get_compound_columns
 )
 
 from seantis.people.supermodel.indexing import (
@@ -145,6 +145,7 @@ class TestIndex(tests.IntegrationTestCase):
 
         new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
 
+        compound_columns = get_compound_columns()
         columns = [[key] for key in compound_columns]
         set_columns(new_type.lookupSchema(), columns)
 
@@ -158,7 +159,7 @@ class TestIndex(tests.IntegrationTestCase):
         self.assertFalse(
             set(compound_columns.values()) & set(catalog._catalog.names)
         )
-        
+
         update_metadata(new_type)
 
         # the compound keys/values are a subset of the catalog columns

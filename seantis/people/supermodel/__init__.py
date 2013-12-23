@@ -16,7 +16,7 @@ from .schemahandler import (
 from .schema_columns import (
     get_schema_columns,
     unrestricted_get_schema_columns,
-    compound_columns
+    get_compound_columns
 )
 
 from .indexing import (

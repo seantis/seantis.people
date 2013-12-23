@@ -13,9 +13,10 @@ from seantis.people.supermodel import (
 # the name of the organizations a person belongs to, but to render these
 # in the list, the organization_uuids attribute is used which being rendered
 # with links to the actual organizations.
-compound_columns = {
-    'organizations': 'organization_uuids'
-}
+def get_compound_columns():
+    return {
+        'organizations': 'organization_uuids'
+    }
 
 
 def unrestricted_get_schema_columns(schema):
