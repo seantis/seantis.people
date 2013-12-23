@@ -1,4 +1,8 @@
+from zope.component import getAdapters
+from plone import api
+
 from seantis.plonetools import tools
+from seantis.people.interfaces import ICompoundColumns
 from seantis.people.supermodel.security import has_read_access
 from seantis.people.supermodel import (
     get_columns,
@@ -14,9 +18,13 @@ from seantis.people.supermodel import (
 # in the list, the organization_uuids attribute is used which being rendered
 # with links to the actual organizations.
 def get_compound_columns():
-    return {
+    columns = {
         'organizations': 'organization_uuids'
     }
+    for name, adapter in getAdapters((api.portal.get(), ), ICompoundColumns):
+        columns.update(adapter.get_compound_columns())
+
+    return columns
 
 
 def unrestricted_get_schema_columns(schema):

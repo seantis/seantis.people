@@ -105,3 +105,12 @@ class IMembership(form.Schema):
 
         if Membership.start > Membership.end:
             raise Invalid(_(u"The membership can't end before it starts"))
+
+
+class ICompoundColumns(Interface):
+
+    def get_compound_columns(self):
+        """ Return a dictionary of compound columns. See
+        seantis.people.supermodel.schema_columns for more.
+
+        """

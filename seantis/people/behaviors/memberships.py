@@ -15,15 +15,27 @@ from seantis.people.interfaces import IMembershipSource, IMembership
 @indexer(IMembership)
 def membership_person(membership, **kw):
     """ Stores the person on each membership object for faster lookups. """
-    return IUUID(membership.person)
+    if hasattr(membership.person, 'to_object'):
+        person = membership.person.to_object
+    else:
+        person = membership.person
+
+    return IUUID(person)
 
 
-def on_membership_changed(event):
+def on_membership_changed(event, *args, **kwargs):
     """ Listens to IMembershipChanged events relaying them to the Catalog
     for reindexing of the person whose membership changed.
 
     """
     notify(ObjectModifiedEvent(event.person))
+
+
+def on_membership_content_item_changed(context, event):
+    if hasattr(context.person, 'to_object'):
+        notify(ObjectModifiedEvent(context.person.to_object))
+    else:
+        notify(ObjectModifiedEvent(context.person))
 
 
 def get_memberships(person=None):
@@ -61,7 +73,7 @@ class ZodbMembershipSource(grok.Adapter):
         result = {}
 
         for membership in memberships:
-            organization = tools.get_parent(membership).UID
+            organization = IUUID(tools.get_parent(membership.getObject()))
             result.setdefault(organization, []).append(membership)
 
         return result

@@ -8,6 +8,7 @@ from seantis.people.interfaces import IPerson
 from seantis.people.behaviors.memberships import get_memberships
 from seantis.people.utils import UUIDList
 
+
 class Person(object):
     implements(IPerson)
 
@@ -17,21 +18,21 @@ class Person(object):
     def memberships(self):
         return get_memberships(self.context)
 
-    def organizations(self):
+    def organizations(self, org_filter=None):
         """ Returns a list of organizations this person is active in. The list
         is sorted by uca collation. This is mainly used for the organizations
         metadata field of all person objects (to show in the list).
 
         """
 
-        organizations = self.organization_uuids()
+        organizations = self.organization_uuids(org_filter)
 
         catalog = api.portal.get_tool('portal_catalog')
         titles = (catalog(UID=uid)[0].Title for uid in organizations)
 
         return sorted(titles, key=tools.unicode_collate_sortkey())
 
-    def organization_uuids(self):
+    def organization_uuids(self, org_filter=None):
         """ Returns the organizations as uuid references which are be rendered
         as links in the list view.
 
@@ -39,6 +40,9 @@ class Person(object):
         organizations = UUIDList()
 
         for uuid, memberships in self.memberships().items():
+            if callable(org_filter) and org_filter(uuid):
+                continue
+
             if not self.active_memberships(memberships):
                 continue
 

@@ -19,4 +19,23 @@
         handler=".behaviors.memberships.on_membership_changed"
         />
 
+    <subscriber
+        for="seantis.people.interfaces.IMembership
+             zope.lifecycleevent.interfaces.IObjectAddedEvent"
+        handler=".behaviors.memberships.on_membership_content_item_changed"
+        />
+
+
+    <subscriber
+        for="seantis.people.interfaces.IMembership
+             zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+        handler=".behaviors.memberships.on_membership_content_item_changed"
+        />
+
+        <subscriber
+        for="seantis.people.interfaces.IMembership
+             zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+        handler=".behaviors.memberships.on_membership_content_item_changed"
+        />
+
 </configure>
