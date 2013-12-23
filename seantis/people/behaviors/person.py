@@ -72,6 +72,6 @@ class Person(object):
         """
         active = self.active_memberships(memberships)
         if active:
-            return active[0].role
+            return active[0].title
         else:
             return u''

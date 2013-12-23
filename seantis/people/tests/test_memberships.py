@@ -16,6 +16,7 @@ from seantis.people.interfaces import IMembershipSource, IPerson
 
 from seantis.people.utils import UUIDList
 
+
 class TestAdapter(object):
 
     def __init__(self, context):
@@ -26,7 +27,7 @@ class Membership(object):
 
     def __init__(self, person, role=None, start=None, end=None):
         self.person = person
-        self.role = role
+        self.title = role
         self.start = start
         self.end = end
 

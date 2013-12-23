@@ -68,17 +68,17 @@ class IMembershipChangedEvent(Interface):
 
 class IMembership(form.Schema):
 
+    title = schema.TextLine(
+        title=_(u"Role inside organization"),
+        required=False
+    )
+
     person = RelationChoice(
         title=_(u"Person"),
         source=ObjPathSourceBinder(
             object_provides=IPersonMarker.__identifier__
         ),
         required=True,
-    )
-
-    role = schema.TextLine(
-        title=_(u"Role inside organization"),
-        required=False
     )
 
     # not used yet
