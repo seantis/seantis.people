@@ -40,7 +40,7 @@ class Person(object):
         organizations = UUIDList()
 
         for uuid, memberships in self.memberships().items():
-            if callable(org_filter) and org_filter(uuid):
+            if callable(org_filter) and not org_filter(uuid):
                 continue
 
             if not self.active_memberships(memberships):
