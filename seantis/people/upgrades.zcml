@@ -23,6 +23,13 @@
         handler=".upgrades.install_custom_controlpanel"
     />
 
+    <genericsetup:upgradeStep
+        title="Install dependencies for membership type."
+        source="1003" destination="1004"
+        profile="seantis.people:default"
+        handler=".upgrades.install_membership_dependencies"
+    />
+
     <!-- PHZ Upgrades -->
     <genericsetup:upgradeStep
         title="Remove import action from detail view."

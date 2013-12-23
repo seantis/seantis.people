@@ -5,7 +5,11 @@ Changelog
 0.16 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-- Nothing yet.
+- Adds missing profile dependencies for membership type.
+  [href]
+
+- Hides start/end on memberships, until it is properly implemented.
+  [href]
 
 0.15
 ~~~~

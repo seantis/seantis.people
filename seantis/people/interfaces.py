@@ -55,6 +55,7 @@ class IMembershipSource(Interface):
         of that person are returned.
         """
 
+
 class IMembershipChangedEvent(Interface):
     """ This event needs to be signaled when the membership in a
     IMembershipSource object changed. That means if a membership was added,
@@ -80,11 +81,15 @@ class IMembership(form.Schema):
         required=False
     )
 
+    # not used yet
+    form.mode(start='hidden')
     start = schema.Date(
         title=_(u"Start of membership"),
         required=False
     )
 
+    # not used yet
+    form.mode(end='hidden')
     end = schema.Date(
         title=_(u"End of membership"),
         required=False
