@@ -9,10 +9,15 @@
             <tal:block repeat="position view/visible_positions" define="split_screen_class python: view.split_screen() and 'splitscreen' or ''">
                 <div tal:attributes="class python: 'person-details person-details-{} {}'.format(position, split_screen_class)">
                   <tal:block repeat="field python: view.fields(position)">
-                    <tal:block condition="python: field == 'memberships'" define="person python: context">
-                      <metal:use use-macro="context/@@seantis-people-macros/person-memberships" />
+                    <tal:block condition="python: field in context.membership_fields" define="
+                      person python: context;
+                      method field;
+                      ">
+                      <tal:block define="label python: context.membership_fields[field]">
+                        <metal:use use-macro="context/@@seantis-people-macros/person-memberships" />
+                      </tal:block>
                     </tal:block>
-                    <tal:block condition="python: field != 'memberships'">
+                    <tal:block condition="python: field not in context.membership_fields">
                       <tal:block define="value context/?field" condition="value">
                         <div class="person-detail">
                           <h2 tal:content="python: view.get_field_title(field)" />

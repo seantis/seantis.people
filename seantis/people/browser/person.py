@@ -1,13 +1,10 @@
-from collections import namedtuple
-
 from five import grok
 
-from plone import api
 from plone.namedfile.field import NamedBlobImage, NamedImage
 
 from seantis.plonetools import tools
 from seantis.people.supermodel import security, get_detail_fields
-from seantis.people.interfaces import IPersonMarker, IPerson
+from seantis.people.interfaces import IPersonMarker
 from seantis.people.browser import BaseView, Renderer
 
 

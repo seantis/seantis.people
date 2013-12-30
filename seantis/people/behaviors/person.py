@@ -15,8 +15,8 @@ class Person(object):
     def __init__(self, context):
         self.context = context
 
-    def memberships(self):
-        return get_memberships(self.context)
+    def memberships(self, org_filter=None):
+        return get_memberships(person=self.context, org_filter=org_filter)
 
     def organizations(self, org_filter=None):
         """ Returns a list of organizations this person is active in. The list

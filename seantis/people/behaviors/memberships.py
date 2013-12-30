@@ -38,19 +38,20 @@ def on_membership_content_item_changed(context, event):
         notify(ObjectModifiedEvent(context.person))
 
 
-def get_memberships(person=None):
+def get_memberships(person=None, org_filter=None):
     context = api.portal.get()
 
     organizations = {}
     for name, source in getAdapters((context, ), IMembershipSource):
         for organization, memberships in source.memberships(person).items():
 
+            if callable(org_filter) and not org_filter(organization):
+                continue
+
             if organization not in organizations:
                 organizations[organization] = []
 
             organizations[organization].extend(memberships)
-
-        organizations.update(source.memberships(person))
 
     return organizations
 
@@ -72,8 +73,8 @@ class ZodbMembershipSource(grok.Adapter):
 
         result = {}
 
-        for membership in memberships:
-            organization = IUUID(tools.get_parent(membership.getObject()))
+        for membership in (m.getObject() for m in memberships):
+            organization = IUUID(tools.get_parent(membership))
             result.setdefault(organization, []).append(membership)
 
         return result

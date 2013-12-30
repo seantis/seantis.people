@@ -4,8 +4,8 @@ from five import grok
 from zope.interface import Interface
 
 from seantis.plonetools import tools
-from seantis.people.browser.base import BaseView
 from seantis.people.interfaces import IPerson
+from seantis.people.browser.base import BaseView
 
 
 class View(BaseView):
@@ -20,14 +20,14 @@ class View(BaseView):
     def __getitem__(self, key):
         return self.template._template.macros[key]
 
-    def organizations(self, person):
+    def organizations(self, person, method):
         Organization = namedtuple('Organization', ['title', 'url', 'role'])
         catalog = api.portal.get_tool('portal_catalog')
 
         organizations = []
-        person = IPerson(self.context)
-        for uuid, memberships in person.memberships().items():
-            current_role = person.current_role(memberships)
+
+        for uuid, memberships in getattr(person, method).items():
+            current_role = IPerson(person).current_role(memberships)
 
             brain = catalog(UID=uuid)[0]
             organizations.append(

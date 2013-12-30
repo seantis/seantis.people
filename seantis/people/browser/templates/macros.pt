@@ -11,9 +11,9 @@
 
     <metal:define define-macro="person-memberships"
        tal:define="macro python: context.unrestrictedTraverse('@@seantis-people-macros')">
-      <tal:block tal:define="organizations python: macro.organizations(person)" tal:condition="organizations">
+      <tal:block tal:define="organizations python: macro.organizations(person, method)" tal:condition="organizations">
         <div class="person-detail person-memberships">
-          <h2 i18n:translate="">Memberships</h2>
+          <h2 tal:content="label"></h2>
           <ul class="dense">
             <li tal:repeat="organization organizations">
               <a tal:attributes="href organization/url" tal:content="organization/title" />
