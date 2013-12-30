@@ -13,6 +13,25 @@ from seantis.people.supermodel import (
 )
 
 
+class ReindexListView(BaseView):
+    """ View to work around issue #10:
+    https://github.com/seantis/seantis.people/issues/10
+
+    """
+
+    permission = 'cmf.ManagePortal'
+    grok.require(permission)
+    grok.context(IList)
+    grok.name('reindex')
+
+    def render(self):
+
+        for id, obj in self.context.objectItems():
+            obj.reindexObject()
+
+        return 'objects reindexed'
+
+
 class ListView(BaseView):
 
     permission = 'zope2.View'
