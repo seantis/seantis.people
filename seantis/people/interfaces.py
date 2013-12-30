@@ -70,7 +70,7 @@ class IMembership(form.Schema):
 
     title = schema.TextLine(
         title=_(u"Role inside organization"),
-        required=False
+        required=True
     )
 
     person = RelationChoice(
