@@ -52,6 +52,14 @@ Status
 The people types and list are pretty much ready for a first release. We are
 currently working on the organisation part of the module.
 
+Known Issues
+------------
+
+After a reindex, the people's list no longer shows the organization memberships.
+This is documented with a workaround in the following issue:
+
+https://github.com/seantis/seantis.people/issues/10
+
 Alternatives
 ------------
 
