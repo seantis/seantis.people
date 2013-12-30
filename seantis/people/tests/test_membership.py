@@ -87,7 +87,7 @@ class TestMembership(tests.IntegrationTestCase):
         self.assertEqual(len(memberships), 1)
         self.assertEqual(memberships.keys(), [org])
         self.assertEqual(len(memberships[org]), 1)
-        self.assertEqual(memberships[org][0].Title, 'Director')
+        self.assertEqual(memberships[org][0].title, 'Director')
 
         with self.user('admin'):
             api.content.create(
@@ -102,5 +102,5 @@ class TestMembership(tests.IntegrationTestCase):
         self.assertEqual(len(memberships), 1)
         self.assertEqual(memberships.keys(), [org])
         self.assertEqual(len(memberships[org]), 2)
-        self.assertEqual(memberships[org][0].Title, 'Director')
-        self.assertEqual(memberships[org][1].Title, 'Leutenant')
+        self.assertEqual(memberships[org][0].title, 'Director')
+        self.assertEqual(memberships[org][1].title, 'Leutenant')
