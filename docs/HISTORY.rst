@@ -2,14 +2,24 @@
 Changelog
 ---------
 
-0.16 (unreleased)
+0.16 (2013-12-31)
 ~~~~~~~~~~~~~~~~~
+
+- Fixes a number of issues with zodb membership source.
+  [href]
+
+- Adds the ability to define custom membership functions on the detail view.
+  [href]
+
+- Adds the ability to define custom compound columns in other packages.
+  [href]
 
 - Adds missing profile dependencies for membership type.
   [href]
 
 - Hides start/end on memberships, until it is properly implemented.
   [href]
+
 
 0.15
 ~~~~
