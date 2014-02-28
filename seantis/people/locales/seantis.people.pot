@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-11-29 09:59+0000\n"
+"POT-Creation-Date: 2014-02-28 10:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./interfaces.py:89
+#: ./interfaces.py:100
 msgid "End of membership"
 msgstr ""
 
@@ -87,6 +87,10 @@ msgstr ""
 #: ./types/phz.xml
 #: ./types/standard.xml
 msgid "Function"
+msgstr ""
+
+#: ./interfaces.py:86
+msgid "General note about this membership"
 msgstr ""
 
 #: ./browser/import_form.py:61
@@ -112,7 +116,7 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: ./browser/list.py:45
+#: ./browser/list.py:66
 msgid "Letter"
 msgstr ""
 
@@ -132,7 +136,7 @@ msgstr ""
 msgid "Membership"
 msgstr ""
 
-#: ./browser/templates/macros.pt:16
+#: ./types/base.py:23
 msgid "Memberships"
 msgstr ""
 
@@ -148,7 +152,7 @@ msgstr ""
 msgid "No available profiles."
 msgstr ""
 
-#: ./content/import_content.py:72
+#: ./content/import_content.py:74
 msgid "No column headers were found"
 msgstr ""
 
@@ -162,6 +166,10 @@ msgstr ""
 
 #: ./browser/templates/controlpanel.pt:74
 msgid "No upgradeable profiles."
+msgstr ""
+
+#: ./interfaces.py:85
+msgid "Note"
 msgstr ""
 
 #: ./interfaces.py:41
@@ -188,7 +196,7 @@ msgstr ""
 msgid "PH Zug Employees"
 msgstr ""
 
-#: ./interfaces.py:71
+#: ./interfaces.py:77
 msgid "Person"
 msgstr ""
 
@@ -218,11 +226,11 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: ./content/import_content.py:151
+#: ./content/import_content.py:191
 msgid "Required column is missing"
 msgstr ""
 
-#: ./interfaces.py:79
+#: ./interfaces.py:72
 msgid "Role inside organization"
 msgstr ""
 
@@ -246,7 +254,7 @@ msgstr ""
 msgid "Standard Contact"
 msgstr ""
 
-#: ./interfaces.py:84
+#: ./interfaces.py:93
 msgid "Start of membership"
 msgstr ""
 
@@ -254,15 +262,15 @@ msgstr ""
 msgid "Successfully imported ${count} records"
 msgstr ""
 
-#: ./content/import_content.py:108
+#: ./content/import_content.py:110
 msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
 msgstr ""
 
-#: ./content/import_content.py:100
+#: ./content/import_content.py:102
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
-#: ./interfaces.py:102
+#: ./interfaces.py:113
 msgid "The membership can't end before it starts"
 msgstr ""
 
