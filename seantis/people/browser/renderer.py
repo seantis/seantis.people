@@ -78,7 +78,7 @@ class UUIDListRenderer(object):
 
         unicode_sortkey = tools.unicode_collate_sortkey()
 
-        brains = (uuidToCatalogBrain(uid) for uid in uuids)
+        brains = (b for b in (uuidToCatalogBrain(uid) for uid in uuids) if b)
         items = sorted(
             ((b.getURL(), b.Title) for b in brains),
             key=lambda i: unicode_sortkey(i[1])

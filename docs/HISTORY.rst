@@ -5,6 +5,10 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Fixes a crash when viewing a public directory with private organisations.
+  Closes #12.
+  [href]
+
 - Adds a note field to the membership.
   [href]
 
