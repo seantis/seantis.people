@@ -81,6 +81,12 @@ class IMembership(form.Schema):
         required=True,
     )
 
+    note = schema.TextLine(
+        title=_(u"Note"),
+        description=_(u"General note about this membership"),
+        required=False
+    )
+
     # not used yet
     form.mode(start='hidden')
     start = schema.Date(

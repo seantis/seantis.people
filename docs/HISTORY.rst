@@ -5,6 +5,9 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds a note field to the membership.
+  [href]
+
 - Adds the ability to define the years_range for plone.formwidget.datetime
   widgets used in the schemas. Fixes #11.
   [href]
