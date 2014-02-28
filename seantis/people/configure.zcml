@@ -60,4 +60,16 @@
     name="seantis.people.people_schema_handler"
     />
 
+<utility
+    provides="plone.autoform.interfaces.IWidgetExportImportHandler"
+    component=".supermodel.widgethandler.DateWidgetExportImportHandler"
+    name="plone.formwidget.datetime.z3cform.widget.DateWidget"
+    />
+
+<utility
+    provides="plone.autoform.interfaces.IWidgetExportImportHandler"
+    component=".supermodel.widgethandler.DateWidgetExportImportHandler"
+    name="plone.formwidget.datetime.z3cform.widget.DatetimeWidget"
+    />
+
 </configure>

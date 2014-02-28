@@ -5,7 +5,9 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-- Nothing yet.
+- Adds the ability to define the years_range for plone.formwidget.datetime
+  widgets used in the schemas. Fixes #11.
+  [href]
 
 0.16 (2013-12-31)
 ~~~~~~~~~~~~~~~~~
