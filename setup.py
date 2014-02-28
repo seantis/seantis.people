@@ -57,6 +57,7 @@ setup(
         'plone.behavior',
         'plone.app.dexterity [grok, relations]',
         'plone.app.registry',
+        'plone.formwidget.datetime',
         'seantis.plonetools>=0.9',
         'collective.js.underscore',
         'collective.dexteritytextindexer',
