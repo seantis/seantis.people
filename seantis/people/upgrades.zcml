@@ -30,6 +30,13 @@
         handler=".upgrades.install_membership_dependencies"
     />
 
+    <genericsetup:upgradeStep
+        title="Update membership type information."
+        source="1004" destination="1005"
+        profile="seantis.people:default"
+        handler=".upgrades.upgrade_membership_title"
+    />
+
     <!-- PHZ Upgrades -->
     <genericsetup:upgradeStep
         title="Remove import action from detail view."

@@ -21,7 +21,7 @@
   
   <!-- enabled behaviors -->
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle" />
+    <element value="seantis.plonetools.behaviors.ICustomTitle" />
   </property>
 
 </object>
