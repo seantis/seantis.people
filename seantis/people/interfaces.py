@@ -68,7 +68,7 @@ class IMembershipChangedEvent(Interface):
 
 class IMembership(form.Schema):
 
-    title = schema.TextLine(
+    role = schema.TextLine(
         title=_(u"Role inside organization"),
         required=True
     )

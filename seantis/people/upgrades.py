@@ -26,6 +26,28 @@ def install_custom_controlpanel(context):
     run_import_step_from_profile('controlpanel', 'seantis.people', 'default')
 
 
+def upgrade_membership_title(context):
+    upgrade_portal_type(
+        'seantis.people.membership', 'seantis.people', 'default'
+    )
+
+    catalog = api.portal.get_tool('portal_catalog')
+    memberships = catalog.unrestrictedSearchResults(
+        portal_type='seantis.people.membership'
+    )
+
+    for membership in [m.getObject() for m in memberships]:
+        if not hasattr(membership, 'role') or membership.role is None:
+            membership.role = membership.title
+            membership.title = membership.get_custom_title()
+            membership.reindexObject()
+
+            old_id = membership.id
+            new_id = membership.title.encode('ascii', 'ignore')
+            new_id = new_id.lower().replace(' ', '-')
+            membership.aq_inner.aq_parent.manage_renameObject(old_id, new_id)
+
+
 def upgrade_phz_type_info(context):
     upgrade_portal_type('seantis.people.phz', 'seantis.people', 'phz')
 
