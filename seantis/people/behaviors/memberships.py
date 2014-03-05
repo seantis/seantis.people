@@ -64,7 +64,7 @@ class ZodbMembershipSource(grok.Adapter):
 
     def memberships(self, person=None):
 
-        query = {'portal_type': 'seantis.people.membership'}
+        query = {'object_provides': IMembership.__identifier__}
 
         if person is not None:
             query['membership_person'] = IUUID(person)

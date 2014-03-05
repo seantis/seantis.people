@@ -5,6 +5,9 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Organization memberships are now queried by interface in the ZODB, rather
+  than by portal_type to support inheritance.
+
 - Changes membership id/title to include the role as well as the name of
   the referenced person. Closes #13.
   [href]
