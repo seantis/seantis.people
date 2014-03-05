@@ -5,6 +5,10 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Changes membership id/title to include the role as well as the name of
+  the referenced person. Closes #13.
+  [href]
+
 - Fixes a crash when viewing a public directory with private organisations.
   Closes #12.
   [href]
