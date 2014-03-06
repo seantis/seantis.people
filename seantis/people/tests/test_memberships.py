@@ -27,7 +27,7 @@ class Membership(object):
 
     def __init__(self, person, role=None, start=None, end=None):
         self.person = person
-        self.title = role
+        self.role = role
         self.start = start
         self.end = end
 
