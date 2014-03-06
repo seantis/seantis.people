@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from zope.component import getUtility
 
 from plone import api
@@ -43,7 +45,11 @@ def upgrade_membership_title(context):
             membership.reindexObject()
 
             old_id = membership.id
-            new_id = membership.title.encode('ascii', 'ignore')
+            safe_title = membership.title.replace(u'ä', u'ae')
+            safe_title = safe_title.replace(u'ö', u'oe')
+            safe_title = safe_title.replace(u'ü', u'ue')
+
+            new_id = safe_title.encode('ascii', 'ignore')
             new_id = new_id.lower().replace(' ', '-')
             membership.aq_inner.aq_parent.manage_renameObject(old_id, new_id)
 
