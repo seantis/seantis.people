@@ -10,7 +10,7 @@ from plone.app.textfield.value import RichTextValue
 from plone.uuid.interfaces import IUUID
 
 from seantis.people.browser.renderer import Renderer
-from seantis.people.utils import UUIDList
+from seantis.people.utils import UUIDList, LinkList
 from seantis.people import tests
 
 
@@ -155,4 +155,22 @@ class TestRenderer(tests.IntegrationTestCase):
         )
         self.assertIn(
             folders[1].absolute_url(), self.render_value('uuids', uuids)
+        )
+
+    def test_link_list(self):
+        self.assertEqual(self.render_value('links', LinkList()), u'')
+
+        links = LinkList([
+            (u'Google', 'https://www.google.ch'),
+            (u'Bing', 'http://lmgtfy.com/?q=bing')
+        ])
+
+        self.assertIn(
+            u'<li><a href="https://www.google.ch">Google</a></li>',
+            self.render_value('links', links)
+        )
+
+        self.assertIn(
+            u'<li><a href="http://lmgtfy.com/?q=bing">Bing</a></li>',
+            self.render_value('links', links)
         )

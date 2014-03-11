@@ -41,6 +41,13 @@ class PersonView(BaseView):
         return [f for f in fields if has_access(f)]
 
     def get_field_title(self, field):
+        
+        # if the object has a custom_titles dictionary it is
+        # used to override titles on the detail view
+        if hasattr(self.context, 'custom_titles'):
+            if field in self.context.custom_titles:
+                return self.context.custom_titles[field]
+
         if field in self.schema:
             if type(self.schema[field]) in self.types_without_label:
                 return u''

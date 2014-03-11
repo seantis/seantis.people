@@ -5,6 +5,16 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds the ability to define custom titles on the person. Currently the custom
+  title is only relevant for the detail view. To use add a custom_titles
+  dictionary to the person object with the key being the field anme and the
+  value being the title that should be used in the detail view.
+  [href]
+
+- Adds a new LinkList type which may be used returned by person attributes.
+  The link list will be rendered using ul > li > a.
+  [href]
+
 - Organization memberships are now queried by interface in the ZODB, rather
   than by portal_type to support inheritance.
 

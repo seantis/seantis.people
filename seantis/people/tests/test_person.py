@@ -36,3 +36,26 @@ class TestList(tests.IntegrationTestCase):
 
         self.assertEqual(view.visible_positions(), ['left', 'right'])
         self.assertTrue(view.split_screen())
+
+    def test_custom_titles(self):
+        with self.user('admin'):
+            person_type = self.new_temporary_type(behaviors=[
+                IPerson.__identifier__
+            ])
+            person = api.content.create(
+                id='test',
+                type=person_type.id,
+                container=self.new_temporary_folder(),
+                name='test',
+                town='test',
+                empty=''
+            )
+            view = person.unrestrictedTraverse('@@view')
+
+        self.assertEqual(view.get_field_title('name'), u'name')
+
+        person.custom_titles = {
+            'name': u'Nom'
+        }
+
+        self.assertEqual(view.get_field_title('name'), u'Nom')

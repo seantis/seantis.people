@@ -48,3 +48,10 @@ class UUIDList(MutableSequence):
 
     def append(self, item):
         self.insert(len(self._list), self.get_uuid(item))
+
+
+class LinkList(list):
+    """ A class containing a list of tuples containing title, url. Used
+    to render a <ul><li><a href="url">title</a></li></ul> list.
+
+    """

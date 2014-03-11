@@ -21,7 +21,7 @@ from Products.ZCatalog.interfaces import ICatalogBrain
 from seantis.plonetools.schemafields import Email, Website
 from seantis.plonetools import tools
 
-from seantis.people.utils import UUIDList
+from seantis.people.utils import UUIDList, LinkList
 
 
 class EmailFieldRenderer(object):
@@ -64,6 +64,23 @@ class ListRenderer(object):
 
     def __call__(self, context, field):
         return u', '.join(getattr(context, field, tuple()))
+
+
+class LinkListRenderer(object):
+
+    template = string.Template(u'<li><a href="${url}">${title}</a></li>')
+
+    def __call__(self, context, field):
+        links = getattr(context, field, None)
+
+        if not links:
+            return u''
+
+        return u'<ul class="dense">{}</ul>'.format(
+            '\n'.join(
+                self.template.substitute(url=l[1], title=l[0]) for l in links
+            )
+        )
 
 
 class UUIDListRenderer(object):
@@ -128,6 +145,7 @@ renderers = {
     set: ListRenderer(),
     tuple: ListRenderer(),
     UUIDList: UUIDListRenderer(),
+    LinkList: LinkListRenderer()
 }
 
 
