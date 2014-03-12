@@ -1,4 +1,4 @@
-from datetime import date, MAXYEAR
+from datetime import date
 
 from plone import api
 from zope.interface import implements
@@ -52,21 +52,20 @@ class Person(object):
 
     def active_memberships(self, memberships):
         """ Goes through the given memberships and returns the active ones.
-        The active memberships are the ones without end date. Or with an end
-        date in the future.
 
-        The result is sorted by date. Memberships without end come before
-        memberships with end.
+        The result is sorted by date. Memberhsips without date come before
+        memberships with date.
         """
 
         def sortkey(membership):
-            if membership.end is not None:
-                return membership.end
-            else:
-                return date(MAXYEAR, 12, 31)
+            return (membership.start or date.min, membership.end or date.max)
 
         today = date.today()
-        active = [m for m in memberships if m.end is None or m.end >= today]
+
+        active = (
+            m for m in memberships
+            if (m.start or date.min) <= today and today <= (m.end or date.max)
+        )
         return sorted(active, key=sortkey)
 
     def current_role(self, memberships):
