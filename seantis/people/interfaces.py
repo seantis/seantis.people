@@ -87,15 +87,11 @@ class IMembership(form.Schema):
         required=False
     )
 
-    # not used yet
-    form.mode(start='hidden')
     start = schema.Date(
         title=_(u"Start of membership"),
         required=False
     )
 
-    # not used yet
-    form.mode(end='hidden')
     end = schema.Date(
         title=_(u"End of membership"),
         required=False
