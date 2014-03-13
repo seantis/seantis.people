@@ -28,7 +28,7 @@ class EmailFieldRenderer(object):
 
     template = string.Template(u'<a href="mailto:${mail}">${mail}</a>')
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         mail = getattr(context, field)
         if mail:
             return self.template.substitute(mail=mail)
@@ -40,7 +40,7 @@ class WebsiteFieldRenderer(object):
 
     template = string.Template(u'<a href="${url}" target="_blank">${url}</a>')
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         url = getattr(context, field)
         if url:
             return self.template.substitute(url=url)
@@ -50,19 +50,19 @@ class WebsiteFieldRenderer(object):
 
 class TextRenderer(object):
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         return '<br />'.join(getattr(context, field, u'').splitlines())
 
 
 class RichTextRenderer(object):
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         return getattr(context, field).output
 
 
 class ListRenderer(object):
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         return u', '.join(getattr(context, field, tuple()))
 
 
@@ -70,7 +70,7 @@ class LinkListRenderer(object):
 
     template = string.Template(u'<li><a href="${url}">${title}</a></li>')
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         links = getattr(context, field, None)
 
         if not links:
@@ -87,7 +87,7 @@ class UUIDListRenderer(object):
 
     template = string.Template(u'<a href="${url}">${title}</a>')
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         uuids = getattr(context, field, None)
 
         if not uuids:
@@ -111,7 +111,7 @@ class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
 
-    def __call__(self, context, field):
+    def __call__(self, context, field, options={}):
         img = getattr(context, field)
         if img:
             if ICatalogBrain.providedBy(context):
@@ -119,7 +119,8 @@ class ImageRenderer(object):
             else:
                 baseurl = context.absolute_url()
 
-            url = '/'.join((baseurl, '@@images', field, 'thumb'))
+            size = options.get('image_size', 'thumb')
+            url = '/'.join((baseurl, '@@images', field, size))
 
             return self.template.substitute(url=url)
         else:
@@ -151,12 +152,13 @@ renderers = {
 
 class Renderer(object):
 
-    def __init__(self, schema, redirects=None):
+    def __init__(self, schema, redirects=None, options={}):
         self.schema = schema
         self.fields = getFields(schema)
         self.redirects = redirects or {}
+        self.options = options
 
     def render(self, context, field):
         field = self.redirects.get(field, field)
         fieldtype = type(self.fields.get(field, getattr(context, field, None)))
-        return renderers.get(fieldtype, getattr)(context, field)
+        return renderers.get(fieldtype, getattr)(context, field, self.options)

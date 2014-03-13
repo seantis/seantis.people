@@ -5,6 +5,10 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Images on the people's list are rendered smaller and in the detail view they
+  are rendered larger. Renderes now have custom options for this case.
+  [href]
+
 - Adds the ability to define custom titles on the person. Currently the custom
   title is only relevant for the detail view. To use add a custom_titles
   dictionary to the person object with the key being the field anme and the

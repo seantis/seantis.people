@@ -23,7 +23,9 @@ class PersonView(BaseView):
     )
 
     def update(self):
-        self.renderer = Renderer(self.schema)
+        self.renderer = Renderer(self.schema, options={
+            'image_size': 'mini'
+        })
 
     @property
     def schema(self):
@@ -41,7 +43,7 @@ class PersonView(BaseView):
         return [f for f in fields if has_access(f)]
 
     def get_field_title(self, field):
-        
+
         # if the object has a custom_titles dictionary it is
         # used to override titles on the detail view
         if hasattr(self.context, 'custom_titles'):
