@@ -38,7 +38,7 @@ class Person(object):
         organizations = UUIDList()
 
         for uuid, memberships in self.memberships().items():
-            if callable(org_filter) and not org_filter(uuid):
+            if callable(org_filter) and not org_filter(uuid, memberships):
                 continue
 
             organizations.append(uuid)
@@ -50,6 +50,7 @@ class Person(object):
         The current role is the role of the first membership in the list.
 
         """
+
         if memberships:
             return memberships[0].role
         else:

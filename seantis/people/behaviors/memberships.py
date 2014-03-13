@@ -45,8 +45,9 @@ def get_memberships(person=None, org_filter=None):
     for name, source in getAdapters((context, ), IMembershipSource):
         for organization, memberships in source.memberships(person).items():
 
-            if callable(org_filter) and not org_filter(organization):
-                continue
+            if callable(org_filter):
+                if not org_filter(organization, memberships):
+                    continue
 
             if organization not in organizations:
                 organizations[organization] = []
