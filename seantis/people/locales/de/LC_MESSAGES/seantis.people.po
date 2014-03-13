@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-02-28 10:36+0000\n"
+"POT-Creation-Date: 2014-03-13 10:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,10 +64,6 @@ msgstr "Abteilung"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ./interfaces.py:100
-msgid "End of membership"
-msgstr "Ende der Mitgliedschaft"
-
 #: ./browser/import_form.py:26
 msgid "File"
 msgstr "Datei"
@@ -113,7 +109,7 @@ msgstr "Installierte Profile"
 msgid "Last Name"
 msgstr "Nachname"
 
-#: ./browser/list.py:66
+#: ./browser/list.py:68
 msgid "Letter"
 msgstr "Buchstabe"
 
@@ -251,10 +247,6 @@ msgstr "Kurzzeichen"
 msgid "Standard Contact"
 msgstr "Standard Kontakt"
 
-#: ./interfaces.py:93
-msgid "Start of membership"
-msgstr "Beginn der Mitgliedschaft"
-
 #: ./browser/import_form.py:90
 msgid "Successfully imported ${count} records"
 msgstr "${count} Eintrage erfolgreich importiert"
@@ -266,10 +258,6 @@ msgstr "Die ${name} Spalte ist ungültig. \"title\" and \"id\" sind reservierte 
 #: ./content/import_content.py:102
 msgid "The ${name} column is specified more than once"
 msgstr "Die ${name} Spalte ist mehr als einmal vorhanden"
-
-#: ./interfaces.py:113
-msgid "The membership can't end before it starts"
-msgstr "Die Mitgliedschaft kann nicht enden bevor sie begonnen hat"
 
 #: ./browser/import_form.py:25
 msgid "Type"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-02-28 10:36+0000\n"
+"POT-Creation-Date: 2014-03-13 10:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,10 +67,6 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./interfaces.py:100
-msgid "End of membership"
-msgstr ""
-
 #: ./browser/import_form.py:26
 msgid "File"
 msgstr ""
@@ -116,7 +112,7 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: ./browser/list.py:66
+#: ./browser/list.py:68
 msgid "Letter"
 msgstr ""
 
@@ -254,10 +250,6 @@ msgstr ""
 msgid "Standard Contact"
 msgstr ""
 
-#: ./interfaces.py:93
-msgid "Start of membership"
-msgstr ""
-
 #: ./browser/import_form.py:90
 msgid "Successfully imported ${count} records"
 msgstr ""
@@ -268,10 +260,6 @@ msgstr ""
 
 #: ./content/import_content.py:102
 msgid "The ${name} column is specified more than once"
-msgstr ""
-
-#: ./interfaces.py:113
-msgid "The membership can't end before it starts"
 msgstr ""
 
 #: ./browser/import_form.py:25
