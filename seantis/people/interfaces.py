@@ -5,7 +5,7 @@ from plone.directives import form
 from z3c.relationfield.schema import RelationChoice
 
 from zope import schema
-from zope.interface import Interface, invariant, Invalid, Attribute
+from zope.interface import Interface, Attribute
 
 from seantis.people import _
 
@@ -86,27 +86,6 @@ class IMembership(form.Schema):
         description=_(u"General note about this membership"),
         required=False
     )
-
-    start = schema.Date(
-        title=_(u"Start of membership"),
-        required=False
-    )
-
-    end = schema.Date(
-        title=_(u"End of membership"),
-        required=False
-    )
-
-    @invariant
-    def has_valid_daterange(Membership):
-        if Membership.start is None:
-            return
-
-        if Membership.end is None:
-            return
-
-        if Membership.start > Membership.end:
-            raise Invalid(_(u"The membership can't end before it starts"))
 
 
 class ICompoundColumns(Interface):

@@ -5,6 +5,11 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Removes start/end on memberships. This module will no longer deal with
+  memberships over time. Where this is required, external modules like
+  seantis.kantonsrat have to do this themselves.
+  [href]
+
 - Images on the people's list are rendered smaller and in the detail view they
   are rendered larger. Renderes now have custom options for this case.
   [href]

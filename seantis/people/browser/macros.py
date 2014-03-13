@@ -27,11 +27,6 @@ class View(BaseView):
         organizations = []
 
         for uuid, memberships in getattr(person, method).items():
-            active = IPerson(person).active_memberships(memberships)
-
-            if not active:
-                continue
-
             current_role = IPerson(person).current_role(memberships)
 
             brain = catalog(UID=uuid)[0]

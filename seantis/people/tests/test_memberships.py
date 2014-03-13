@@ -1,5 +1,4 @@
 from contextlib import contextmanager
-from datetime import date
 
 from zope.component import getGlobalSiteManager, getAdapters
 from zope.interface import Interface
@@ -25,11 +24,9 @@ class TestAdapter(object):
 
 class Membership(object):
 
-    def __init__(self, person, role=None, start=None, end=None):
+    def __init__(self, person, role=None):
         self.person = person
         self.role = role
-        self.start = start
-        self.end = end
 
 
 class TestMemberships(tests.IntegrationTestCase):
@@ -43,8 +40,8 @@ class TestMemberships(tests.IntegrationTestCase):
 
     def unregister_membership_source(self, adapter, interface, name):
         gsm = getGlobalSiteManager()
-        gsm.unregisterAdapter(required=(interface,), name=name,
-            provided=IMembershipSource
+        gsm.unregisterAdapter(
+            required=(interface,), name=name, provided=IMembershipSource
         )
 
     @contextmanager
@@ -117,27 +114,6 @@ class TestMemberships(tests.IntegrationTestCase):
                 IUUID(organization)
             ]))
 
-    def test_active_memberships(self):
-        person = self.get_test_person()
-        organization = self.new_temporary_folder()
-
-        class Source(TestAdapter):
-
-            def memberships(self, person=None):
-                return {
-                    IUUID(organization): [
-                        Membership(person),
-                        Membership(person, end=date(2012, 1, 1))
-                    ]
-                }
-
-        with self.custom_source(Source):
-            memberships = IPerson(person).memberships()[IUUID(organization)]
-            self.assertEqual(len(memberships), 2)
-
-            active = IPerson(person).active_memberships(memberships)
-            self.assertEqual(len(active), 1)
-
     def test_current_role(self):
         person = self.get_test_person()
         organization = self.new_temporary_folder()
@@ -148,7 +124,7 @@ class TestMemberships(tests.IntegrationTestCase):
                 return {
                     IUUID(organization): [
                         Membership(person, 'president'),
-                        Membership(person, 'secretary', end=date(2012, 1, 1))
+                        Membership(person, 'secretary')
                     ]
                 }
 
@@ -169,7 +145,7 @@ class TestMemberships(tests.IntegrationTestCase):
         class Source(TestAdapter):
 
             def memberships(self, person=None):
-                return { IUUID(organization): memberships }
+                return {IUUID(organization): memberships}
 
         with self.custom_source(Source):
             catalog = api.portal.get_tool('portal_catalog')

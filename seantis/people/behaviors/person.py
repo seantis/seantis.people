@@ -1,5 +1,3 @@
-from datetime import date
-
 from plone import api
 from zope.interface import implements
 
@@ -43,38 +41,16 @@ class Person(object):
             if callable(org_filter) and not org_filter(uuid):
                 continue
 
-            if not self.active_memberships(memberships):
-                continue
-
             organizations.append(uuid)
 
         return organizations
 
-    def active_memberships(self, memberships):
-        """ Goes through the given memberships and returns the active ones.
-
-        The result is sorted by date. Memberhsips without date come before
-        memberships with date.
-        """
-
-        def sortkey(membership):
-            return (membership.start or date.min, membership.end or date.max)
-
-        today = date.today()
-
-        active = (
-            m for m in memberships
-            if (m.start or date.min) <= today and today <= (m.end or date.max)
-        )
-        return sorted(active, key=sortkey)
-
     def current_role(self, memberships):
         """ Goes through the given memberships and returns the current role.
-        The current role is the latest active membership's role.
+        The current role is the role of the first membership in the list.
 
         """
-        active = self.active_memberships(memberships)
-        if active:
-            return active[0].role
+        if memberships:
+            return memberships[0].role
         else:
             return u''

@@ -64,7 +64,10 @@ class ZodbMembershipSource(grok.Adapter):
 
     def memberships(self, person=None):
 
-        query = {'object_provides': IMembership.__identifier__}
+        query = {
+            'object_provides': IMembership.__identifier__,
+            'sort_on': 'getObjPositionInParent'
+        }
 
         if person is not None:
             query['membership_person'] = IUUID(person)
