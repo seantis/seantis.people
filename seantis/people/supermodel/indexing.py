@@ -35,6 +35,14 @@ def first_letter(obj):
     return title and title[:1].upper() or u''
 
 
+@indexer(IPersonMarker)
+def is_active_person(obj):
+    if hasattr(obj, 'is_active_person'):
+        return obj.is_active_person
+    else:
+        return True
+
+
 def on_type_modified(fti, event=None):
     """ The IPerson types need to be reindexed if the type changes, because
     the supermodel could be different and it's hints may have an effect on

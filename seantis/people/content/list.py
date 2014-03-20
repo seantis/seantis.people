@@ -1,6 +1,8 @@
 from collections import namedtuple
 
 from five import grok
+from zope.security import checkPermission as has_permission
+
 from plone import api
 from plone.dexterity.content import Container
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
@@ -23,6 +25,10 @@ class List(Container):
         query['path'] = {
             'query': '/'.join(self.getPhysicalPath()), 'depth': 1
         }
+
+        if not has_permission('cmf.ModifyPortalContent', self):
+            query['is_active_person'] = True
+
         query['sort_on'] = 'sortable_title'
         query['sort_order'] = 'ascending'
 

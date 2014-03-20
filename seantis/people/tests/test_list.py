@@ -111,6 +111,33 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(len(filtered), 1)
         self.assertEqual(filtered[0].id, 'jessie')
 
+    def test_list_inactive(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            person = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__]
+            )
+
+            api.content.create(title='Abed', type=person.id, container=lst)
+            api.content.create(
+                title='Troy',
+                type=person.id,
+                container=lst,
+                is_active_person=False
+            )
+
+        # admins see inactive people
+        with self.user('admin'):
+            self.assertEqual(len(lst.people()), 2)
+
+        # normal users do not
+        self.assertEqual(len(lst.people()), 1)
+
     def test_list_view_empty(self):
         with self.user('admin'):
             lst = api.content.create(
@@ -309,17 +336,13 @@ class TestList(tests.IntegrationTestCase):
                 self.new_temporary_folder(),
                 self.new_temporary_folder()
             ]
-            
+
             # normally organizations are defined through memberships,
             # but it's easier here to just use class properties
             api.content.create(
-                title='test', type=person, container=lst, 
-                organizations=list(
-                    o.title for o in organizations
-                ),
-                organization_uuids=UUIDList(
-                    IUUID(o) for o in organizations
-                )
+                title='test', type=person, container=lst,
+                organizations=[o.title for o in organizations],
+                organization_uuids=UUIDList([IUUID(o) for o in organizations])
             )
             api.content.create(
                 title='loner', type=person, container=lst,

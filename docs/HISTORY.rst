@@ -5,6 +5,10 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds 'is_active_person' property which if present and False hides the given
+  person from the person list for anonymous users.
+  [href]
+
 - Removes start/end on memberships. This module will no longer deal with
   memberships over time. Where this is required, external modules like
   seantis.kantonsrat have to do this themselves.

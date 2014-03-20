@@ -53,6 +53,7 @@
 <adapter factory=".behaviors.NameFromPerson" />
 <adapter factory=".supermodel.indexing.sortable_title" name="sortable_title" />
 <adapter factory=".supermodel.indexing.first_letter" name="first_letter" />
+<adapter factory=".supermodel.indexing.is_active_person" name="is_active_person" />
 <adapter factory=".behaviors.memberships.membership_person" name="membership_person" />
 
 <utility
