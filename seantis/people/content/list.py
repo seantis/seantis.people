@@ -18,7 +18,13 @@ LetterFilter = namedtuple('LetterFilter', ['value', 'title'])
 
 class List(Container):
 
-    def people(self, filter=None, batch_start=None, batch_size=None):
+    def people(
+        self,
+        filter=None,
+        batch_start=None,
+        batch_size=None,
+        include_inactive=False
+    ):
         catalog = api.portal.get_tool('portal_catalog')
 
         query = {}
@@ -26,8 +32,9 @@ class List(Container):
             'query': '/'.join(self.getPhysicalPath()), 'depth': 1
         }
 
-        if not has_permission('cmf.ModifyPortalContent', self):
-            query['is_active_person'] = True
+        if not include_inactive:
+            if not has_permission('cmf.ModifyPortalContent', self):
+                query['is_active_person'] = True
 
         query['sort_on'] = 'sortable_title'
         query['sort_order'] = 'ascending'

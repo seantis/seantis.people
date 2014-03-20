@@ -138,6 +138,9 @@ class TestList(tests.IntegrationTestCase):
         # normal users do not
         self.assertEqual(len(lst.people()), 1)
 
+        # unless overriden by flag
+        self.assertEqual(len(lst.people(include_inactive=True)), 2)
+
     def test_list_view_empty(self):
         with self.user('admin'):
             lst = api.content.create(
