@@ -5,11 +5,17 @@ from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from z3c.form import field
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from z3c.form.browser.radio import RadioFieldWidget
 from plone.directives import form
 
 from seantis.people import _
 from seantis.people.interfaces import IList
 from seantis.people.browser import ImportExportBaseForm
+from seantis.people.content.export_content import (
+    supported_formats, export_people
+)
+
+uppercase_formats = [f.upper() for f in supported_formats]
 
 
 class IExportFormSchema(form.Schema):
@@ -17,10 +23,16 @@ class IExportFormSchema(form.Schema):
     portal_type = schema.Choice(title=_(u"Type"), values=[])
 
     export_fields = schema.List(
-        title=u"Fields",
-        description=u"Fields to include in the export",
+        title=_(u"Fields"),
+        description=_(u"Fields to include in the export"),
         required=True,
         value_type=schema.Choice(values=[]),
+    )
+
+    export_format = schema.Choice(
+        title=_(u"Format"),
+        values=uppercase_formats,
+        default='CSV'
     )
 
 
@@ -58,6 +70,7 @@ class ExportForm(ImportExportBaseForm):
         fields = field.Fields(IExportFormSchema)
         self.prepare_portal_type_field(fields)
         self.prepare_export_fields(fields)
+        self.prepare_format_field(fields)
         return fields
 
     def prepare_export_fields(self, fields):
@@ -77,11 +90,21 @@ class ExportForm(ImportExportBaseForm):
 
         f.widgetFactory = CheckBoxFieldWidget
 
+    def prepare_format_field(self, fields):
+        f = fields['export_format']
+        f.field = copy(f.field)
+        f.widgetFactory = RadioFieldWidget
+
     @property
     def available_actions(self):
         yield dict(name='export', title=_(u"Export"), css_class='context')
         yield dict(name='cancel', title=_(u"Cancel"))
 
     def handle_export(self):
-        print self.parameters
-        print 'aww yeah'
+        export_people(
+            self.request,
+            self.context,
+            self.parameters.get('portal_type'),
+            self.parameters.get('export_format').lower(),
+            self.parameters.get('export_fields')
+        )
