@@ -53,7 +53,7 @@ class ImportForm(BaseForm):
     def available_types_vocabulary(self):
         translate = lambda txt: self.translate(unicode(txt))
         return SimpleVocabulary(terms=[
-            SimpleTerm(fti.id, title=translate(fti.title)) for fti
+            SimpleTerm(fti.id, fti.id, translate(fti.title)) for fti
             in self.context.available_types()
         ])
 
