@@ -10,7 +10,7 @@ from plone.directives import form
 
 from seantis.people import _
 from seantis.people.interfaces import IList
-from seantis.people.browser import ImportExportBaseForm
+from seantis.people.browser import BaseForm
 from seantis.people.content.export_content import (
     supported_formats, export_people
 )
@@ -19,8 +19,6 @@ uppercase_formats = [f.upper() for f in supported_formats]
 
 
 class IExportFormSchema(form.Schema):
-
-    portal_type = schema.Choice(title=_(u"Type"), values=[])
 
     export_fields = schema.List(
         title=_(u"Fields"),
@@ -36,7 +34,7 @@ class IExportFormSchema(form.Schema):
     )
 
 
-class ExportForm(ImportExportBaseForm):
+class ExportForm(BaseForm):
 
     grok.require('cmf.ModifyPortalContent')
     grok.context(IList)
@@ -52,23 +50,18 @@ class ExportForm(ImportExportBaseForm):
 
     @property
     def portal_type(self):
-        portal_type = self.request.get('portal_type')
-        valid_portal_types = [t for t in self.context.available_types()]
-
-        for fti in valid_portal_types:
-            if fti.id == portal_type:
-                return fti
-
-        return valid_portal_types[0]
+        return self.context.used_type()
 
     @property
     def portal_type_fields(self):
-        return field.Fields(self.portal_type.lookupSchema()).items()
+        if self.portal_type:
+            return field.Fields(self.portal_type.lookupSchema()).items()
+        else:
+            return []
 
     @property
     def fields(self):
         fields = field.Fields(IExportFormSchema)
-        self.prepare_portal_type_field(fields)
         self.prepare_export_fields(fields)
         self.prepare_format_field(fields)
         return fields

@@ -1,15 +1,18 @@
 import transaction
+from copy import copy
 from five import grok
 
 from zope import schema
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from z3c.form import field
+from z3c.form.browser.radio import RadioFieldWidget
 from plone.directives import form
 from plone.namedfile.field import NamedFile
 
 from seantis.people import _
 from seantis.people.errors import ContentImportError
 from seantis.people.interfaces import IList
-from seantis.people.browser import ImportExportBaseForm
+from seantis.people.browser import BaseForm
 from seantis.people.content.import_content import (
     supported_formats,
     import_people
@@ -22,7 +25,7 @@ class IImportFormSchema(form.Schema):
     import_file = NamedFile(title=_(u"File"))
 
 
-class ImportForm(ImportExportBaseForm):
+class ImportForm(BaseForm):
 
     grok.require('cmf.ManagePortal')
     grok.context(IList)
@@ -46,6 +49,22 @@ class ImportForm(ImportExportBaseForm):
     def available_actions(self):
         yield dict(name='import', title=_(u'Import'), css_class='context')
         yield dict(name='cancel', title=_(u'Cancel'))
+
+    def available_types_vocabulary(self):
+        translate = lambda txt: self.translate(unicode(txt))
+        return SimpleVocabulary(terms=[
+            SimpleTerm(fti.id, title=translate(fti.title)) for fti
+            in self.context.available_types()
+        ])
+
+    def prepare_portal_type_field(self, fields):
+        f = fields['portal_type']
+        vocabulary = self.available_types_vocabulary()
+
+        f.field = copy(f.field)
+        f.field.vocabulary = vocabulary
+        f.widgetFactory = RadioFieldWidget
+        f.field.default = vocabulary._terms[0].value
 
     def get_format_from_filename(self, filename):
         if '.' in filename:
