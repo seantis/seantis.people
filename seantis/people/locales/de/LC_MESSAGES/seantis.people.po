@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-03-13 10:21+0000\n"
+"POT-Creation-Date: 2014-03-21 13:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ./browser/import_form.py:74
+#: ./browser/import_form.py:69
 msgid "${format} is not supported, supported are ${formats}"
 msgstr "${format} wird nicht unterstützt. Unterstützte Formate: ${formats}"
 
@@ -43,7 +43,8 @@ msgstr "Verfügbare Profile"
 msgid "Biography"
 msgstr "Biographie"
 
-#: ./browser/import_form.py:101
+#: ./browser/export_form.py:83
+#: ./browser/import_form.py:50
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -64,7 +65,16 @@ msgstr "Abteilung"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ./browser/import_form.py:26
+#: ./browser/export_form.py:82
+#: ./profiles/default/types/seantis.people.list.xml
+msgid "Export"
+msgstr "Export"
+
+#: ./browser/export_form.py:37
+msgid "Export ${name}"
+msgstr "${name} exportieren"
+
+#: ./browser/import_form.py:22
 msgid "File"
 msgstr "Datei"
 
@@ -86,15 +96,15 @@ msgstr "Funktion"
 msgid "General note about this membership"
 msgstr "Allgemeine Notiz/Bemerkung zu dieser Mitgliedschaft"
 
-#: ./browser/import_form.py:61
+#: ./browser/import_form.py:49
 #: ./profiles/default/types/seantis.people.list.xml
 #: ./profiles/phz/types/seantis.people.phz.xml
 msgid "Import"
 msgstr "Import"
 
-#: ./browser/import_form.py:31
-msgid "Import people"
-msgstr "Personen importieren"
+#: ./browser/import_form.py:37
+msgid "Import ${name}"
+msgstr "${name} importieren"
 
 #: ./browser/templates/controlpanel.pt:38
 msgid "Install"
@@ -247,7 +257,7 @@ msgstr "Kurzzeichen"
 msgid "Standard Contact"
 msgstr "Standard Kontakt"
 
-#: ./browser/import_form.py:90
+#: ./browser/import_form.py:85
 msgid "Successfully imported ${count} records"
 msgstr "${count} Eintrage erfolgreich importiert"
 
@@ -259,7 +269,8 @@ msgstr "Die ${name} Spalte ist ungültig. \"title\" and \"id\" sind reservierte 
 msgid "The ${name} column is specified more than once"
 msgstr "Die ${name} Spalte ist mehr als einmal vorhanden"
 
-#: ./browser/import_form.py:25
+#: ./browser/export_form.py:17
+#: ./browser/import_form.py:21
 msgid "Type"
 msgstr "Typ"
 

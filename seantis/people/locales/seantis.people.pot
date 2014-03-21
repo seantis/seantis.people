@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-03-13 10:21+0000\n"
+"POT-Creation-Date: 2014-03-21 13:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: seantis.people\n"
 
-#: ./browser/import_form.py:74
+#: ./browser/import_form.py:69
 msgid "${format} is not supported, supported are ${formats}"
 msgstr ""
 
@@ -46,7 +46,8 @@ msgstr ""
 msgid "Biography"
 msgstr ""
 
-#: ./browser/import_form.py:101
+#: ./browser/export_form.py:83
+#: ./browser/import_form.py:50
 msgid "Cancel"
 msgstr ""
 
@@ -67,7 +68,16 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./browser/import_form.py:26
+#: ./browser/export_form.py:82
+#: ./profiles/default/types/seantis.people.list.xml
+msgid "Export"
+msgstr ""
+
+#: ./browser/export_form.py:37
+msgid "Export ${name}"
+msgstr ""
+
+#: ./browser/import_form.py:22
 msgid "File"
 msgstr ""
 
@@ -89,14 +99,14 @@ msgstr ""
 msgid "General note about this membership"
 msgstr ""
 
-#: ./browser/import_form.py:61
+#: ./browser/import_form.py:49
 #: ./profiles/default/types/seantis.people.list.xml
 #: ./profiles/phz/types/seantis.people.phz.xml
 msgid "Import"
 msgstr ""
 
-#: ./browser/import_form.py:31
-msgid "Import people"
+#: ./browser/import_form.py:37
+msgid "Import ${name}"
 msgstr ""
 
 #: ./browser/templates/controlpanel.pt:38
@@ -250,7 +260,7 @@ msgstr ""
 msgid "Standard Contact"
 msgstr ""
 
-#: ./browser/import_form.py:90
+#: ./browser/import_form.py:85
 msgid "Successfully imported ${count} records"
 msgstr ""
 
@@ -262,7 +272,8 @@ msgstr ""
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
-#: ./browser/import_form.py:25
+#: ./browser/export_form.py:17
+#: ./browser/import_form.py:21
 msgid "Type"
 msgstr ""
 

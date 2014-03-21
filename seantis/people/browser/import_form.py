@@ -1,23 +1,19 @@
 import transaction
-from copy import copy
 from five import grok
 
 from zope import schema
 from z3c.form import field
-from z3c.form.button import buttonAndHandler
 from plone.directives import form
 from plone.namedfile.field import NamedFile
 
 from seantis.people import _
 from seantis.people.errors import ContentImportError
 from seantis.people.interfaces import IList
-from seantis.people.browser import BaseForm
+from seantis.people.browser import ImportExportBaseForm
 from seantis.people.content.import_content import (
     supported_formats,
     import_people
 )
-
-from zope.schema.vocabulary import SimpleVocabulary
 
 
 class IImportFormSchema(form.Schema):
@@ -26,41 +22,38 @@ class IImportFormSchema(form.Schema):
     import_file = NamedFile(title=_(u"File"))
 
 
-class ImportForm(BaseForm):
+class ImportForm(ImportExportBaseForm):
 
-    label = _(u'Import people')
-
-    permission = 'cmf.ManagePortal'
-    grok.require(permission)
+    grok.require('cmf.ManagePortal')
     grok.context(IList)
     grok.name('import')
 
     ignoreContext = True
 
-    template = grok.PageTemplateFile('templates/import_form.pt')
+    @property
+    def label(self):
+        return _(u"Import ${name}", mapping={
+            'name': self.context.title
+        })
 
     @property
     def fields(self):
         fields = field.Fields(IImportFormSchema)
-
-        for f in fields.values():
-            f.field = copy(f.field)
-
-        fields['portal_type'].field.vocabulary = SimpleVocabulary.fromItems(
-            (fti.title, fti.id) for fti in self.context.available_types()
-        )
-
+        self.prepare_portal_type_field(fields)
         return fields
 
+    @property
+    def available_actions(self):
+        yield dict(name='import', title=_(u'Import'), css_class='context')
+        yield dict(name='cancel', title=_(u'Cancel'))
+
     def get_format_from_filename(self, filename):
-        if not '.' in filename:
-            return ''
-        else:
+        if '.' in filename:
             return filename.split('.')[-1]
+        else:
+            return ''
 
-    @buttonAndHandler(_(u'Import'), name='import')
-    def run_import(self, action):
-
+    def handle_import(self):
         if not self.parameters:
             return
 
@@ -97,7 +90,3 @@ class ImportForm(BaseForm):
             self.raise_action_error(e.translate(self.request))
         else:
             self.request.response.redirect(self.context.absolute_url())
-
-    @buttonAndHandler(_(u'Cancel'), name='cancel')
-    def cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())
