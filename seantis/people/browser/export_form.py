@@ -1,4 +1,5 @@
 from copy import copy
+from importlib import import_module
 
 from five import grok
 from zope import schema
@@ -54,10 +55,23 @@ class ExportForm(BaseForm):
 
     @property
     def portal_type_fields(self):
+        result = []
+
         if self.portal_type:
-            return field.Fields(self.portal_type.lookupSchema()).items()
-        else:
-            return []
+            schema = self.portal_type.lookupSchema()
+
+            for id, f in field.Fields(schema).items():
+                result.append((id, f.field.title))
+
+            module = '.'.join(self.portal_type.klass.split('.')[:-1])
+            klass = self.portal_type.klass.split('.')[-1]
+            klass = getattr(import_module(module), klass)
+
+            membership_fields = klass().membership_fields
+            for id in sorted(membership_fields):
+                result.append((id, membership_fields[id]))
+
+        return result
 
     @property
     def fields(self):
@@ -69,8 +83,8 @@ class ExportForm(BaseForm):
     def prepare_export_fields(self, fields):
 
         vocabulary = SimpleVocabulary(terms=[
-            SimpleTerm(id, title=self.translate(f.field.title)) for id, f
-            in self.portal_type_fields
+            SimpleTerm(id, title=title)
+            for id, title in self.portal_type_fields
         ])
 
         default_values = [i[0] for i in self.portal_type_fields]
