@@ -1,3 +1,5 @@
+import codecs
+
 from copy import copy
 from importlib import import_module
 
@@ -12,6 +14,7 @@ from plone.directives import form
 from seantis.people import _
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseForm
+from seantis.people.errors import ContentExportError
 from seantis.people.content.export_content import (
     supported_formats, export_people
 )
@@ -42,6 +45,13 @@ class ExportForm(BaseForm):
     grok.name('export')
 
     ignoreContext = True
+    output = None
+
+    def render(self):
+        if self.output:
+            return self.output
+        else:
+            return super(ExportForm, self).render()
 
     @property
     def label(self):
@@ -108,10 +118,35 @@ class ExportForm(BaseForm):
         yield dict(name='cancel', title=_(u"Cancel"))
 
     def handle_export(self):
-        export_people(
-            self.request,
-            self.context,
-            self.parameters.get('portal_type'),
-            self.parameters.get('export_format').lower(),
-            self.parameters.get('export_fields')
-        )
+        try:
+            export_fields = self.parameters.get('export_fields')
+            export_fields = [
+                (id, title) for id, title
+                in self.portal_type_fields
+                if id in export_fields
+            ]
+
+            dataset = export_people(
+                self.request,
+                self.context,
+                self.portal_type.id,
+                export_fields
+            )
+
+            format = self.parameters.get('export_format').lower()
+            filename = '%s.%s' % (self.context.title, format)
+            filename = codecs.utf_8_encode('filename="%s"' % filename)[0]
+
+            output = getattr(dataset, format)
+
+            RESPONSE = self.request.RESPONSE
+            RESPONSE.setHeader("Content-disposition", filename)
+            RESPONSE.setHeader(
+                "Content-Type", "application/%s;charset=utf-8" % format
+            )
+            RESPONSE.setHeader("Content-Length", len(output))
+
+            self.output = output
+
+        except ContentExportError, e:
+            self.raise_action_error(e.translate(self.request))

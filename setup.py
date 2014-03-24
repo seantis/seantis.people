@@ -61,7 +61,8 @@ setup(
         'seantis.plonetools>=0.11',
         'collective.js.underscore',
         'collective.dexteritytextindexer',
-        'tablib'
+        'tablib',
+        'isodate'
     ],
     extras_require=dict(
         tests=tests_require,
