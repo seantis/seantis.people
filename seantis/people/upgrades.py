@@ -61,3 +61,7 @@ def upgrade_phz_type_info(context):
 def install_membership_dependencies(context):
     import_profile('profile-plone.formwidget.autocomplete:default')
     import_profile('profile-plone.app.relationfield:default')
+
+
+def update_people_list(context):
+    upgrade_portal_type('seantis.people.list', 'seantis.people', 'default')

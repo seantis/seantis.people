@@ -37,12 +37,18 @@
         handler=".upgrades.upgrade_membership_title"
     />
 
-
     <genericsetup:upgradeStep 
         title="Import new 'is_active_person' index."
         source="1005" destination="1006"
         profile="seantis.people:default"
         handler=".setuphandler.add_catalog_indexes"
+    />
+
+    <genericsetup:upgradeStep 
+        title="Adds export action."
+        source="1006" destination="1007"
+        profile="seantis.people:default"
+        handler=".upgrades.update_people_list"
     />
 
     <!-- PHZ Upgrades -->

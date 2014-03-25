@@ -3,8 +3,9 @@ from copy import copy
 from five import grok
 
 from zope import schema
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from z3c.form import field
-from z3c.form.button import buttonAndHandler
+from z3c.form.browser.radio import RadioFieldWidget
 from plone.directives import form
 from plone.namedfile.field import NamedFile
 
@@ -17,8 +18,6 @@ from seantis.people.content.import_content import (
     import_people
 )
 
-from zope.schema.vocabulary import SimpleVocabulary
-
 
 class IImportFormSchema(form.Schema):
 
@@ -28,39 +27,52 @@ class IImportFormSchema(form.Schema):
 
 class ImportForm(BaseForm):
 
-    label = _(u'Import people')
-
-    permission = 'cmf.ManagePortal'
-    grok.require(permission)
+    grok.require('cmf.ManagePortal')
     grok.context(IList)
     grok.name('import')
 
     ignoreContext = True
 
-    template = grok.PageTemplateFile('templates/import_form.pt')
+    @property
+    def label(self):
+        return _(u"Import ${name}", mapping={
+            'name': self.context.title
+        })
 
     @property
     def fields(self):
         fields = field.Fields(IImportFormSchema)
-
-        for f in fields.values():
-            f.field = copy(f.field)
-
-        fields['portal_type'].field.vocabulary = SimpleVocabulary.fromItems(
-            (fti.title, fti.id) for fti in self.context.available_types()
-        )
-
+        self.prepare_portal_type_field(fields)
         return fields
 
+    @property
+    def available_actions(self):
+        yield dict(name='import', title=_(u'Import'), css_class='context')
+        yield dict(name='cancel', title=_(u'Cancel'))
+
+    def available_types_vocabulary(self):
+        translate = lambda txt: self.translate(unicode(txt))
+        return SimpleVocabulary(terms=[
+            SimpleTerm(fti.id, fti.id, translate(fti.title)) for fti
+            in self.context.available_types()
+        ])
+
+    def prepare_portal_type_field(self, fields):
+        f = fields['portal_type']
+        vocabulary = self.available_types_vocabulary()
+
+        f.field = copy(f.field)
+        f.field.vocabulary = vocabulary
+        f.widgetFactory = RadioFieldWidget
+        f.field.default = vocabulary._terms[0].value
+
     def get_format_from_filename(self, filename):
-        if not '.' in filename:
-            return ''
-        else:
+        if '.' in filename:
             return filename.split('.')[-1]
+        else:
+            return ''
 
-    @buttonAndHandler(_(u'Import'), name='import')
-    def run_import(self, action):
-
+    def handle_import(self):
         if not self.parameters:
             return
 
@@ -97,7 +109,3 @@ class ImportForm(BaseForm):
             self.raise_action_error(e.translate(self.request))
         else:
             self.request.response.redirect(self.context.absolute_url())
-
-    @buttonAndHandler(_(u'Cancel'), name='cancel')
-    def cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())

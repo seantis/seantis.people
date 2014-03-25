@@ -5,6 +5,9 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds the ability to export people to csv, xls, xlsx or json.
+  [href]
+
 - Adds 'is_active_person' property which if present and False hides the given
   person from the person list for anonymous users.
   [href]

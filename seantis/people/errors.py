@@ -14,6 +14,12 @@ class TranslatableException(Exception):
         return tools.translator(request)(self.message)
 
 
+class ContentExportError(TranslatableException):
+
+    def __repr__(self):
+        return 'ContentExportError(message="{}")'.format(self.message)
+
+
 class ContentImportError(TranslatableException):
 
     def __repr__(self):

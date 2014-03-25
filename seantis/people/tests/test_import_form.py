@@ -25,7 +25,9 @@ class TestImportForm(tests.IntegrationTestCase):
         form = self.get_import_form()
         types = form.fields['portal_type'].field.vocabulary.by_token
 
-        self.assertEqual(types['employee'].value, new_type.id)
+        self.assertEqual(types.values()[0].title, u'employee')
+        self.assertEqual(types.values()[0].value, new_type.id)
+        self.assertEqual(types.values()[0].token, new_type.id)
 
     def test_import_format(self):
         form = self.get_import_form()
@@ -43,9 +45,7 @@ class TestImportForm(tests.IntegrationTestCase):
             'import_file': MockFile('test.jpg', None)
         }, None))
 
-        self.assertRaises(
-            ActionExecutionError, form.run_import.func, form, 'import'
-        )
+        self.assertRaises(ActionExecutionError, form.handle_import)
         self.assertTrue(abort.called)
 
     @patch('seantis.people.browser.import_form.import_people')
@@ -59,6 +59,6 @@ class TestImportForm(tests.IntegrationTestCase):
 
         import_people.return_value = 3
 
-        form.run_import.func(form, 'import')
+        form.handle_import()
 
         self.assertEqual(form.status.mapping['count'], 3)

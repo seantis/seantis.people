@@ -29,5 +29,9 @@
     url_expr="string:${object_url}/import" visible="True" i18n:attributes="title">
     <permission value="Modify portal content"/>
   </action>
+  <action i18n:domain="seantis.people" title="Export" action_id="export" category="object" condition_expr=""
+    url_expr="string:${object_url}/export" visible="True" i18n:attributes="title">
+    <permission value="Modify portal content"/>
+  </action>
 
 </object>
