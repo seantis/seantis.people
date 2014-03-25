@@ -30,7 +30,8 @@ def export_people(request, container, portal_type, fields):
 
     records = (get_record(request, person, fields) for person in people)
 
-    dataset = tablib.Dataset(headers=[f[1] for f in fields])
+    translate = tools.translator(request, 'seantis.people')
+    dataset = tablib.Dataset(headers=[translate(f[1]) for f in fields])
     map(dataset.append, records)
 
     return dataset
@@ -79,6 +80,10 @@ def get_field(person, field):
 
     if isinstance(value, basestring):
         return unicode(value)
+
+    if field in person.membership_fields.keys():
+        organizations = (api.content.get(UID=i).title for i in value.keys())
+        return u', '.join(organizations)
 
     if isinstance(value, (list, tuple, set)):
         return u', '.join(value)
