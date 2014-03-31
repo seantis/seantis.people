@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.17 (unreleased)
+0.17 (2014-03-31)
 ~~~~~~~~~~~~~~~~~
 
 - Adds support for url, date and datetime fields to the import.
