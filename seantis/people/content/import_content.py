@@ -12,8 +12,11 @@ from plone import namedfile
 from zope.schema import getFields, getValidationErrors, Text
 from zope.schema._bootstrapinterfaces import RequiredMissing
 from zope.schema.interfaces import (
-    IFromUnicode, ValidationError, SchemaNotFullyImplemented
+    IFromUnicode, ValidationError, SchemaNotFullyImplemented,
+    IDate, IDatetime, IURI
 )
+
+from isodate import parse_date, parse_datetime
 
 from seantis.people import _
 from seantis.people.errors import ContentImportError
@@ -29,6 +32,7 @@ def import_people(request, container, portal_type, format, data):
     schema = tools.get_schema_from_portal_type(portal_type)
 
     for ix, record in enumerate(dataset.dict):
+        log.info('processing row number {}'.format(ix+1))
         try:
             values = get_attribute_values(record, attribute_map)
 
@@ -143,7 +147,7 @@ def download_field_from_url(field, url):
                 else:
                     return image
             except IOError:
-                pass
+                return None
 
     return False
 
@@ -157,6 +161,25 @@ def get_attribute_values(record, attribute_map):
         if downloaded is not False:
             values[field.__name__] = downloaded
             continue
+
+        if IDate.providedBy(field):
+            if not record[header]:
+                values[field.__name__] = None
+            else:
+                values[field.__name__] = parse_date(record[header])
+            continue
+
+        if IDatetime.providedBy(field):
+            if not record[header]:
+                values[field.__name__] = None
+            else:
+                values[field.__name__] = parse_datetime(record[header])
+            continue
+
+        if IURI.providedBy(field):
+            if not record[header].strip():
+                values[field.__name__] = None
+                continue
 
         assert IFromUnicode.providedBy(field), """
             {} does not support fromUnicode

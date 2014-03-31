@@ -5,6 +5,9 @@ Changelog
 0.17 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds support for url, date and datetime fields to the import.
+  [href]
+
 - Adds the ability to export people to csv, xls, xlsx or json.
   [href]
 
