@@ -141,6 +141,37 @@ class TestList(tests.IntegrationTestCase):
         # unless overriden by flag
         self.assertEqual(len(lst.people(include_inactive=True)), 2)
 
+    def test_list_unrestricted(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+
+            person = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                workflow='simple_publication_workflow'
+            )
+
+            abed = api.content.create(
+                title='Abed', type=person.id, container=lst
+            )
+
+            self.assertEqual(len(lst.people()), 1)
+
+        # we are no longer admin so we don't see the private people
+        self.assertEqual(len(lst.people()), 0)
+
+        # unless we request it
+        self.assertEqual(len(lst.people(unrestricted_search=True)), 1)
+
+        # or we publish
+        with self.user('admin'):
+            api.content.transition(obj=abed, transition='publish')
+
+        self.assertEqual(len(lst.people()), 1)
+
     def test_list_view_empty(self):
         with self.user('admin'):
             lst = api.content.create(

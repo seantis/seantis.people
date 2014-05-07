@@ -5,8 +5,8 @@ Changelog
 0.18 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-- Nothing yet.
- [href]
+- Adds the ability to do an unrestricted search on the people's list.
+  [href]
 
 0.17 (2014-03-31)
 ~~~~~~~~~~~~~~~~~
@@ -93,7 +93,7 @@ Changelog
   view. This is the default in the standard type.
   [href]
 
-- Adds a standard profile which is more or less compatible with 
+- Adds a standard profile which is more or less compatible with
   egov.contactdirectory. Fixes #6.
   [href]
 
@@ -166,7 +166,7 @@ Changelog
 - Adds collective.cover support as an extra
   [href]
 
-- Memberships can now be defined dynamically through the MembershipSource 
+- Memberships can now be defined dynamically through the MembershipSource
   adapter.
   [href]
 

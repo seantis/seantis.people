@@ -23,7 +23,8 @@ class List(Container):
         filter=None,
         batch_start=None,
         batch_size=None,
-        include_inactive=False
+        include_inactive=False,
+        unrestricted_search=False
     ):
         catalog = api.portal.get_tool('portal_catalog')
 
@@ -58,7 +59,10 @@ class List(Container):
 
                 query[keyword_index] = {'query': filter.value}
 
-        return catalog(query)
+        if unrestricted_search:
+            return catalog.unrestrictedSearchResults(query)
+        else:
+            return catalog(query)
 
     def letters(self):
         catalog = api.portal.get_tool('portal_catalog')
