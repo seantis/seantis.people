@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.18 (unreleased)
+0.18 (2014-05-08)
 ~~~~~~~~~~~~~~~~~
 
 - Adds the ability to do an unrestricted search on the people's list.
