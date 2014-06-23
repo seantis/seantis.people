@@ -150,8 +150,12 @@ class TestList(tests.IntegrationTestCase):
             )
 
             person = self.new_temporary_type(
-                behaviors=[IPerson.__identifier__],
-                workflow='simple_publication_workflow'
+                behaviors=[IPerson.__identifier__]
+            )
+
+            workflows = api.portal.get_tool('portal_workflow')
+            workflows.setChainForPortalTypes(
+                [person.id], 'simple_publication_workflow'
             )
 
             abed = api.content.create(
@@ -161,7 +165,7 @@ class TestList(tests.IntegrationTestCase):
             self.assertEqual(len(lst.people()), 1)
 
         # we are no longer admin so we don't see the private people
-        self.assertEqual(len(lst.people()), 0)
+        self.assertEqual(len(lst.people(unrestricted_search=False)), 0)
 
         # unless we request it
         self.assertEqual(len(lst.people(unrestricted_search=True)), 1)
