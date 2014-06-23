@@ -6,6 +6,7 @@ import tablib
 from zope.i18nmessageid.message import Message
 
 from plone import api
+from plone.app.textfield.value import RichTextValue
 from plone.namedfile.file import NamedImage, NamedBlobImage
 
 from seantis.plonetools import tools
@@ -102,6 +103,9 @@ def get_field(person, field):
 
     if isinstance(value, time):
         return unicode(isodate.time_isoformat(value))
+
+    if isinstance(value, RichTextValue):
+        return unicode(value.output)
 
     if isinstance(value, (NamedImage, NamedBlobImage)):
         base = person.absolute_url()

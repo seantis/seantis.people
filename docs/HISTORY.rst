@@ -5,7 +5,8 @@ Changelog
 0.19 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- The export now also works with richtext fields. Fixes #18.
+  [href]
 
 0.18 (2014-05-08)
 ~~~~~~~~~~~~~~~~~
