@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.19 (unreleased)
+0.19 (2014-06-24)
 ~~~~~~~~~~~~~~~~~
 
 - Adds a navigation bar to the person detail view. Fixes #17.
