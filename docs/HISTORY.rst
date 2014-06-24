@@ -5,6 +5,9 @@ Changelog
 0.19 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds a navigation bar to the person detail view. Fixes #17.
+  [href]
+
 - The export now also works with richtext fields. Fixes #18.
   [href]
 

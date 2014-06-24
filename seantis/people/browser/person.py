@@ -68,3 +68,36 @@ class PersonView(BaseView):
 
     def split_screen(self):
         return set(('left', 'right')).issubset(set(self.visible_positions()))
+
+    def get_parent(self):
+        return self.context.aq_inner.aq_parent
+
+    def get_adjacent_urls(self):
+        """ Returns the previous and next url of the current item, if found.
+        Only works inside people lists.
+
+        """
+        parent = self.get_parent()
+
+        if not hasattr(parent, 'people'):
+            return None, None
+
+        people = self.get_parent().people()
+
+        if len(people) <= 1:
+            return None, None
+
+        people_ids = list(p.id for p in self.get_parent().people())
+        context_id = self.context.getId()
+
+        try:
+            position = people_ids.index(context_id)
+        except ValueError:
+            return None, None
+
+        if position == 0:
+            return None, people[1].getURL()
+        if position == len(people) - 1:
+            return people[position - 1].getURL(), None
+        else:
+            return people[position - 1].getURL(), people[position + 1].getURL()

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-03-21 15:38+0000\n"
+"POT-Creation-Date: 2014-06-24 08:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr "Verfügbare Profile"
 msgid "Biography"
 msgstr "Biographie"
 
-#: ./browser/export_form.py:94
+#: ./browser/export_form.py:118
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -52,7 +52,7 @@ msgstr "Abbrechen"
 msgid "Click to Reset"
 msgstr "Zurücksetzen"
 
-#: ./errors.py:37
+#: ./errors.py:43
 msgid "Column ${column}"
 msgstr "Spalte ${column}"
 
@@ -65,20 +65,24 @@ msgstr "Abteilung"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ./browser/export_form.py:93
+#: ./browser/export_form.py:117
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr "Export"
 
-#: ./browser/export_form.py:47
+#: ./browser/export_form.py:58
 msgid "Export ${name}"
 msgstr "${name} exportieren"
 
-#: ./browser/export_form.py:24
+#: ./content/export_content.py:70
+msgid "Field '${name}' does not exist"
+msgstr "Das Feld mit dem Namen '${name}' existiert nicht"
+
+#: ./browser/export_form.py:28
 msgid "Fields"
 msgstr "Felder"
 
-#: ./browser/export_form.py:25
+#: ./browser/export_form.py:29
 msgid "Fields to include in the export"
 msgstr "Felder die im Export enthalten sein sollen"
 
@@ -95,7 +99,7 @@ msgstr "Filter"
 msgid "First Name"
 msgstr "Vorname"
 
-#: ./browser/export_form.py:31
+#: ./browser/export_form.py:35
 msgid "Format"
 msgstr "Format"
 
@@ -163,11 +167,19 @@ msgstr "Verschiedenes"
 msgid "Name of the list of people"
 msgstr "Name der Personenliste"
 
+#: ./browser/templates/person.pt:37
+msgid "Next portrait"
+msgstr "Nächstes Portrait"
+
+#: ./content/export_content.py:80
+msgid "No"
+msgstr "Nein"
+
 #: ./browser/templates/controlpanel.pt:50
 msgid "No available profiles."
 msgstr "Keine verfügbaren Profile."
 
-#: ./content/import_content.py:74
+#: ./content/import_content.py:78
 msgid "No column headers were found"
 msgstr "Es wurden keine Spaltentitel gefunden"
 
@@ -178,6 +190,10 @@ msgstr "Keine installierten Profile."
 #: ./browser/templates/list.pt:22
 msgid "No people in the list."
 msgstr "Keine Personen in der Liste."
+
+#: ./content/export_content.py:30
+msgid "No people to export"
+msgstr "Keine Personen für den Export vorhanden"
 
 #: ./browser/templates/controlpanel.pt:74
 msgid "No upgradeable profiles."
@@ -237,11 +253,15 @@ msgstr "Politische Partei"
 msgid "Portrait"
 msgstr "Portrait"
 
+#: ./browser/templates/person.pt:36
+msgid "Previous portrait"
+msgstr "Vorheriges Portrait"
+
 #: ./types/standard.xml
 msgid "Private"
 msgstr "Privat"
 
-#: ./content/import_content.py:191
+#: ./content/import_content.py:214
 msgid "Required column is missing"
 msgstr "Benötigte Spalte fehlt"
 
@@ -249,7 +269,7 @@ msgstr "Benötigte Spalte fehlt"
 msgid "Role inside organization"
 msgstr "Rolle in der Organisation"
 
-#: ./errors.py:32
+#: ./errors.py:38
 msgid "Row ${row}"
 msgstr "Zeile ${row}"
 
@@ -273,11 +293,11 @@ msgstr "Standard Kontakt"
 msgid "Successfully imported ${count} records"
 msgstr "${count} Eintrage erfolgreich importiert"
 
-#: ./content/import_content.py:110
+#: ./content/import_content.py:114
 msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
 msgstr "Die ${name} Spalte ist ungültig. \"title\" and \"id\" sind reservierte Feldnamen und dürfen nicht verwendet werden."
 
-#: ./content/import_content.py:102
+#: ./content/import_content.py:106
 msgid "The ${name} column is specified more than once"
 msgstr "Die ${name} Spalte ist mehr als einmal vorhanden"
 
@@ -296,4 +316,8 @@ msgstr "Aktualisierbare Profile"
 #: ./types/standard.xml
 msgid "Website"
 msgstr "Webseite"
+
+#: ./content/export_content.py:80
+msgid "Yes"
+msgstr "Ja"
 

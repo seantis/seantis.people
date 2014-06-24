@@ -37,6 +37,63 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(view.visible_positions(), ['left', 'right'])
         self.assertTrue(view.split_screen())
 
+    def test_person_view_navigation(self):
+        with self.user('admin'):
+            lst = api.content.create(
+                id='test',
+                type='seantis.people.list',
+                container=self.new_temporary_folder()
+            )
+            person_type = self.new_temporary_type(behaviors=[
+                IPerson.__identifier__
+            ])
+            one = api.content.create(
+                id='one',
+                type=person_type.id,
+                container=lst,
+                name='test',
+                town='test',
+                empty=''
+            )
+
+            view = one.unrestrictedTraverse('@@view')
+            self.assertEqual(view.get_adjacent_urls(), (None, None))
+
+            two = api.content.create(
+                id='two',
+                type=person_type.id,
+                container=lst,
+                name='test',
+                town='test',
+                empty=''
+            )
+
+            view = one.unrestrictedTraverse('@@view')
+            self.assertEqual(
+                view.get_adjacent_urls(), (None, two.absolute_url())
+            )
+
+            view = two.unrestrictedTraverse('@@view')
+            self.assertEqual(
+                view.get_adjacent_urls(), (one.absolute_url(), None)
+            )
+
+            three = api.content.create(
+                id='three',
+                type=person_type.id,
+                container=lst,
+                name='test',
+                town='test',
+                empty=''
+            )
+
+            view = two.unrestrictedTraverse('@@view')
+            self.assertEqual(
+                view.get_adjacent_urls(), (
+                    one.absolute_url(), three.absolute_url()
+                )
+            )
+
     def test_custom_titles(self):
         with self.user('admin'):
             person_type = self.new_temporary_type(behaviors=[

@@ -117,6 +117,5 @@
         <people:item>memberships</people:item>
         <people:item>biographie</people:item>
     </people:details>
-
   </schema>
 </model>

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-03-21 15:38+0000\n"
+"POT-Creation-Date: 2014-06-24 08:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Biography"
 msgstr ""
 
-#: ./browser/export_form.py:94
+#: ./browser/export_form.py:118
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr ""
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Click to Reset"
 msgstr ""
 
-#: ./errors.py:37
+#: ./errors.py:43
 msgid "Column ${column}"
 msgstr ""
 
@@ -68,20 +68,24 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./browser/export_form.py:93
+#: ./browser/export_form.py:117
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr ""
 
-#: ./browser/export_form.py:47
+#: ./browser/export_form.py:58
 msgid "Export ${name}"
 msgstr ""
 
-#: ./browser/export_form.py:24
+#: ./content/export_content.py:70
+msgid "Field '${name}' does not exist"
+msgstr ""
+
+#: ./browser/export_form.py:28
 msgid "Fields"
 msgstr ""
 
-#: ./browser/export_form.py:25
+#: ./browser/export_form.py:29
 msgid "Fields to include in the export"
 msgstr ""
 
@@ -98,7 +102,7 @@ msgstr ""
 msgid "First Name"
 msgstr ""
 
-#: ./browser/export_form.py:31
+#: ./browser/export_form.py:35
 msgid "Format"
 msgstr ""
 
@@ -166,11 +170,19 @@ msgstr ""
 msgid "Name of the list of people"
 msgstr ""
 
+#: ./browser/templates/person.pt:37
+msgid "Next portrait"
+msgstr ""
+
+#: ./content/export_content.py:80
+msgid "No"
+msgstr ""
+
 #: ./browser/templates/controlpanel.pt:50
 msgid "No available profiles."
 msgstr ""
 
-#: ./content/import_content.py:74
+#: ./content/import_content.py:78
 msgid "No column headers were found"
 msgstr ""
 
@@ -180,6 +192,10 @@ msgstr ""
 
 #: ./browser/templates/list.pt:22
 msgid "No people in the list."
+msgstr ""
+
+#: ./content/export_content.py:30
+msgid "No people to export"
 msgstr ""
 
 #: ./browser/templates/controlpanel.pt:74
@@ -240,11 +256,15 @@ msgstr ""
 msgid "Portrait"
 msgstr ""
 
+#: ./browser/templates/person.pt:36
+msgid "Previous portrait"
+msgstr ""
+
 #: ./types/standard.xml
 msgid "Private"
 msgstr ""
 
-#: ./content/import_content.py:191
+#: ./content/import_content.py:214
 msgid "Required column is missing"
 msgstr ""
 
@@ -252,7 +272,7 @@ msgstr ""
 msgid "Role inside organization"
 msgstr ""
 
-#: ./errors.py:32
+#: ./errors.py:38
 msgid "Row ${row}"
 msgstr ""
 
@@ -276,11 +296,11 @@ msgstr ""
 msgid "Successfully imported ${count} records"
 msgstr ""
 
-#: ./content/import_content.py:110
+#: ./content/import_content.py:114
 msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
 msgstr ""
 
-#: ./content/import_content.py:102
+#: ./content/import_content.py:106
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
@@ -298,5 +318,9 @@ msgstr ""
 
 #: ./types/standard.xml
 msgid "Website"
+msgstr ""
+
+#: ./content/export_content.py:80
+msgid "Yes"
 msgstr ""
 
