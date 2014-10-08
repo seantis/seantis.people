@@ -25,10 +25,7 @@ class ReindexListView(BaseView):
     grok.name('reindex')
 
     def render(self):
-
-        for id, obj in self.context.objectItems():
-            obj.reindexObject()
-
+        self.context.reindex_organisations()
         return 'objects reindexed'
 
 

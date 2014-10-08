@@ -99,6 +99,10 @@ class List(Container):
 
         return None
 
+    def reindex_organisations(self):
+        for brain in self.people(unrestricted_search=True):
+            brain.getObject().reindexObject(idxs=['membership_person'])
+
 
 class ListConstrainTypes(grok.Adapter):
     grok.provides(IConstrainTypes)
