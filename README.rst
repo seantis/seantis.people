@@ -92,7 +92,7 @@ referncing the person:
 
 Your list of people should now look something like this:
 
-.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-06-add-membership.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-06-result.png
    :alt: Add Folder Screenshot
 
 Status
