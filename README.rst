@@ -74,11 +74,6 @@ of people and add them:
 On the people's list you can now add people. You can only add people of the
 same type together on the same list:
 
-.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-02-add-list.png
-   :alt: Add List of People Screenshot
-
-Open the people's list and add a new Standard Contact, to populate the list:
-
 .. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-03-add-contact.png
    :alt: Add Contact Screenshot
 
