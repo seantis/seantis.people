@@ -11,21 +11,22 @@ following itches:
   should have the option to create its own set of fields. At the same time
   there should be at least one reasonable standard.
 
-- Some fields should only be visible with certain permissions. Think mobile
-  phone number.
+- Some fields should only be visible with certain permissions.
 
-- Elected officials are part of many comitees and councils. It must be easy
-  to define the timespans during which any person was part of such an
-  organization. It must also always be clear what the role of the person was.
+- It must be possible to put people into various organisations and show the
+  membership of those organisations.
 
 Design
 ------
 
-This is how we plan to scratch the aforementioned itches:
+This is how it is done:
 
 - We give the user the possiblity to define a list of people. Each list
   consists of a number of dexterity objects with IPerson behavior. Within
   one list only one dexterity type is allowed.
+
+- This list of people is the same for all lists of people - it's just that 
+  the contained people must all have the same type.
 
 - Through the schema of the dexterity type we define the fields, their
   required read and write permissions, the fields shown in the list, the order
@@ -37,20 +38,73 @@ This is how we plan to scratch the aforementioned itches:
   even possible to create them through the web, but we don't recommend this
   approach for various reasons.)
 
-- We devine an organzation-behavior which any folderish dexterity type may 
-  adapt. Types with that behavior may then have people added to them with
-  entry, exit and role information.
+- Any folderish type can be an organization. For people to be members of an
+  organization, a membership type can be added to such a folderish type. This
+  membership type links to the actual person object.
 
-- We display the memberships of each person using the entry, exit and role
-  information. We identity the organization solely by url and title. This will
-  give users the ability to have some plone page act as an organization, which
-  frees os from having to reinvent the wheel there.
+- We identify the organization solely by url and title. This makes
+  organisations very flexible. For example, with `seantis.cover.people`_
+  we implemented organisations using collective.cover.
+
+Installation & Usage
+--------------------
+
+To see what it's all about install seantis.people using buildout (we assume
+you know how to do that) and activate the add-on using the controlpanel.
+
+Note that we don't provide any styling for seantis.people. We build on
+`plonetheme.onegov`_ and try to keep our HTML as simple as possible.
+
+Having installed seantis.people be sure to open the seantis.people controlpanel
+found on the plone contrlpanel (under "Add-on Configuration").
+
+There you can select the Person type you would like to use. Currently this
+will without a doubt be "Seantis People - Standard". To use it, click
+"Install":
+
+.. image:: readme-01-controlpanel.png
+   :alt: Controlpanel Screenshot
+
+Having done that, go to the front-page or to wherever you want to place a list
+of people and add them:
+
+.. image:: readme-02-add-list.png
+   :alt: Add List of People Screenshot
+
+On the people's list you can now add people. You can only add people of the
+same type together on the same list:
+
+.. image:: readme-02-add-list.png
+   :alt: Add List of People Screenshot
+
+Open the people's list and add a new Standard Contact, to populate the list:
+
+.. image:: readme-03-add-contact.png
+   :alt: Add Contact Screenshot
+
+Going back to the list you will notice that this person does not belong to
+an organisation. To add a person to an organisation you can simply create
+a folder with the name of the organisation as its title:
+
+.. image:: readme-04-add-folder.png
+   :alt: Add Folder Screenshot
+
+Finally, add the person to the organisation by creating a membership and
+referncing the person:
+
+.. image:: readme-05-add-membership.png
+   :alt: Add Folder Screenshot
+
+Your list of people should now look something like this:
+
+.. image:: readme-06-add-membership.png
+   :alt: Add Folder Screenshot
 
 Status
 ------
 
-The people types and list are pretty much ready for a first release. We are
-currently working on the organisation part of the module.
+Seantis.people is used in production already. Though it's one of our newer
+modules so it hasn't been as battle tested as some of our other offerings.
 
 Alternatives
 ------------
@@ -93,3 +147,5 @@ seantis.people is released under GPL v2
 .. -> external links
 
 .. _OneGov: http://onegov.ch/
+.. _seantis.cover.people: https://github.com/seantis/seantis.cover.people
+.. _plonetheme.onegov: https://github.com/onegov/plonetheme.onegov
