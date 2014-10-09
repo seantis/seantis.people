@@ -250,3 +250,15 @@ class PeopleSchemaMetaHandler(object):
     def write(self, schema_node, schema):
         for handler in self.handlers:
             handler.write(schema_node, schema)
+
+    @staticmethod
+    def register_utility():
+        from zope.component import provideUtility
+
+        from seantis.people.supermodel.schemahandler import (
+            PeopleSchemaMetaHandler
+        )
+        provideUtility(
+            component=PeopleSchemaMetaHandler(),
+            name='seantis.people.people_schema_handler'
+        )

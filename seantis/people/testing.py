@@ -9,6 +9,7 @@ from plone.testing import z2
 from Testing import ZopeTestCase
 from zope.configuration import xmlconfig
 
+
 class TestLayer(PloneSandboxLayer):
 
     default_bases = (PLONE_FIXTURE,)
@@ -18,6 +19,15 @@ class TestLayer(PloneSandboxLayer):
             self[key] = value
 
     def setUpZope(self, app, configurationContext):
+
+        # register the people schemahandler before anything else to ensure
+        # that the seantis.people.types.* interfaces are loaded correctly
+
+        # if not, the xml base of those interfaces is not parsed correctly
+        from seantis.people.supermodel.schemahandler import (
+            PeopleSchemaMetaHandler
+        )
+        PeopleSchemaMetaHandler.register_utility()
 
         # Set up sessioning objects
         app.REQUEST['SESSION'] = self.Session()
@@ -43,14 +53,20 @@ class TestLayer(PloneSandboxLayer):
         z2.uninstallProduct(app, 'seantis.people')
 
 
-TESTFIXTURE = TestLayer()
+class BrowserTestLayer(TestLayer):
+
+    def setUpPloneSite(self, portal):
+        # install the standard people type for the browser tests
+        super(BrowserTestLayer, self).setUpPloneSite(portal)
+        applyProfile(portal, 'seantis.people:standard')
+
 
 INTEGRATION_TESTING = IntegrationTesting(
-    bases=(TESTFIXTURE, ),
+    bases=(TestLayer(), ),
     name="Testfixture:Integration"
 )
 
 FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(TESTFIXTURE, ),
+    bases=(BrowserTestLayer(), ),
     name="Testfixture:Functional"
 )
