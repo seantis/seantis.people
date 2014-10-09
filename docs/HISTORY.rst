@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.2 (unreleased)
+0.20 (2014-10-09)
 ~~~~~~~~~~~~~~~~~
 
 - Adds a permanent work-around for the long standing issue #10.

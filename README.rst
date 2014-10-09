@@ -101,6 +101,8 @@ Status
 Seantis.people is used in production already. Though it's one of our newer
 modules so it hasn't been as battle tested as some of our other offerings.
 
+Once we feel perfectly confident about this you'll see an 1.0 release.
+
 Alternatives
 ------------
 
