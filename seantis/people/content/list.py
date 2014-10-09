@@ -38,8 +38,6 @@ class List(Container):
             if fti.aq_base.allowed_content_types != types:
                 fti.aq_base.allowed_content_types = types
 
-            fti.fuckyou = True
-
             return fti
 
     def invokeFactory(self, type, content_id, **kwargs):

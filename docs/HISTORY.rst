@@ -5,6 +5,9 @@ Changelog
 0.2 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds a permanent work-around for the long standing issue #10.
+  [href]
+
 - Makes sure that the persons are only available on the list of people.
   [href]
 
