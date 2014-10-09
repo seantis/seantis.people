@@ -2,10 +2,11 @@
 Changelog
 ---------
 
-0.20 (unreleased)
+0.2 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Makes sure that the persons are only available on the list of people.
+  [href]
 
 0.19 (2014-06-24)
 ~~~~~~~~~~~~~~~~~
