@@ -62,42 +62,42 @@ There you can select the Person type you would like to use. Currently this
 will without a doubt be "Seantis People - Standard". To use it, click
 "Install":
 
-.. image:: readme-01-controlpanel.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-01-controlpanel.png
    :alt: Controlpanel Screenshot
 
 Having done that, go to the front-page or to wherever you want to place a list
 of people and add them:
 
-.. image:: readme-02-add-list.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-02-add-list.png
    :alt: Add List of People Screenshot
 
 On the people's list you can now add people. You can only add people of the
 same type together on the same list:
 
-.. image:: readme-02-add-list.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-02-add-list.png
    :alt: Add List of People Screenshot
 
 Open the people's list and add a new Standard Contact, to populate the list:
 
-.. image:: readme-03-add-contact.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-03-add-contact.png
    :alt: Add Contact Screenshot
 
 Going back to the list you will notice that this person does not belong to
 an organisation. To add a person to an organisation you can simply create
 a folder with the name of the organisation as its title:
 
-.. image:: readme-04-add-folder.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-04-add-folder.png
    :alt: Add Folder Screenshot
 
 Finally, add the person to the organisation by creating a membership and
 referncing the person:
 
-.. image:: readme-05-add-membership.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-05-add-membership.png
    :alt: Add Folder Screenshot
 
 Your list of people should now look something like this:
 
-.. image:: readme-06-add-membership.png
+.. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-06-add-membership.png
    :alt: Add Folder Screenshot
 
 Status
