@@ -5,7 +5,8 @@ Changelog
 0.21 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Adds renderer for Bool field type.
+  [href]
 
 0.20 (2014-10-09)
 ~~~~~~~~~~~~~~~~~
