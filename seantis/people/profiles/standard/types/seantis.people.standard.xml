@@ -5,7 +5,7 @@
  
   <!-- Basic metadata -->
   <property name="title" i18n:translate="">Standard Contact</property>
-  <property name="icon_expr">string:${portal_url}/file_icon.png</property>
+  <property name="icon_expr">string:${portal_url}/user.png</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">True</property>
   <property name="allowed_content_types"></property>
