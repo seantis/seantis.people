@@ -5,6 +5,9 @@ Changelog
 0.21 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds support for Set Choices and List Textlines in the import.
+  [href]
+
 - Adds renderer for Bool field type.
   [href]
 

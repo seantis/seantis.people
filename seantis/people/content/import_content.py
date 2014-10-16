@@ -13,7 +13,7 @@ from zope.schema import getFields, getValidationErrors, Text
 from zope.schema._bootstrapinterfaces import RequiredMissing
 from zope.schema.interfaces import (
     IFromUnicode, ValidationError, SchemaNotFullyImplemented,
-    IDate, IDatetime, IURI
+    IDate, IDatetime, IURI, ITextLine, IList, ISet, IChoice
 )
 
 from isodate import parse_date, parse_datetime
@@ -99,6 +99,7 @@ def get_attribute_map(request, headers, portal_type):
         elif header in known_titles:
             field = known_titles[header]
         else:
+            log.warn(u"The header '{}' was ignored.".format(header))
             continue
 
         if field in attribute_map.values():
@@ -152,6 +153,15 @@ def download_field_from_url(field, url):
     return False
 
 
+def convert_to_list(value):
+    if '\n' in value:
+        separator = '\n'
+    else:
+        separator = ','
+
+    return [s.strip() for s in value.split(separator)]
+
+
 def get_attribute_values(record, attribute_map):
     values = {}
 
@@ -179,6 +189,16 @@ def get_attribute_values(record, attribute_map):
         if IURI.providedBy(field):
             if not record[header].strip():
                 values[field.__name__] = None
+                continue
+
+        if IList.providedBy(field):
+            if ITextLine.providedBy(field.value_type):
+                values[field.__name__] = convert_to_list(record[header])
+                continue
+
+        if ISet.providedBy(field):
+            if IChoice.providedBy(field.value_type):
+                values[field.__name__] = set(convert_to_list(record[header]))
                 continue
 
         assert IFromUnicode.providedBy(field), """
