@@ -78,7 +78,23 @@ class RichTextRenderer(object):
 class ListRenderer(object):
 
     def __call__(self, context, field, options={}, default={}):
-        return u', '.join(getattr(context, field, tuple()))
+        value = getattr(context, field, tuple())
+
+        if not value:
+            return u''
+
+        render_type = options.get(field, default).get(
+            'list_type', 'comma-separated'
+        )
+
+        if render_type == 'comma-separated':
+            return u', '.join(getattr(context, field, tuple()))
+        elif render_type == 'ul':
+            return u'<ul class="dense"><li>{}</li></ul>'.format(
+                u'</li><li>'.join(
+                    value
+                )
+            )
 
 
 class LinkListRenderer(object):
@@ -178,12 +194,14 @@ class Renderer(object):
         if place == 'list':
             self.options = get_list_render_options(schema)
             self.default = {
-                'image_size': 'tile'
+                'image_size': 'tile',
+                'list_type': 'comma-separated'
             }
         else:
             self.options = get_detail_render_options(schema)
             self.default = {
-                'image_size': 'mini'
+                'image_size': 'mini',
+                'list_type': 'comma-separated'
             }
 
     def render(self, context, field):

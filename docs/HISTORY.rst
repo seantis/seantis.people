@@ -5,6 +5,10 @@ Changelog
 0.21 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- List fields can now be rendered using 'comma-separated' (default) or 'ul',
+  the latter creates a ul in html.
+  [href]
+
 - Adds the ability to define render options on the list and detail view.
   [href]
 
