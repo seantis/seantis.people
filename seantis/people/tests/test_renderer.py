@@ -115,7 +115,7 @@ class TestRenderer(tests.IntegrationTestCase):
 
     def test_image(self):
 
-        renderer = Renderer(self.schema, context='list')
+        renderer = Renderer(self.schema, place='list')
 
         class MockContext(object):
             def getURL(self):
@@ -132,14 +132,21 @@ class TestRenderer(tests.IntegrationTestCase):
         context.image = NamedImage()
         self.assertEqual(
             renderer.render(context, 'image'),
-            u'<img src="http://nohost/mockobject/@@images/image/thumb" />'
+            u'<img src="http://nohost/mockobject/@@images/image/tile" />'
         )
 
-        # if it does, getURL is used
+        # per default, the size on the detail view is different
+        renderer = Renderer(self.schema, place='detail')
+        self.assertEqual(
+            renderer.render(context, 'image'),
+            u'<img src="http://nohost/mockobject/@@images/image/mini" />'
+        )
+
+        # if the context provides ICatalogBrain, getURL is used
         directlyProvides(context, ICatalogBrain)
         self.assertEqual(
             renderer.render(context, 'image'),
-            u'<img src="http://nohost/mockbrain/@@images/image/thumb" />'
+            u'<img src="http://nohost/mockbrain/@@images/image/mini" />'
         )
 
     def test_uuid_list(self):

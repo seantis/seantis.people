@@ -197,7 +197,7 @@ class DetailsHandler(NodeHandler):
             render_options.update(self.render_options_from_items(tag))
 
         set_detail_fields(schema, detail_fields)
-        set_detail_render_options
+        set_detail_render_options(schema, render_options)
 
     def write(self, schema_node, schema):
         detail_fields = get_detail_fields(schema)
