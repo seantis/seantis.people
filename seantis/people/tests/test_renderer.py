@@ -65,7 +65,7 @@ class TestRenderer(tests.IntegrationTestCase):
         return loadString(self.model).schema
 
     def render_value(self, field, value):
-        renderer = Renderer(self.schema)
+        renderer = Renderer(self.schema, place='list')
         context = namedtuple('MockContext', [field])(value)
         return renderer.render(context, field)
 
@@ -115,7 +115,7 @@ class TestRenderer(tests.IntegrationTestCase):
 
     def test_image(self):
 
-        renderer = Renderer(self.schema)
+        renderer = Renderer(self.schema, context='list')
 
         class MockContext(object):
             def getURL(self):

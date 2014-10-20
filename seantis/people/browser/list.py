@@ -42,9 +42,7 @@ class ListView(BaseView):
     def update(self):
         if self.has_people:
             self.renderer = Renderer(
-                self.schema, redirects=get_compound_columns(), options={
-                    'image_size': 'tile'
-                }
+                self.schema, redirects=get_compound_columns(), place='list'
             )
 
     @property

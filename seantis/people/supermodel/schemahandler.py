@@ -9,6 +9,10 @@ PERSON_COLUMNS = u'seantis.people.person_column'
 PERSON_ORDER = u'seantis.people.order'
 PERSON_SELECTABLE = u'seantis.people.selectable'
 PERSON_DETAILS = u'seantis.people.details'
+PERSON_LIST_RENDER_OPTIONS = u'seantis.people.list_render_options'
+PERSON_DETAIL_RENDER_OPTIONS = u'seantis.people.detail_render_options'
+
+# typo, but not really a problem, so just leave it, or face migration
 PERSON_COLUMN_TITLE = u'senatis.people.column_title'
 
 # Supermodel namespace and prefix
@@ -87,6 +91,30 @@ def set_custom_column_titles(schema, titles):
     schema.setTaggedValue(PERSON_COLUMN_TITLE, titles)
 
 
+def set_list_render_options(schema, render_options):
+    schema.setTaggedValue(PERSON_LIST_RENDER_OPTIONS, render_options)
+
+
+def get_list_render_options(schema):
+    return schema.queryTaggedValue(PERSON_LIST_RENDER_OPTIONS, {})
+
+
+def set_detail_render_options(schema, render_options):
+    schema.setTaggedValue(PERSON_DETAIL_RENDER_OPTIONS, render_options)
+
+
+def get_detail_render_options(schema):
+    return schema.queryTaggedValue(PERSON_DETAIL_RENDER_OPTIONS, {})
+
+
+def render_options_to_dict(options):
+    return dict(o.split('=') for o in options.split(';'))
+
+
+def dict_to_render_options(options):
+    return ';'.join(sorted('='.join((k, v)) for k, v in options.items()))
+
+
 class NodeHandler(object):
 
     namespace = PEOPLE_NAMESPACE
@@ -113,6 +141,17 @@ class NodeHandler(object):
 
     def text(self, nodes):
         return [n.text.strip() for n in nodes]
+
+    def render_options_from_items(self, parent):
+        render_options = {}
+
+        for item in self.nodes(parent, 'item'):
+            if item.get('render-options'):
+                render_options[item.text] = render_options_to_dict(
+                    item.get('render-options')
+                )
+
+        return render_options
 
 
 class ItemListHandler(NodeHandler):
@@ -151,14 +190,18 @@ class DetailsHandler(NodeHandler):
             return
 
         detail_fields = {}
+        render_options = {}
 
         for tag in tags:
             detail_fields[tag.get('position') or 'left'] = self.items(tag)
+            render_options.update(self.render_options_from_items(tag))
 
         set_detail_fields(schema, detail_fields)
+        set_detail_render_options
 
     def write(self, schema_node, schema):
         detail_fields = get_detail_fields(schema)
+        render_options = get_detail_render_options(schema)
 
         if not detail_fields:
             return
@@ -170,6 +213,11 @@ class DetailsHandler(NodeHandler):
             for field in fields:
                 item = etree.Element(self.prefixed('item'))
                 item.text = field
+
+                if field in render_options:
+                    item.set('render-options', dict_to_render_options(
+                        render_options[field]
+                    ))
 
                 element.append(item)
 
@@ -185,6 +233,7 @@ class ColumnsHandler(NodeHandler):
             return
 
         columns, selectable_fields, titles = [], [], []
+        render_options = {}
 
         for tag in tags:
             for column in self.nodes(tag, 'column'):
@@ -196,14 +245,18 @@ class ColumnsHandler(NodeHandler):
                 titles.append(column.get('title'))
                 columns.append(column_items)
 
+                render_options.update(self.render_options_from_items(column))
+
         set_columns(schema, columns)
         set_selectable_fields(schema, selectable_fields)
         set_custom_column_titles(schema, titles)
+        set_list_render_options(schema, render_options)
 
     def write(self, schema_node, schema):
         columns = get_columns(schema)
         selectable_fields = get_selectable_fields(schema)
         titles = get_custom_column_titles(schema)
+        render_options = get_list_render_options(schema)
 
         if not columns:
             return
@@ -222,6 +275,12 @@ class ColumnsHandler(NodeHandler):
             for field in column:
                 item_el = etree.Element(self.prefixed('item'))
                 item_el.text = field
+
+                if field in render_options:
+                    item_el.set('render-options', dict_to_render_options(
+                        render_options[field]
+                    ))
+
                 column_el.append(item_el)
 
             columns_el.append(column_el)

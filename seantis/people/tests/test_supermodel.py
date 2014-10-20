@@ -15,7 +15,11 @@ from seantis.people.supermodel import (
     get_detail_fields,
     set_detail_fields,
     get_custom_column_titles,
-    set_custom_column_titles
+    set_custom_column_titles,
+    get_list_render_options,
+    set_list_render_options,
+    get_detail_render_options,
+    set_detail_render_options
 )
 
 
@@ -217,3 +221,59 @@ class TestSupermodel(tests.IntegrationTestCase):
         )
 
         self.assertEqual(xml.count('<people:details'), 1)
+
+    render_options_xml = """<?xml version='1.0' encoding='utf8'?>
+        <model  xmlns="http://namespaces.plone.org/supermodel/schema"
+                xmlns:people="http://namespaces.plone.org/supermodel/people">
+            <schema>
+                <people:columns>
+                    <people:column>
+                        <people:item
+                        render-options="image_size=small"
+                        >one</people:item>
+                    </people:column>
+                </people:columns>
+                <people:details>
+                    <people:item render-options="image_size=large"
+                    >one</people:item>
+                </people:details>
+            </schema>
+        </model>"""
+
+    def test_load_render_options(self):
+        model = loadString(self.render_options_xml)
+        list_options = get_list_render_options(model.schema)
+        detail_options = get_detail_render_options(model.schema)
+
+        self.assertEqual(list_options, {
+            'one': {
+                'image_size': 'small'
+            }
+        })
+
+        self.assertEqual(detail_options, {
+            'one': {
+                'image_size': 'large'
+            }
+        })
+
+    def test_write_render_options(self):
+        model = loadString(self.render_options_xml)
+
+        set_list_render_options(model.schema, {
+            'one': {
+                'image_size': 'small',
+            }
+        })
+        set_detail_render_options(model.schema, {
+            'one': {
+                'image_size': 'tiny',
+            }
+        })
+        xml = serializeSchema(model.schema)
+        self.assertIn(
+            '<people:item render-options="image_size=small">one', xml
+        )
+        self.assertIn(
+            '<people:item render-options="image_size=tiny">one', xml
+        )

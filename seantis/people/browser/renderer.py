@@ -22,6 +22,9 @@ from seantis.plonetools.schemafields import Email, Website
 from seantis.plonetools import tools
 
 from seantis.people import _
+from seantis.people.supermodel import (
+    get_list_render_options, get_detail_render_options
+)
 from seantis.people.utils import UUIDList, LinkList
 
 
@@ -29,7 +32,7 @@ class EmailFieldRenderer(object):
 
     template = string.Template(u'<a href="mailto:${mail}">${mail}</a>')
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         mail = getattr(context, field)
         if mail:
             return self.template.substitute(mail=mail)
@@ -41,7 +44,7 @@ class WebsiteFieldRenderer(object):
 
     template = string.Template(u'<a href="${url}" target="_blank">${url}</a>')
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         url = getattr(context, field)
         if url:
             return self.template.substitute(url=url)
@@ -51,7 +54,7 @@ class WebsiteFieldRenderer(object):
 
 class BoolRenderer(object):
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         value = getattr(context, field, False)
 
         if value is True:
@@ -62,19 +65,19 @@ class BoolRenderer(object):
 
 class TextRenderer(object):
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         return '<br />'.join(getattr(context, field, u'').splitlines())
 
 
 class RichTextRenderer(object):
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         return getattr(context, field).output
 
 
 class ListRenderer(object):
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         return u', '.join(getattr(context, field, tuple()))
 
 
@@ -82,7 +85,7 @@ class LinkListRenderer(object):
 
     template = string.Template(u'<li><a href="${url}">${title}</a></li>')
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         links = getattr(context, field, None)
 
         if not links:
@@ -99,7 +102,7 @@ class UUIDListRenderer(object):
 
     template = string.Template(u'<a href="${url}">${title}</a>')
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         uuids = getattr(context, field, None)
 
         if not uuids:
@@ -123,7 +126,7 @@ class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
 
-    def __call__(self, context, field, options={}):
+    def __call__(self, context, field, options={}, default={}):
         img = getattr(context, field)
         if img:
             if ICatalogBrain.providedBy(context):
@@ -131,7 +134,7 @@ class ImageRenderer(object):
             else:
                 baseurl = context.absolute_url()
 
-            size = options.get('image_size', 'thumb')
+            size = options.get(field, default).get('image_size', 'thumb')
             url = '/'.join((baseurl, '@@images', field, size))
 
             return self.template.substitute(url=url)
@@ -165,13 +168,31 @@ renderers = {
 
 class Renderer(object):
 
-    def __init__(self, schema, redirects=None, options={}):
+    def __init__(self, schema, place, redirects=None):
+        assert place in ('list', 'detail')
+
         self.schema = schema
         self.fields = getFields(schema)
         self.redirects = redirects or {}
-        self.options = options
+
+        if place == 'list':
+            self.options = get_list_render_options(schema)
+            self.default = {
+                'image_size': 'tile'
+            }
+        else:
+            self.options = get_detail_render_options(schema)
+            self.default = {
+                'image_size': 'mini'
+            }
 
     def render(self, context, field):
         field = self.redirects.get(field, field)
         fieldtype = type(self.fields.get(field, getattr(context, field, None)))
-        return renderers.get(fieldtype, getattr)(context, field, self.options)
+
+        if fieldtype in renderers:
+            return renderers[fieldtype](
+                context, field, self.options, self.default
+            )
+        else:
+            return getattr(context, field)

@@ -5,6 +5,9 @@ Changelog
 0.21 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds the ability to define render options on the list and detail view.
+  [href]
+
 - Adds support for Set Choices and List Textlines in the import.
   [href]
 

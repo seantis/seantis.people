@@ -23,9 +23,7 @@ class PersonView(BaseView):
     )
 
     def update(self):
-        self.renderer = Renderer(self.schema, options={
-            'image_size': 'mini'
-        })
+        self.renderer = Renderer(self.schema, place='detail')
 
     @property
     def schema(self):
