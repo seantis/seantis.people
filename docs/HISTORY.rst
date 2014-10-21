@@ -5,6 +5,9 @@ Changelog
 0.21 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Adds a renderer for decimal numbers.
+  [href]
+
 - Add a type css body class to the list view that contains the used type of
   the list (if any).
   [href]

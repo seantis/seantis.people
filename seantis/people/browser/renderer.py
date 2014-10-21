@@ -12,7 +12,16 @@ is by far the fastest way of doing templates in python.
 
 import string
 
-from zope.schema import getFields, Text, Tuple, List, Set, FrozenSet, Bool
+from zope.schema import (
+    Bool,
+    Decimal,
+    FrozenSet,
+    getFields,
+    List,
+    Set,
+    Text,
+    Tuple,
+)
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from plone.app.textfield import RichText
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -32,7 +41,7 @@ class EmailFieldRenderer(object):
 
     template = string.Template(u'<a href="mailto:${mail}">${mail}</a>')
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         mail = getattr(context, field)
         if mail:
             return self.template.substitute(mail=mail)
@@ -44,7 +53,7 @@ class WebsiteFieldRenderer(object):
 
     template = string.Template(u'<a href="${url}" target="_blank">${url}</a>')
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         url = getattr(context, field)
         if url:
             return self.template.substitute(url=url)
@@ -54,7 +63,7 @@ class WebsiteFieldRenderer(object):
 
 class BoolRenderer(object):
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         value = getattr(context, field, False)
 
         if value is True:
@@ -65,27 +74,54 @@ class BoolRenderer(object):
 
 class TextRenderer(object):
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         return '<br />'.join(getattr(context, field, u'').splitlines())
+
+
+class DecimalRenderer(object):
+
+    def __call__(self, context, field, options):
+        value = getattr(context, field)
+
+        if not value:
+            return u''
+
+        # a custom formatter, because the api of Zope's formatter is.. weird?
+        formatter = context.REQUEST.locale.numbers.getFormatter('decimal')
+        precision = options.by(field).get('precision', 'auto')
+
+        if precision == 'auto':
+            formatstring = u'{:,}'
+        else:
+            formatstring = u'{{:,.{}f}}'.format(precision)
+
+        # this will fail miserably, if the group and the thousand separator
+        # should ever be the same, but then again that's stupid
+        output = formatstring.format(value)
+
+        output = output.replace('.', 'd')
+        output = output.replace(',', 'g')
+        output = output.replace('d', formatter.symbols['decimal'])
+        output = output.replace('g', formatter.symbols['group'])
+
+        return output
 
 
 class RichTextRenderer(object):
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         return getattr(context, field).output
 
 
 class ListRenderer(object):
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         value = getattr(context, field, tuple())
 
         if not value:
             return u''
 
-        render_type = options.get(field, default).get(
-            'list_type', 'comma-separated'
-        )
+        render_type = options.by(field).get('list_type', 'comma-separated')
 
         if render_type == 'comma-separated':
             return u', '.join(getattr(context, field, tuple()))
@@ -101,7 +137,7 @@ class LinkListRenderer(object):
 
     template = string.Template(u'<li><a href="${url}">${title}</a></li>')
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         links = getattr(context, field, None)
 
         if not links:
@@ -118,7 +154,7 @@ class UUIDListRenderer(object):
 
     template = string.Template(u'<a href="${url}">${title}</a>')
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         uuids = getattr(context, field, None)
 
         if not uuids:
@@ -142,7 +178,7 @@ class ImageRenderer(object):
 
     template = string.Template(u'<img src="${url}" />')
 
-    def __call__(self, context, field, options={}, default={}):
+    def __call__(self, context, field, options):
         img = getattr(context, field)
         if img:
             if ICatalogBrain.providedBy(context):
@@ -150,7 +186,7 @@ class ImageRenderer(object):
             else:
                 baseurl = context.absolute_url()
 
-            size = options.get(field, default).get('image_size', 'thumb')
+            size = options.by(field).get('image_size', 'thumb')
             url = '/'.join((baseurl, '@@images', field, size))
 
             return self.template.substitute(url=url)
@@ -169,6 +205,7 @@ renderers = {
     NamedImage: ImageRenderer(),
     Text: TextRenderer(),
     RichText: RichTextRenderer(),
+    Decimal: DecimalRenderer(),
     Tuple: ListRenderer(),
     List: ListRenderer(),
     Set: ListRenderer(),
@@ -182,6 +219,19 @@ renderers = {
 }
 
 
+class Options(object):
+
+    def __init__(self, field_options, default_options):
+        self.field_options = field_options
+        self.default_options = default_options
+
+    def by(self, field):
+        if field in self.field_options:
+            return self.field_options[field]
+        else:
+            return self.default_options
+
+
 class Renderer(object):
 
     def __init__(self, schema, place, redirects=None):
@@ -192,25 +242,23 @@ class Renderer(object):
         self.redirects = redirects or {}
 
         if place == 'list':
-            self.options = get_list_render_options(schema)
-            self.default = {
+            self.options = Options(get_list_render_options(schema), {
                 'image_size': 'tile',
-                'list_type': 'comma-separated'
-            }
+                'list_type': 'comma-separated',
+                'precision': 'auto'
+            })
         else:
-            self.options = get_detail_render_options(schema)
-            self.default = {
+            self.options = Options(get_detail_render_options(schema), {
                 'image_size': 'mini',
-                'list_type': 'comma-separated'
-            }
+                'list_type': 'comma-separated',
+                'precision': 'auto'
+            })
 
     def render(self, context, field):
         field = self.redirects.get(field, field)
         fieldtype = type(self.fields.get(field, getattr(context, field, None)))
 
         if fieldtype in renderers:
-            return renderers[fieldtype](
-                context, field, self.options, self.default
-            )
+            return renderers[fieldtype](context, field, self.options)
         else:
             return getattr(context, field)
