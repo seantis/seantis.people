@@ -34,6 +34,15 @@
 <!-- Events -->
 <include file="events.zcml" />
 
+<!-- Custom css classes for the list view -->
+<browser:page
+    name="plone_layout"
+    for="seantis.people.interfaces.IList"
+    permission="zope.Public"
+    class="seantis.people.browser.layout_policy.ListLayoutPolicy"
+    allowed_interface="plone.app.layout.globals.interfaces.ILayoutPolicy"
+/>
+
 <!-- Behaviours -->
 <plone:behavior
     title="Person"

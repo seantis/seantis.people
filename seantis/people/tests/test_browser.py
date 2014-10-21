@@ -55,6 +55,9 @@ class TestBrowser(tests.FunctionalTestCase):
         browser.open(list_url)
         self.assertIn('No people in the list.', browser.contents)
 
+        # layout policy
+        self.assertNotIn('seantis-people-standard-list', browser.contents)
+
     def test_simple_list(self):
         list_url = self.new_people_list()
         self.new_person('Phil', 'Dunphy')
@@ -63,3 +66,6 @@ class TestBrowser(tests.FunctionalTestCase):
         browser.open(list_url)
         self.assertIn('Phil', browser.contents)
         self.assertIn('Dunphy', browser.contents)
+
+        # layout policy
+        self.assertIn('seantis-people-standard-list', browser.contents)

@@ -5,6 +5,10 @@ Changelog
 0.21 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Add a type css body class to the list view that contains the used type of
+  the list (if any).
+  [href]
+
 - List fields can now be rendered using 'comma-separated' (default) or 'ul',
   the latter creates a ul in html.
   [href]
