@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.21 (unreleased)
+0.21 (2014-10-24)
 ~~~~~~~~~~~~~~~~~
 
 - Adds a renderer for decimal numbers.
