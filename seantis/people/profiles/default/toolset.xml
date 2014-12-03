@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<tool-setup>
+    <required tool_id="seantis_people_catalog" class="seantis.people.catalog.PeopleCatalog"/>
+</tool-setup>

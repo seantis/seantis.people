@@ -51,6 +51,13 @@
         handler=".upgrades.update_people_list"
     />
 
+    <genericsetup:upgradeStep 
+        title="Introduces custom catalog."
+        source="1007" destination="1008"
+        profile="seantis.people:default"
+        handler=".upgrades.introduce_custom_catalog"
+    />
+
     <!-- PHZ Upgrades -->
     <genericsetup:upgradeStep
         title="Remove import action from detail view."

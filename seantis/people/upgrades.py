@@ -65,3 +65,7 @@ def install_membership_dependencies(context):
 
 def update_people_list(context):
     upgrade_portal_type('seantis.people.list', 'seantis.people', 'default')
+
+
+def introduce_custom_catalog(context):
+    run_import_step_from_profile('toolset', 'seantis.people', 'default')
