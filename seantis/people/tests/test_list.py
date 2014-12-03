@@ -35,7 +35,8 @@ class TestList(tests.IntegrationTestCase):
             )
 
             new_person_type = lambda: self.new_temporary_type(
-                behaviors=[IPerson.__identifier__]
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
             )
 
             person = new_person_type()
@@ -65,7 +66,8 @@ class TestList(tests.IntegrationTestCase):
             constrain = IConstrainTypes(lst)
 
             new_type = self.new_temporary_type(
-                behaviors=[IPerson.__identifier__]
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
             )
 
             self.assertIs(type(constrain), ListConstrainTypes)
@@ -99,7 +101,8 @@ class TestList(tests.IntegrationTestCase):
             )
 
             person = self.new_temporary_type(
-                behaviors=[IPerson.__identifier__]
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
             )
 
             api.content.create(title='Jessie', type=person.id, container=lst)
@@ -120,7 +123,8 @@ class TestList(tests.IntegrationTestCase):
             )
 
             person = self.new_temporary_type(
-                behaviors=[IPerson.__identifier__]
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
             )
 
             api.content.create(title='Abed', type=person.id, container=lst)
@@ -150,7 +154,8 @@ class TestList(tests.IntegrationTestCase):
             )
 
             person = self.new_temporary_type(
-                behaviors=[IPerson.__identifier__]
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
             )
 
             workflows = api.portal.get_tool('portal_workflow')
@@ -222,7 +227,8 @@ class TestList(tests.IntegrationTestCase):
 
             person = self.new_temporary_type(
                 behaviors=[IPerson.__identifier__],
-                model_source=model
+                model_source=model,
+                klass='seantis.people.types.base.PersonBase'
             ).id
 
             api.content.create(
@@ -268,7 +274,8 @@ class TestList(tests.IntegrationTestCase):
 
             group = self.new_temporary_type(
                 behaviors=[IPerson.__identifier__],
-                model_source=model
+                model_source=model,
+                klass='seantis.people.types.base.PersonBase'
             ).id
 
             countries = api.content.create(
@@ -319,7 +326,8 @@ class TestList(tests.IntegrationTestCase):
 
             country = self.new_temporary_type(
                 behaviors=[IPerson.__identifier__],
-                model_source=model
+                model_source=model,
+                klass='seantis.people.types.base.PersonBase'
             ).id
 
             countries = ['Germany', 'Switzerland']
@@ -367,7 +375,8 @@ class TestList(tests.IntegrationTestCase):
 
             person = self.new_temporary_type(
                 behaviors=[IPerson.__identifier__],
-                model_source=model
+                model_source=model,
+                klass='seantis.people.types.base.PersonBase'
             ).id
 
             organizations = [
@@ -429,7 +438,8 @@ class TestList(tests.IntegrationTestCase):
 
         with self.user('admin'):
             person = self.new_temporary_type(
-                behaviors=[IPerson.__identifier__]
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
             )
             api.content.create(id='test', type=person.id, container=lst)
 

@@ -87,7 +87,7 @@ class TestIndex(tests.IntegrationTestCase):
 
         values = [
             index.getEntryForObject(
-                tools.get_brain_by_object(obj).getRID()
+                tools.get_brain_by_object(obj, catalog_id).getRID()
             ) for obj in objects
         ]
 
@@ -110,7 +110,8 @@ class TestIndex(tests.IntegrationTestCase):
 
         foobar = self.new_temporary_type(
             behaviors=[IPerson.__identifier__],
-            model_source=foobar_xml
+            model_source=foobar_xml,
+            klass='seantis.people.types.base.PersonBase'
         )
 
         obj = api.content.create(

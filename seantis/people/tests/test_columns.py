@@ -6,6 +6,7 @@ from seantis.people.supermodel import (
 )
 from seantis.plonetools import tools
 
+from seantis.people import catalog_id
 from seantis.people.supermodel.indexing import on_type_modified
 from seantis.people.interfaces import IPerson
 from seantis.people import tests
@@ -14,7 +15,10 @@ from seantis.people import tests
 class TestColumns(tests.IntegrationTestCase):
 
     def test_add_person_column_first(self):
-        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
 
         set_columns(new_type.lookupSchema(), [['foo']])
         on_type_modified(new_type)
@@ -28,7 +32,7 @@ class TestColumns(tests.IntegrationTestCase):
                 bar='hammertime!'
             )
 
-        brain = tools.get_brain_by_object(obj)
+        brain = tools.get_brain_by_object(obj, catalog_id)
 
         self.assertTrue(hasattr(brain, 'foo'))
         self.assertFalse(hasattr(brain, 'bar'))
@@ -36,7 +40,10 @@ class TestColumns(tests.IntegrationTestCase):
         self.assertEqual(brain.foo, 'stop')
 
     def test_add_person_column_later(self):
-        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
 
         self.assertEqual(get_columns(new_type.lookupSchema()), [])
 
@@ -53,16 +60,19 @@ class TestColumns(tests.IntegrationTestCase):
         set_columns(new_type.lookupSchema(), [['foo']])
 
         # which leaves the attribute in a missing value state
-        brain = tools.get_brain_by_object(obj)
+        brain = tools.get_brain_by_object(obj, catalog_id)
         self.assertFalse(hasattr(brain, 'foo'))
 
         # until reindexing happens
         on_type_modified(new_type)
-        brain = tools.get_brain_by_object(obj)
+        brain = tools.get_brain_by_object(obj, catalog_id)
         self.assertEqual(brain.foo, 'stop')
 
     def test_reindex_on_change(self):
-        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
 
         set_columns(new_type.lookupSchema(), [['foo']])
         on_type_modified(new_type)
@@ -76,7 +86,7 @@ class TestColumns(tests.IntegrationTestCase):
                 bar='hammertime!'
             )
 
-        brain = tools.get_brain_by_object(obj)
+        brain = tools.get_brain_by_object(obj, catalog_id)
 
         self.assertTrue(hasattr(brain, 'foo'))
         self.assertFalse(hasattr(brain, 'bar'))
@@ -88,7 +98,7 @@ class TestColumns(tests.IntegrationTestCase):
         # usually the dexterity fti modified event does this
         on_type_modified(new_type)
 
-        brain = tools.get_brain_by_object(obj)
+        brain = tools.get_brain_by_object(obj, catalog_id)
 
         # The metadata is not deleted at this point because it is impossible
         # to tell if the metadata is used elsewhere. It's a rather big caveat..

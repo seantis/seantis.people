@@ -96,7 +96,8 @@ def update_metadata(fti):
             tools.add_attribute_to_metadata(field, catalog_id)
 
             if field in compound_columns:
-                tools.add_attribute_to_metadata(compound_columns[field])
+                tools.add_attribute_to_metadata(
+                    compound_columns[field], catalog_id)
 
 
 def update_selectable_field_indexes(fti):

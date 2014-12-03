@@ -1,10 +1,14 @@
+from plone import api
 from plone.dexterity.content import Container
 from seantis.people.interfaces import IPerson
 from seantis.people import _
-from seantis.people import catalog
+from seantis.people import catalog_id
 
 
 class PersonBase(Container):
+
+    def _getCatalogTool(self):
+        return api.portal.get_tool(catalog_id)
 
     @property
     def memberships(self):

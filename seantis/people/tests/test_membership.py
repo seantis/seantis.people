@@ -20,7 +20,8 @@ class TestMembership(tests.IntegrationTestCase):
 
     def test_membership_person_relation(self):
         person_type = self.new_temporary_type(
-            behaviors=[IPerson.__identifier__]
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
         )
 
         with self.user('admin'):

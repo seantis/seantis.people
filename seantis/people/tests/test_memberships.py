@@ -150,7 +150,7 @@ class TestMemberships(tests.IntegrationTestCase):
 
         with self.custom_source(Source):
             catalog = api.portal.get_tool(catalog_id)
-            rid = tools.get_brain_by_object(person).getRID()
+            rid = tools.get_brain_by_object(person, catalog_id).getRID()
 
             get_orgs = lambda: catalog.getMetadataForRID(rid)['organizations']
 
