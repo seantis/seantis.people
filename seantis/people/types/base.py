@@ -1,6 +1,7 @@
 from plone.dexterity.content import Container
 from seantis.people.interfaces import IPerson
 from seantis.people import _
+from seantis.people import catalog
 
 
 class PersonBase(Container):

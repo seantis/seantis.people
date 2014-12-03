@@ -1,3 +1,4 @@
+from seantis.people import catalog_id
 from seantis.plonetools import setuphandlers
 
 indexes = [
@@ -9,11 +10,11 @@ indexes = [
 
 def add_catalog_indexes(context, logger=None):
     setuphandlers.add_catalog_indexes(
-        'seantis.people', indexes, context, logger
+        'seantis.people', indexes, context, logger, catalog_id
     )
 
 
 def import_indexes(context):
     setuphandlers.import_indexes(
-        'seantis.people', indexes, context
+        'seantis.people', indexes, context, catalog_id
     )

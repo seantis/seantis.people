@@ -9,6 +9,7 @@ from plone.uuid.interfaces import IUUID
 from plone.indexer.decorator import indexer
 
 from seantis.plonetools import tools
+from seantis.people import catalog_id
 from seantis.people.interfaces import IMembershipSource, IMembership
 
 
@@ -73,7 +74,7 @@ class ZodbMembershipSource(grok.Adapter):
         if person is not None:
             query['membership_person'] = IUUID(person)
 
-        memberships = api.portal.get_tool(name='portal_catalog')(**query)
+        memberships = api.portal.get_tool(name=catalog_id)(**query)
 
         result = {}
 

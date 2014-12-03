@@ -9,6 +9,7 @@ from plone.uuid.interfaces import IUUID
 
 from seantis.plonetools import tools
 
+from seantis.people import catalog_id
 from seantis.people import tests
 from seantis.people.events import MembershipChangedEvent
 from seantis.people.interfaces import IMembershipSource, IPerson
@@ -135,7 +136,7 @@ class TestMemberships(tests.IntegrationTestCase):
             self.assertEqual(role, 'president')
 
     def test_membership_changed(self):
-        tools.add_attribute_to_metadata('organizations')
+        tools.add_attribute_to_metadata('organizations', catalog_id)
 
         organization = self.new_temporary_folder()
 
@@ -148,7 +149,7 @@ class TestMemberships(tests.IntegrationTestCase):
                 return {IUUID(organization): memberships}
 
         with self.custom_source(Source):
-            catalog = api.portal.get_tool('portal_catalog')
+            catalog = api.portal.get_tool(catalog_id)
             rid = tools.get_brain_by_object(person).getRID()
 
             get_orgs = lambda: catalog.getMetadataForRID(rid)['organizations']

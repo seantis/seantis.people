@@ -5,6 +5,7 @@ from seantis.people.supermodel import (
 )
 from seantis.plonetools import tools
 
+from seantis.people import catalog_id
 from seantis.people.interfaces import IPerson
 from seantis.people import tests
 
@@ -25,7 +26,7 @@ class TestOrder(tests.IntegrationTestCase):
             )
 
         brain = tools.get_brain_by_object(obj)
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
 
         self.assertEqual(
             catalog.getIndexDataForRID(brain.getRID())['sortable_title'],

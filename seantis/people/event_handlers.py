@@ -5,6 +5,8 @@ from five import grok
 from plone import api
 from ZPublisher.interfaces import IPubBeforeCommit
 
+from seantis.people import catalog_id
+
 
 @grok.subscribe(IPubBeforeCommit)
 def reindex_lists(event):
@@ -28,7 +30,7 @@ def reindex_lists(event):
     # never fail, this code is run after ever request!
     try:
         if event.request.URL.endswith('manage_catalogRebuild'):
-            catalog = api.portal.get_tool('portal_catalog')
+            catalog = api.portal.get_tool(catalog_id)
 
             lists = catalog.unrestrictedSearchResults(
                 portal_type='seantis.people.list'

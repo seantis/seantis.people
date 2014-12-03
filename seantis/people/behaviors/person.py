@@ -2,6 +2,7 @@ from plone import api
 from zope.interface import implements
 
 from seantis.plonetools import tools
+from seantis.people import catalog_id
 from seantis.people.interfaces import IPerson
 from seantis.people.behaviors.memberships import get_memberships
 from seantis.people.utils import UUIDList
@@ -25,7 +26,7 @@ class Person(object):
 
         organizations = self.organization_uuids(org_filter)
 
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
         titles = (catalog(UID=uid)[0].Title for uid in organizations)
 
         return sorted(titles, key=tools.unicode_collate_sortkey())

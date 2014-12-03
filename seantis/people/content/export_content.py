@@ -11,6 +11,7 @@ from plone.namedfile.file import NamedImage, NamedBlobImage
 
 from seantis.plonetools import tools
 from seantis.people import _
+from seantis.people import catalog_id
 from seantis.people.errors import ContentExportError
 
 
@@ -39,7 +40,7 @@ def export_people(request, container, portal_type, fields):
 
 
 def get_people(container, portal_type):
-    catalog = api.portal.get_tool('portal_catalog')
+    catalog = api.portal.get_tool(catalog_id)
     path = '/'.join(container.getPhysicalPath())
 
     brains = catalog({

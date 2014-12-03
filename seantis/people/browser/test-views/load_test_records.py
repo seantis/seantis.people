@@ -13,6 +13,7 @@ from urllib2 import urlopen
 from five import grok
 from plone import api
 
+from seantis.people import catalog_id
 from seantis.people.browser import BaseView
 from seantis.people.interfaces import IList
 from seantis.plonetools import tools
@@ -105,7 +106,7 @@ class LoadTestRecordsView(BaseView):
         if noindexing_available:
             log.info('rebuilding the catalog')
             unapply()
-            api.portal.get_tool('portal_catalog').clearFindAndRebuild()
+            api.portal.get_tool(catalog_id).clearFindAndRebuild()
 
         return rowix
 
