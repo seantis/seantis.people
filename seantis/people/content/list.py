@@ -33,14 +33,10 @@ class List(Container):
             # This kind of clones the ListConstrainTypes logic below, but
             # Plone sometimes uses this (CMFPlone) and sometimes the other
             # (plone.api) - FUN!
+            types = tuple(t.id for t in self.available_types())
 
-            # only do this if the request is given, meaning that the people's
-            # list view was opened (it doesn't matter anywhere else)
-            if hasattr(self, 'request') or hasattr(self, 'REQUEST'):
-                types = tuple(t.id for t in self.available_types())
-
-                if fti.aq_base.allowed_content_types != types:
-                    fti.aq_base.allowed_content_types = types
+            if fti.aq_base.allowed_content_types != types:
+                fti.aq_base.allowed_content_types = types
 
             return fti
 
@@ -126,7 +122,10 @@ class List(Container):
         path = {'query': '/'.join(self.getPhysicalPath()), 'depth': 1}
 
         for fti in self.possible_types():
-            if catalog(path=path, portal_type=fti.id, sort_limit=1)[:1]:
+            obj_of_type = catalog.unrestrictedSearchResults(
+                path=path, portal_type=fti.id, sort_limit=1
+            )
+            if obj_of_type[:1]:
                 return fti
 
         return None
