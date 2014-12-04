@@ -34,10 +34,13 @@ class List(Container):
             # Plone sometimes uses this (CMFPlone) and sometimes the other
             # (plone.api) - FUN!
 
-            types = tuple(t.id for t in self.available_types())
+            # only do this if the request is given, meaning that the people's
+            # list view was opened (it doesn't matter anywhere else)
+            if hasattr(self, 'request'):
+                types = tuple(t.id for t in self.available_types())
 
-            if fti.aq_base.allowed_content_types != types:
-                fti.aq_base.allowed_content_types = types
+                if fti.aq_base.allowed_content_types != types:
+                    fti.aq_base.allowed_content_types = types
 
             return fti
 
