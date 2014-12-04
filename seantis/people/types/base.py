@@ -8,7 +8,10 @@ from seantis.people import catalog_id
 class PersonBase(Container):
 
     def _getCatalogTool(self):
-        return api.portal.get_tool(catalog_id)
+        try:
+            return api.portal.get_tool(catalog_id)
+        except api.exc.CannotGetPortalError:
+            return None
 
     @property
     def memberships(self):
