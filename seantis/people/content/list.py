@@ -36,7 +36,7 @@ class List(Container):
 
             # only do this if the request is given, meaning that the people's
             # list view was opened (it doesn't matter anywhere else)
-            if hasattr(self, 'request'):
+            if hasattr(self, 'request') or hasattr(self, 'REQUEST'):
                 types = tuple(t.id for t in self.available_types())
 
                 if fti.aq_base.allowed_content_types != types:
