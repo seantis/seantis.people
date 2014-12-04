@@ -9,15 +9,6 @@ from seantis.people.interfaces import IPeopleCatalog
 from zope.interface import implements
 
 
-def on_person_modified(obj, event=None):
-    reindex_person(obj)
-
-
-def reindex_person(obj, idxs=[]):
-    catalog = api.portal.get_tool(catalog_id)
-    catalog.reindexObject(obj, idxs=idxs)
-
-
 class PeopleCatalog(CatalogTool):
     """ A custom catalog for seantis.people. Required because people may have
     a large number of metadata/indicies assigned to them which would slow
@@ -53,29 +44,21 @@ class PeopleCatalog(CatalogTool):
     def base_catalog(self):
         return api.portal.get_tool('portal_catalog')
 
-    @property
-    def unique_indexes(self):
-        this = self._catalog.indexes.keys()
-        base = self.base_catalog._catalog.indexes.keys()
-        return set(this) - set(base)
+    security.declarePrivate('indexObject')
+    security.declarePrivate('reindexObject')
+    security.declarePrivate('unindexObject')
 
-    def catalog_object(self, obj, uid=None, idxs=None, update_metadata=1,
-                       pghandler=None):
-        if idxs:
-            base_idxs = [ix for ix in idxs if ix not in self.unique_indexes]
-        else:
-            base_idxs = idxs
+    def indexObject(self, *args, **kwargs):
+        self.base_catalog.indexObject(*args, **kwargs)
+        super(PeopleCatalog, self).indexObject(*args, **kwargs)
 
-        self.base_catalog.catalog_object(
-            obj, uid, base_idxs, update_metadata, pghandler
-        )
-        super(PeopleCatalog, self).catalog_object(
-            obj, uid, idxs, update_metadata, pghandler
-        )
+    def reindexObject(self, *args, **kwargs):
+        self.base_catalog.reindexObject(*args, **kwargs)
+        super(PeopleCatalog, self).reindexObject(*args, **kwargs)
 
-    def uncatalog_object(self, *args, **kwargs):
-        self.base_catalog.uncatalog_object(*args, **kwargs)
-        super(PeopleCatalog, self).uncatalog_object(*args, **kwargs)
+    def unindexObject(self, *args, **kwargs):
+        self.base_catalog.unindexObject(*args, **kwargs)
+        super(PeopleCatalog, self).unindexObject(*args, **kwargs)
 
 
 InitializeClass(PeopleCatalog)

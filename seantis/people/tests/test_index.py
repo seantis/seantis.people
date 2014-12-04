@@ -41,7 +41,8 @@ class TestIndex(tests.IntegrationTestCase):
     def test_selectable_fields_index(self):
         new_type = self.new_temporary_type(
             behaviors=[IPerson.__identifier__],
-            model_source=self.selectable_xml
+            model_source=self.selectable_xml,
+            klass='seantis.people.types.base.PersonBase'
         )
         schema = new_type.lookupSchema()
 
@@ -71,7 +72,10 @@ class TestIndex(tests.IntegrationTestCase):
     def test_first_letter_index(self):
         self.login('admin')
 
-        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
         folder = self.new_temporary_folder()
 
         create = lambda title: api.content.create(
