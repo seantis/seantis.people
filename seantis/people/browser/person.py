@@ -85,20 +85,17 @@ class PersonView(BaseView):
         if len(people) <= 1:
             return None, None
 
-        # XXX since adding a separate catalog for people the id is not correct
-        # anymore (probably a metadata issue) -> this new way works, but it's
-        # slower. Metadata should probably also be copied from the base catalog
-        people_urls = list(p.getURL() for p in self.get_parent().people())
-        context_url = self.context.absolute_url()
+        people_ids = list(p.id for p in self.get_parent().people())
+        context_id = self.context.getId()
 
         try:
-            position = people_urls.index(context_url)
+            position = people_ids.index(context_id)
         except ValueError:
             return None, None
 
         if position == 0:
-            return None, people_urls[1]
+            return None, people[1].getURL()
         if position == len(people) - 1:
-            return people_urls[position - 1], None
+            return people[position - 1].getURL(), None
         else:
-            return people_urls[position - 1], people_urls[position + 1]
+            return people[position - 1].getURL(), people[position + 1].getURL()

@@ -41,8 +41,13 @@ class PeopleCatalog(CatalogTool):
     def __init__(self):
         ZCatalog.__init__(self, self.id)
 
-        # TODO copy metadata as well
         self._catalog.indexes = deepcopy(self.base_catalog._catalog.indexes)
+        self._catalog.schema = copy(self.base_catalog._catalog.schema)
+        self._catalog.names = copy(self.base_catalog._catalog.names)
+
+    @property
+    def plone_lexicon(self):
+        return self.base_catalog.plone_lexicon
 
     @property
     def base_catalog(self):
@@ -56,7 +61,6 @@ class PeopleCatalog(CatalogTool):
 
     def catalog_object(self, obj, uid=None, idxs=None, update_metadata=1,
                        pghandler=None):
-
         if idxs:
             base_idxs = [ix for ix in idxs if ix not in self.unique_indexes]
         else:
@@ -66,7 +70,7 @@ class PeopleCatalog(CatalogTool):
             obj, uid, base_idxs, update_metadata, pghandler
         )
         super(PeopleCatalog, self).catalog_object(
-            obj, uid, base_idxs, update_metadata, pghandler
+            obj, uid, idxs, update_metadata, pghandler
         )
 
     def uncatalog_object(self, *args, **kwargs):

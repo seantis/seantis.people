@@ -386,14 +386,19 @@ class TestList(tests.IntegrationTestCase):
 
             # normally organizations are defined through memberships,
             # but it's easier here to just use class properties
+            #
+            # XXX -> this should be changed to really setup memberships, so
+            # the testcode in PersonBase is not needed!
             api.content.create(
                 title='test', type=person, container=lst,
-                organizations=[o.title for o in organizations],
-                organization_uuids=UUIDList([IUUID(o) for o in organizations])
+                test_organizations=[o.title for o in organizations],
+                test_organization_uuids=UUIDList(
+                    [IUUID(o) for o in organizations]
+                )
             )
             api.content.create(
                 title='loner', type=person, container=lst,
-                organizations=[], organization_uuids=UUIDList()
+                test_organizations=[], test_organization_uuids=UUIDList()
             )
 
             view = lst.unrestrictedTraverse('@@view')

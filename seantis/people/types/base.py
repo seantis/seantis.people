@@ -16,10 +16,16 @@ class PersonBase(Container):
 
     @property
     def organizations(self):
+        if hasattr(self, 'test_organizations'):
+            return self.test_organizations
+
         return IPerson(self).organizations()
 
     @property
     def organization_uuids(self):
+        if hasattr(self, 'test_organization_uuids'):
+            return self.test_organization_uuids
+
         return IPerson(self).organization_uuids()
 
     @property
