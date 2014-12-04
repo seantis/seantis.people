@@ -38,6 +38,8 @@ class PeopleCatalog(CatalogTool):
 
     @property
     def plone_lexicon(self):
+        # XXX -> this should be done differently, I just don't know how to
+        # properly setup plone_lexicon on this catalog yet.
         return self.base_catalog.plone_lexicon
 
     @property
