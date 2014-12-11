@@ -36,6 +36,9 @@ class PeopleCatalog(CatalogTool):
         self._catalog.schema = copy(self.base_catalog._catalog.schema)
         self._catalog.names = copy(self.base_catalog._catalog.names)
 
+        self._catalog.clear()  # the catalog needs to be cleared after setting
+                               # up the indexes, or there will be problems
+
     @property
     def plone_lexicon(self):
         # XXX -> this should be done differently, I just don't know how to
