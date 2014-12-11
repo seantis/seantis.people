@@ -45,6 +45,8 @@ class PeopleCatalog(CatalogTool):
         self._catalog.clear()  # the catalog needs to be cleared after setting
                                # up the indexes, or there will be problems
 
+        self._catalog.updateBrains()
+
     @property
     def base_catalog(self):
         return api.portal.get_tool('portal_catalog')
