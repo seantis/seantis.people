@@ -1,9 +1,10 @@
 from AccessControl import ClassSecurityInfo
-from copy import copy, deepcopy
+from copy import deepcopy
 from Globals import InitializeClass
 from plone import api
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.ZCatalog.ZCatalog import ZCatalog
+from Products.ZCTextIndex.ZCTextIndex import PLexicon
 from seantis.people import catalog_id
 from seantis.people.interfaces import IPeopleCatalog
 from zope.interface import implements
@@ -33,17 +34,16 @@ class PeopleCatalog(CatalogTool):
         ZCatalog.__init__(self, self.id)
 
         self._catalog.indexes = deepcopy(self.base_catalog._catalog.indexes)
-        self._catalog.schema = copy(self.base_catalog._catalog.schema)
-        self._catalog.names = copy(self.base_catalog._catalog.names)
+        self._catalog.schema = deepcopy(self.base_catalog._catalog.schema)
+        self._catalog.names = deepcopy(self.base_catalog._catalog.names)
+
+        lexicons = ('plone_lexicon', 'plaintext_lexicon', 'htmltext_lexicon')
+
+        for lexicon in lexicons:
+            self._setObject(lexicon, PLexicon(lexicon))
 
         self._catalog.clear()  # the catalog needs to be cleared after setting
                                # up the indexes, or there will be problems
-
-    @property
-    def plone_lexicon(self):
-        # XXX -> this should be done differently, I just don't know how to
-        # properly setup plone_lexicon on this catalog yet.
-        return self.base_catalog.plone_lexicon
 
     @property
     def base_catalog(self):
