@@ -1,3 +1,6 @@
+import logging
+log = logging.getLogger('seantis.people')
+
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('seantis.people')
 

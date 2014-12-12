@@ -5,7 +5,7 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.ZCatalog.ZCatalog import ZCatalog
 from Products.ZCTextIndex.ZCTextIndex import PLexicon
 from Products.ZCTextIndex.PipelineFactory import element_factory
-from seantis.people import catalog_id
+from seantis.people import catalog_id, log
 from seantis.people.interfaces import IPeopleCatalog
 from zope.interface import implements
 
@@ -98,14 +98,49 @@ class PeopleCatalog(CatalogTool):
         # copy the indexes from the base catalog, so the code using the
         # people catalog doesn't have to know where each index/metadata-column
         # is stored exactly
+        
+        # only support known index types
+        known_index_types = {
+            'BooleanIndex',
+            'DateIndex', 
+            'DateRangeIndex',
+            'ExtendedPathIndex',
+            'FieldIndex',
+            'GopipIndex',
+            'KeywordIndex',
+            'UUIDIndex',
+            'ZCTextIndex',
+        }
+
         for index in self.base_catalog.index_objects():
-            if index.meta_type == 'ZCTextIndex':
-                extra = Extra()
+            if index.meta_type not in known_index_types:
+                log.warn('Unknown index type: {}'.format(index.meta_type))
+
+            extra = Extra()
+
+            if hasattr(index, 'lexicon_id'):
                 extra.lexicon_id = index.lexicon_id
+
+            if hasattr(index, '_index_type'):
                 extra.index_type = index._index_type
-                self.addIndex(index.id, index.meta_type, extra)
-            else:
-                self.addIndex(index.id, index.meta_type)
+
+            if hasattr(index, 'indexed_attrs'):
+                extra.indexed_attrs = index.indexed_attrs
+
+            if hasattr(index, 'since_field'):
+                extra.since_field = index.since_field
+
+            if hasattr(index, 'since_field'):
+                extra.since_field = index.since_field
+
+            if hasattr(index, 'until_field'):
+                extra.until_field = index.until_field
+
+            self.addIndex(index.id, index.meta_type, extra=extra)
+
+            if hasattr(index, 'index_naive_time_as_local'):
+                new = self._catalog.getIndex(index.id)
+                new.index_naive_time_as_local = index.index_naive_time_as_local
 
         # copy the metadata from the base catalog
         for name in self.base_catalog._catalog.names:
