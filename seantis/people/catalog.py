@@ -15,6 +15,19 @@ class PeopleCatalog(CatalogTool):
     a large number of metadata/indicies assigned to them which would slow
     down the rest of the site.
 
+    The catalog is used by all types that inherit from
+    seantis.people.types.base.PersonBase. It is supposed to shadow the
+    portal_catalog. It does so by applying indexing operations to both itself
+    and the portal_catalog.
+
+    This results in a separate catalog that has the same indexes and metadata
+    as the portal_catalog plus additional indexes and metadata defined by the
+    custom people types.
+
+    This catalog can be used if all that is required is a lookup to people
+    indexes/properties - like when displaying the list of people. Anything
+    else should still go through portal_catalog.
+
     """
 
     implements(IPeopleCatalog)
@@ -33,18 +46,21 @@ class PeopleCatalog(CatalogTool):
     def __init__(self):
         ZCatalog.__init__(self, self.id)
 
+        # copy the indexs of portal_catalog, so the code using this catalog
+        # doesn't have to know where each index/metadata-column is stored
         self._catalog.indexes = deepcopy(self.base_catalog._catalog.indexes)
         self._catalog.schema = deepcopy(self.base_catalog._catalog.schema)
         self._catalog.names = deepcopy(self.base_catalog._catalog.names)
 
+        # setup the lexicons as some Plone internal code depends on it
         lexicons = ('plone_lexicon', 'plaintext_lexicon', 'htmltext_lexicon')
 
         for lexicon in lexicons:
             self._setObject(lexicon, PLexicon(lexicon))
 
-        self._catalog.clear()  # the catalog needs to be cleared after setting
-                               # up the indexes, or there will be problems
-
+        # the catalog needs to be cleared after setting up the indexes
+        # or they will encounter subtle errors (like print failing on brains)
+        self._catalog.clear()
         self._catalog.updateBrains()
 
     @property

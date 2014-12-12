@@ -5,7 +5,13 @@ Changelog
 0.23 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Adds a custom catalog to manage generated indexes and metadata. 
+
+  WARNING!
+
+  This change will leave the new catalog empty as we didn't find a way to
+  setup the new catalog and reindex it at the upgrade stage. To fix this
+  go into the ZMI->seantis_portal_catalog->Advanced->Clean & Rebuild!
 
 0.22 (2014-12-12)
 ~~~~~~~~~~~~~~~~~
