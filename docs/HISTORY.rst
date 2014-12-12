@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.22 (unreleased)
+0.22 (2014-12-12)
 ~~~~~~~~~~~~~~~~~
 
 - Fixes error when deleting a person with at least one membership. See #27.
