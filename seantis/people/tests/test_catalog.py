@@ -92,8 +92,8 @@ class TestCatalog(tests.IntegrationTestCase):
                 type=new_type.id,
                 container=self.new_temporary_folder(),
                 Subject='O O Seven',
-                Title=lambda *args: 'James Bond',
-                Description=lambda *args: 'Spy for his Majesty, the Queen',
+                title='James Bond',
+                description='Spy for his Majesty, the Queen',
                 created=created
             )
 
@@ -116,3 +116,15 @@ class TestCatalog(tests.IntegrationTestCase):
         self.assertEqual(portal_brain.Subject, people_brain.Subject)
         self.assertEqual(portal_brain.created, people_brain.created)
         self.assertEqual(portal_brain.Description, people_brain.Description)
+
+        self.assertEqual(len(portal_catalog(Subject='O O Seven')), 1)
+        self.assertEqual(len(people_catalog(Subject='O O Seven')), 1)
+
+        self.assertEqual(len(portal_catalog(SearchableText='James Bond')), 1)
+        self.assertEqual(len(people_catalog(SearchableText='James Bond')), 1)
+
+        # folder and person
+        self.assertEqual(len(portal_catalog(created=created)), 2)
+
+        # person only
+        self.assertEqual(len(people_catalog(created=created)), 1)

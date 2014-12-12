@@ -1,10 +1,10 @@
 from AccessControl import ClassSecurityInfo
-from copy import copy
 from Globals import InitializeClass
 from plone import api
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.ZCatalog.ZCatalog import ZCatalog
 from Products.ZCTextIndex.ZCTextIndex import PLexicon
+from Products.ZCTextIndex.PipelineFactory import element_factory
 from seantis.people import catalog_id
 from seantis.people.interfaces import IPeopleCatalog
 from zope.interface import implements
@@ -32,6 +32,15 @@ class PeopleCatalog(CatalogTool):
     indexes/properties - like when displaying the list of people. Anything
     else should still go through portal_catalog.
 
+    Note that the people catalog is automatically update if you work with
+    seantis people objects. But you have to use it manually if you need
+    to get a custom index/metadata value:
+
+        from plone import api
+        from seantis.people import catalog_id
+
+        people_catalog = api.portal.get_tool(catalog_id)
+
     """
 
     implements(IPeopleCatalog)
@@ -51,13 +60,44 @@ class PeopleCatalog(CatalogTool):
         ZCatalog.__init__(self, self.id)
 
         # setup the lexicons as some Plone-Catalog internal code depends on it
-        lexicons = ('plone_lexicon', 'plaintext_lexicon', 'htmltext_lexicon')
+        # we wouldn't relly have to be so thorough as we don't actually want
+        # to support full text searches on the people catalog, but setting
+        # up the people catalog as close as possible to the portal catalog
+        # ensures that there are no surprises
+        lexicons = {
+            'plone_lexicon': [
+                ('Unicode Whitespace splitter', 'Word Splitter'),
+                ('Unicode Ignoring Accents Case Normalizer',
+                    'Case Normalizer'),
+            ],
+            'plaintext_lexicon': [
+                ('HTML aware splitter', 'Word Splitter'),
+                ('Case Normalizer', 'Case Normalizer'),
+                ('Remove listed stop words only', 'Stop Words')
+            ],
+            'htmltext_lexicon': [
+                ('HTML aware splitter', 'Word Splitter'),
+                ('Case Normalizer', 'Case Normalizer'),
+                ('Remove listed stop words only', 'Stop Words')
+            ]
+        }
 
-        for lexicon in lexicons:
-            self._setObject(lexicon, PLexicon(lexicon))
+        for lexicon, elements in lexicons.items():
+            pipeline = []
 
-        # copy the indexs of portal_catalog, so the code using this catalog
-        # doesn't have to know where each index/metadata-column is stored
+            for element in elements:
+                element = element_factory.instantiate(
+                    element[1], element[0]
+                )
+                pipeline.append(element)
+
+            plexicon = PLexicon(lexicon)
+            plexicon._pipeline = pipeline
+            self._setObject(lexicon, plexicon)
+
+        # copy the indexes from the base catalog, so the code using the
+        # people catalog doesn't have to know where each index/metadata-column
+        # is stored exactly
         for index in self.base_catalog.index_objects():
             if index.meta_type == 'ZCTextIndex':
                 extra = Extra()
@@ -67,12 +107,12 @@ class PeopleCatalog(CatalogTool):
             else:
                 self.addIndex(index.id, index.meta_type)
 
-        # the metadata is just a list and a dictionary, we can copy it directly
-        self._catalog.schema = copy(self.base_catalog._catalog.schema)
-        self._catalog.names = copy(self.base_catalog._catalog.names)
+        # copy the metadata from the base catalog
+        for name in self.base_catalog._catalog.names:
+            self.addColumn(name)
 
-        # the catalog needs to be cleared after setting up the indexes
-        # or they will encounter subtle errors (like print failing on brains)
+        # the catalog needs to be cleared after setting up everything
+        # or subtle errors will appear (like print failing on brains)
         self._catalog.clear()
         self._catalog.updateBrains()
 
