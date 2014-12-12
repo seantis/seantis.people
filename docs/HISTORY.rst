@@ -5,7 +5,8 @@ Changelog
 0.22 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Fixes error when deleting a person with at least one membership. See #27.
+  [href]
 
 0.21 (2014-10-24)
 ~~~~~~~~~~~~~~~~~
