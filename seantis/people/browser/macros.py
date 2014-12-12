@@ -4,7 +4,6 @@ from five import grok
 from zope.interface import Interface
 
 from seantis.plonetools import tools
-from seantis.people import catalog_id
 from seantis.people.interfaces import IPerson
 from seantis.people.browser.base import BaseView
 
@@ -23,7 +22,7 @@ class View(BaseView):
 
     def organizations(self, person, method):
         Organization = namedtuple('Organization', ['title', 'url', 'role'])
-        catalog = api.portal.get_tool(catalog_id)
+        catalog = api.portal.get_tool('portal_catalog')
 
         organizations = []
 
