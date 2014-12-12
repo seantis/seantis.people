@@ -1,5 +1,5 @@
 from AccessControl import ClassSecurityInfo
-from copy import deepcopy
+from copy import copy
 from Globals import InitializeClass
 from plone import api
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -8,6 +8,10 @@ from Products.ZCTextIndex.ZCTextIndex import PLexicon
 from seantis.people import catalog_id
 from seantis.people.interfaces import IPeopleCatalog
 from zope.interface import implements
+
+
+class Extra(object):
+    pass
 
 
 class PeopleCatalog(CatalogTool):
@@ -46,17 +50,26 @@ class PeopleCatalog(CatalogTool):
     def __init__(self):
         ZCatalog.__init__(self, self.id)
 
-        # copy the indexs of portal_catalog, so the code using this catalog
-        # doesn't have to know where each index/metadata-column is stored
-        self._catalog.indexes = deepcopy(self.base_catalog._catalog.indexes)
-        self._catalog.schema = deepcopy(self.base_catalog._catalog.schema)
-        self._catalog.names = deepcopy(self.base_catalog._catalog.names)
-
-        # setup the lexicons as some Plone internal code depends on it
+        # setup the lexicons as some Plone-Catalog internal code depends on it
         lexicons = ('plone_lexicon', 'plaintext_lexicon', 'htmltext_lexicon')
 
         for lexicon in lexicons:
             self._setObject(lexicon, PLexicon(lexicon))
+
+        # copy the indexs of portal_catalog, so the code using this catalog
+        # doesn't have to know where each index/metadata-column is stored
+        for index in self.base_catalog.index_objects():
+            if index.meta_type == 'ZCTextIndex':
+                extra = Extra()
+                extra.lexicon_id = index.lexicon_id
+                extra.index_type = index._index_type
+                self.addIndex(index.id, index.meta_type, extra)
+            else:
+                self.addIndex(index.id, index.meta_type)
+
+        # the metadata is just a list and a dictionary, we can copy it directly
+        self._catalog.schema = copy(self.base_catalog._catalog.schema)
+        self._catalog.names = copy(self.base_catalog._catalog.names)
 
         # the catalog needs to be cleared after setting up the indexes
         # or they will encounter subtle errors (like print failing on brains)

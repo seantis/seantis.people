@@ -1,3 +1,4 @@
+from datetime import datetime
 from plone import api
 from seantis.people import tests
 from seantis.people.interfaces import IPerson
@@ -73,3 +74,45 @@ class TestCatalog(tests.IntegrationTestCase):
             portal_catalog(portal_type=new_type.id)[0].foo
 
         self.assertEqual(people_catalog(portal_type=new_type.id)[0].foo, 'bar')
+
+    def test_default_indexes(self):
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
+
+        set_columns(new_type.lookupSchema(), [['foo']])
+        on_type_modified(new_type)
+
+        with self.user('admin'):
+            created = datetime.now()
+
+            api.content.create(
+                id='007',
+                type=new_type.id,
+                container=self.new_temporary_folder(),
+                Subject='O O Seven',
+                Title=lambda *args: 'James Bond',
+                Description=lambda *args: 'Spy for his Majesty, the Queen',
+                created=created
+            )
+
+        portal_catalog = api.portal.get_tool('portal_catalog')
+        people_catalog = api.portal.get_tool('seantis_people_catalog')
+
+        portal_brain = portal_catalog(portal_type=new_type.id)[0]
+        people_brain = people_catalog(portal_type=new_type.id)[0]
+
+        self.assertEqual(portal_brain.id, '007')
+        self.assertEqual(portal_brain.Subject, 'O O Seven')
+        self.assertEqual(portal_brain.Title, 'James Bond')
+        self.assertEqual(portal_brain.created, created)
+        self.assertEqual(
+            portal_brain.Description, 'Spy for his Majesty, the Queen'
+        )
+
+        self.assertEqual(portal_brain.id, people_brain.id)
+        self.assertEqual(portal_brain.Title, people_brain.Title)
+        self.assertEqual(portal_brain.Subject, people_brain.Subject)
+        self.assertEqual(portal_brain.created, people_brain.created)
+        self.assertEqual(portal_brain.Description, people_brain.Description)
