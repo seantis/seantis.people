@@ -1,4 +1,5 @@
 from collections import namedtuple
+from datetime import date, datetime
 
 from zope.interface import directlyProvides
 
@@ -46,6 +47,14 @@ class TestRenderer(tests.IntegrationTestCase):
             <field name="image"
                    type="plone.namedfile.field.NamedImage">
                 <title>Image</title>
+            </field>
+            <field name="date"
+                   type="zope.schema.Date">
+                <title>Date</title>
+            </field>
+            <field name="datetime"
+                   type="zope.schema.Datetime">
+                <title>Datetime</title>
             </field>
             <field name="list" type="zope.schema.Set">
               <title>List</title>
@@ -107,10 +116,16 @@ class TestRenderer(tests.IntegrationTestCase):
             u'<b>This is important</b>'
         )
 
-    def test_list(self):
+    def test_date(self):
         self.assertEqual(
-            self.render_value('list', ['one', 'two']),
-            u'one, two'
+            self.render_value('date', date(2014, 12, 15)),
+            u'Dec 15, 2014'
+        )
+
+    def test_datetime(self):
+        self.assertEqual(
+            self.render_value('datetime', datetime(2014, 12, 15, 12, 0)),
+            u'Dec 15, 2014 12:00 PM'
         )
 
     def test_image(self):

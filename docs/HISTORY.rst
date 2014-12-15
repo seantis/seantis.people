@@ -13,8 +13,11 @@ Changelog
   setup the new catalog and reindex it at the upgrade stage. To fix this
   go into the ZMI->seantis_portal_catalog->Advanced->Clean & Rebuild!
 
-  Closes #23
+  Closes #23.
 
+  [href]
+
+- Adds localized date/datetime rendering.
   [href]
 
 0.22 (2014-12-12)

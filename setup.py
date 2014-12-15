@@ -52,7 +52,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'Plone>=4.3',
-        'plone.api',
+        'plone.api>=1.3.0',
         'five.grok',
         'plone.behavior',
         'plone.app.dexterity [grok, relations]',

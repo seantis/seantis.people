@@ -21,7 +21,10 @@ from zope.schema import (
     Set,
     Text,
     Tuple,
+    Date,
+    Datetime
 )
+from plone import api
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from plone.app.textfield import RichText
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -194,6 +197,24 @@ class ImageRenderer(object):
             return u''
 
 
+class DateRenderer(object):
+
+    def __init__(self, long_format=False, time_only=False):
+        self.long_format = long_format
+        self.time_only = time_only
+
+    def __call__(self, context, field, options):
+        date = getattr(context, field)
+        if date:
+            return api.portal.get_localized_time(
+                datetime=date,
+                long_format=self.long_format,
+                time_only=self.time_only
+            )
+        else:
+            return u''
+
+
 # This is not the best way to match objects to classes, but it sure is the
 # fastest. Checking through isinstance would require going through a list.
 # Since that can easily happen more than a thousand times in a request it's
@@ -215,7 +236,9 @@ renderers = {
     tuple: ListRenderer(),
     UUIDList: UUIDListRenderer(),
     LinkList: LinkListRenderer(),
-    Bool: BoolRenderer()
+    Bool: BoolRenderer(),
+    Datetime: DateRenderer(long_format=True),
+    Date: DateRenderer(long_format=False)
 }
 
 
