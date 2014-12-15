@@ -51,6 +51,12 @@ class PeopleCatalog(CatalogTool):
     plone_tool = 1
 
     security = ClassSecurityInfo()
+    security.declarePrivate('indexObject')
+    security.declarePrivate('reindexObject')
+    security.declarePrivate('unindexObject')
+    security.declarePrivate('setup_lexicons')
+    security.declarePrivate('setup_indexes')
+    security.declarePrivate('setup_metadata')
 
     _properties = (
         {'id': 'title', 'type': 'string', 'mode': 'w'},
@@ -59,6 +65,32 @@ class PeopleCatalog(CatalogTool):
     def __init__(self):
         ZCatalog.__init__(self, self.id)
 
+        self.setup_lexicons()
+        self.setup_indexes()
+        self.setup_metadata()
+
+        # the catalog needs to be cleared after setting up everything
+        # or subtle errors will appear (like print failing on brains)
+        self._catalog.clear()
+        self._catalog.updateBrains()
+
+    @property
+    def base_catalog(self):
+        return api.portal.get_tool('portal_catalog')
+
+    def indexObject(self, *args, **kwargs):
+        self.base_catalog.indexObject(*args, **kwargs)
+        super(PeopleCatalog, self).indexObject(*args, **kwargs)
+
+    def reindexObject(self, *args, **kwargs):
+        self.base_catalog.reindexObject(*args, **kwargs)
+        super(PeopleCatalog, self).reindexObject(*args, **kwargs)
+
+    def unindexObject(self, *args, **kwargs):
+        self.base_catalog.unindexObject(*args, **kwargs)
+        super(PeopleCatalog, self).unindexObject(*args, **kwargs)
+
+    def setup_lexicons(self):
         # setup the lexicons as some Plone-Catalog internal code depends on it
         # we wouldn't relly have to be so thorough as we don't actually want
         # to support full text searches on the people catalog, but setting
@@ -86,23 +118,22 @@ class PeopleCatalog(CatalogTool):
             pipeline = []
 
             for element in elements:
-                element = element_factory.instantiate(
-                    element[1], element[0]
-                )
+                element = element_factory.instantiate(element[1], element[0])
                 pipeline.append(element)
 
             plexicon = PLexicon(lexicon)
             plexicon._pipeline = pipeline
             self._setObject(lexicon, plexicon)
 
+    def setup_indexes(self):
         # copy the indexes from the base catalog, so the code using the
         # people catalog doesn't have to know where each index/metadata-column
         # is stored exactly
-        
+
         # only support known index types
-        known_index_types = {
+        known_index_types = set((
             'BooleanIndex',
-            'DateIndex', 
+            'DateIndex',
             'DateRangeIndex',
             'ExtendedPathIndex',
             'FieldIndex',
@@ -110,7 +141,7 @@ class PeopleCatalog(CatalogTool):
             'KeywordIndex',
             'UUIDIndex',
             'ZCTextIndex',
-        }
+        ))
 
         for index in self.base_catalog.index_objects():
             if index.meta_type not in known_index_types:
@@ -142,34 +173,10 @@ class PeopleCatalog(CatalogTool):
                 new = self._catalog.getIndex(index.id)
                 new.index_naive_time_as_local = index.index_naive_time_as_local
 
+    def setup_metadata(self):
         # copy the metadata from the base catalog
         for name in self.base_catalog._catalog.names:
             self.addColumn(name)
-
-        # the catalog needs to be cleared after setting up everything
-        # or subtle errors will appear (like print failing on brains)
-        self._catalog.clear()
-        self._catalog.updateBrains()
-
-    @property
-    def base_catalog(self):
-        return api.portal.get_tool('portal_catalog')
-
-    security.declarePrivate('indexObject')
-    security.declarePrivate('reindexObject')
-    security.declarePrivate('unindexObject')
-
-    def indexObject(self, *args, **kwargs):
-        self.base_catalog.indexObject(*args, **kwargs)
-        super(PeopleCatalog, self).indexObject(*args, **kwargs)
-
-    def reindexObject(self, *args, **kwargs):
-        self.base_catalog.reindexObject(*args, **kwargs)
-        super(PeopleCatalog, self).reindexObject(*args, **kwargs)
-
-    def unindexObject(self, *args, **kwargs):
-        self.base_catalog.unindexObject(*args, **kwargs)
-        super(PeopleCatalog, self).unindexObject(*args, **kwargs)
 
 
 InitializeClass(PeopleCatalog)
