@@ -7,7 +7,7 @@ install:
     - mkdir -p buildout-cache/eggs
     - mkdir -p buildout-cache/downloads
     - python bootstrap.py -c travis.cfg
-    - bin/buildout -N -t 3 -c travis.cfg
+    - bin/buildout -N -t 3 -v -c travis.cfg
 
 script: bin/coverage run bin/test -s seantis.people
 
