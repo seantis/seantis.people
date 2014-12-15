@@ -3,6 +3,7 @@ language: python
 python: "2.7"
 
 install:
+    - pip install setuptools==7.0 --ignore-installed
     - cp buildout/* .
     - mkdir -p buildout-cache/eggs
     - mkdir -p buildout-cache/downloads
