@@ -17,6 +17,9 @@ Changelog
 
   [href]
 
+- Exported XLSX files now automatically have the autofilter columns set.
+  [href]
+
 - Adds localized date/datetime rendering.
   [href]
 
