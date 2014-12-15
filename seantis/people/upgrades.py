@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from zope.component import getUtility
+from zope.component.hooks import setSite
 
 from plone import api
 from plone.dexterity.interfaces import IDexterityFTI
 
+from seantis.people import catalog_id
 from seantis.people.supermodel.indexing import update_related_indexes
 
 
@@ -65,3 +67,27 @@ def install_membership_dependencies(context):
 
 def update_people_list(context):
     upgrade_portal_type('seantis.people.list', 'seantis.people', 'default')
+
+
+def introduce_custom_catalog(context, profiles=None):
+    run_import_step_from_profile('toolset', 'seantis.people', 'default')
+
+    import_ctx = context._getImportContext('profile-seantis.people:default')
+    old_site = api.portal.get()
+
+    try:
+        setSite(import_ctx.getSite())
+        catalog = api.portal.get_tool(catalog_id)
+        catalog.refreshCatalog(clear=1)
+
+        # XXX is this required?
+        profiles = profiles or [
+            ('seantis.people.phz', 'seantis.people', 'phz'),
+            ('seantis.people.standard', 'seantis.people', 'standard')
+        ]
+
+        for profile in profiles:
+            upgrade_portal_type(*profile)
+
+    finally:
+        setSite(old_site)

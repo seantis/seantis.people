@@ -7,6 +7,7 @@ from plone import api
 from plone.dexterity.content import Container
 from Products.CMFPlone.interfaces.constrains import IConstrainTypes, ENABLED
 
+from seantis.people import catalog_id
 from seantis.people.interfaces import IPerson, IList
 from seantis.people.supermodel import get_selectable_field_ix
 from seantis.plonetools import tools
@@ -32,7 +33,6 @@ class List(Container):
             # This kind of clones the ListConstrainTypes logic below, but
             # Plone sometimes uses this (CMFPlone) and sometimes the other
             # (plone.api) - FUN!
-
             types = tuple(t.id for t in self.available_types())
 
             if fti.aq_base.allowed_content_types != types:
@@ -54,7 +54,7 @@ class List(Container):
         include_inactive=False,
         unrestricted_search=False
     ):
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
 
         query = {}
         query['path'] = {
@@ -93,7 +93,7 @@ class List(Container):
             return catalog(query)
 
     def letters(self):
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
         index = catalog._catalog.getIndex('first_letter')
 
         letters = set()
@@ -118,11 +118,14 @@ class List(Container):
             return self.possible_types()
 
     def used_type(self):
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
         path = {'query': '/'.join(self.getPhysicalPath()), 'depth': 1}
 
         for fti in self.possible_types():
-            if catalog(path=path, portal_type=fti.id, sort_limit=1)[:1]:
+            obj_of_type = catalog.unrestrictedSearchResults(
+                path=path, portal_type=fti.id, sort_limit=1
+            )
+            if obj_of_type[:1]:
                 return fti
 
         return None

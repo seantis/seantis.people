@@ -69,3 +69,19 @@ class TestBrowser(tests.FunctionalTestCase):
 
         # layout policy
         self.assertIn('seantis-people-standard-list', browser.contents)
+
+    def test_remove_from_list(self):
+        list_url = self.new_people_list()
+        self.new_person('Claire', 'Dunphy')
+
+        browser = self.new_admin_browser()
+        browser.open(list_url)
+        self.assertIn('Claire', browser.contents)
+        self.assertIn('Dunphy', browser.contents)
+
+        browser.open(list_url + '/dunphy-claire/delete_confirmation')
+        browser.getControl('Delete').click()
+
+        browser.open(list_url)
+        self.assertNotIn('Claire', browser.contents)
+        self.assertNotIn('Dunphy', browser.contents)

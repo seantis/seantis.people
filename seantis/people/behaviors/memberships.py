@@ -73,7 +73,9 @@ class ZodbMembershipSource(grok.Adapter):
         if person is not None:
             query['membership_person'] = IUUID(person)
 
-        memberships = api.portal.get_tool(name='portal_catalog')(**query)
+        # memberships are stored outside the people's list, so the normal
+        # catalog is used instead of the people's catalog
+        memberships = api.portal.get_tool('portal_catalog')(**query)
 
         result = {}
 

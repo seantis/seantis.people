@@ -25,6 +25,10 @@ class IPerson(Interface):
         organization (brain or object with a title and an url)."""
 
 
+class IPeopleCatalog(Interface):
+    """ Seantis People uses a custom ZCatalog implementing this interface. """
+
+
 class INameFromPerson(Interface):
     pass
 

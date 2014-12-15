@@ -1,9 +1,17 @@
+from plone import api
 from plone.dexterity.content import Container
 from seantis.people.interfaces import IPerson
 from seantis.people import _
+from seantis.people import catalog_id
 
 
 class PersonBase(Container):
+
+    def _getCatalogTool(self):
+        try:
+            return api.portal.get_tool(catalog_id)
+        except api.exc.CannotGetPortalError:
+            return None
 
     @property
     def memberships(self):
@@ -11,10 +19,16 @@ class PersonBase(Container):
 
     @property
     def organizations(self):
+        if hasattr(self, 'test_organizations'):
+            return self.test_organizations
+
         return IPerson(self).organizations()
 
     @property
     def organization_uuids(self):
+        if hasattr(self, 'test_organization_uuids'):
+            return self.test_organization_uuids
+
         return IPerson(self).organization_uuids()
 
     @property

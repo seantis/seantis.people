@@ -4,6 +4,7 @@ from plone import api
 
 from seantis.plonetools import tools
 
+from seantis.people import catalog_id
 from seantis.people import tests
 from seantis.people.interfaces import IPerson
 from seantis.people.supermodel import (
@@ -40,11 +41,12 @@ class TestIndex(tests.IntegrationTestCase):
     def test_selectable_fields_index(self):
         new_type = self.new_temporary_type(
             behaviors=[IPerson.__identifier__],
-            model_source=self.selectable_xml
+            model_source=self.selectable_xml,
+            klass='seantis.people.types.base.PersonBase'
         )
         schema = new_type.lookupSchema()
 
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
 
         ix = '{}_selectable_{}'
 
@@ -70,7 +72,10 @@ class TestIndex(tests.IntegrationTestCase):
     def test_first_letter_index(self):
         self.login('admin')
 
-        new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
         folder = self.new_temporary_folder()
 
         create = lambda title: api.content.create(
@@ -81,12 +86,12 @@ class TestIndex(tests.IntegrationTestCase):
             u'Andrew', u'Beat', u'cesar', u'Dexter', u'', u'ändu', u'Ödipus'
         )]
 
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
         index = catalog._catalog.getIndex('first_letter')
 
         values = [
             index.getEntryForObject(
-                tools.get_brain_by_object(obj).getRID()
+                tools.get_brain_by_object(obj, catalog_id).getRID()
             ) for obj in objects
         ]
 
@@ -109,7 +114,8 @@ class TestIndex(tests.IntegrationTestCase):
 
         foobar = self.new_temporary_type(
             behaviors=[IPerson.__identifier__],
-            model_source=foobar_xml
+            model_source=foobar_xml,
+            klass='seantis.people.types.base.PersonBase'
         )
 
         obj = api.content.create(
@@ -118,11 +124,12 @@ class TestIndex(tests.IntegrationTestCase):
             container=self.new_temporary_folder()
         )
 
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
+
         index = catalog._catalog.getIndex('first_letter')
 
         get_index_value = lambda: index.getEntryForObject(
-            tools.get_brain_by_object(obj).getRID()
+            tools.get_brain_by_object(obj, catalog_id).getRID()
         )
 
         self.assertEqual(get_index_value(), u'T')
@@ -149,7 +156,7 @@ class TestIndex(tests.IntegrationTestCase):
         columns = [[key] for key in compound_columns]
         set_columns(new_type.lookupSchema(), columns)
 
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool(catalog_id)
 
         # the sets are completely different, the compound keys/values are not
         # part of the catalog columns

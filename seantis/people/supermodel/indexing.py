@@ -4,6 +4,7 @@ from plone.indexer import indexer
 
 from seantis.plonetools import tools
 
+from seantis.people import catalog_id
 from seantis.people.interfaces import IPerson, IPersonMarker
 from seantis.people.supermodel import (
     get_selectable_fields, get_order, get_columns, get_compound_columns
@@ -60,7 +61,7 @@ def update_related_indexes(fti):
 
     update_metadata(fti)
 
-    catalog = api.portal.get_tool('portal_catalog')
+    catalog = api.portal.get_tool(catalog_id)
     new_indexes = update_selectable_field_indexes(fti)
 
     if new_indexes:
@@ -83,7 +84,7 @@ def get_selectable_field_ix(portal_type, field):
 
 def get_selectable_field_indexes(fti):
     prefix = get_selectable_prefix(fti.id)
-    zcatalog = api.portal.get_tool('portal_catalog')._catalog
+    zcatalog = api.portal.get_tool(catalog_id)._catalog
     return [ix for ix in zcatalog.indexes if ix.startswith(prefix)]
 
 
@@ -92,14 +93,15 @@ def update_metadata(fti):
 
     for column in get_columns(fti.lookupSchema()):
         for field in column:
-            tools.add_attribute_to_metadata(field)
+            tools.add_attribute_to_metadata(field, catalog_id)
 
             if field in compound_columns:
-                tools.add_attribute_to_metadata(compound_columns[field])
+                tools.add_attribute_to_metadata(
+                    compound_columns[field], catalog_id)
 
 
 def update_selectable_field_indexes(fti):
-    catalog = api.portal.get_tool('portal_catalog')
+    catalog = api.portal.get_tool(catalog_id)
     fields = get_selectable_fields(fti.lookupSchema())
 
     new_indexes = []

@@ -25,6 +25,8 @@ class Person(object):
 
         organizations = self.organization_uuids(org_filter)
 
+        # organizations are defined in the general catalog, not the people
+        # catalog, which only contains people, therefore use 'portal_catalog'
         catalog = api.portal.get_tool('portal_catalog')
         titles = (catalog(UID=uid)[0].Title for uid in organizations)
 

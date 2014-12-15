@@ -10,9 +10,10 @@ class TestList(tests.IntegrationTestCase):
 
     def test_person_view_positions(self):
         with self.user('admin'):
-            person_type = self.new_temporary_type(behaviors=[
-                IPerson.__identifier__
-            ])
+            person_type = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
+            )
             person = api.content.create(
                 id='test',
                 type=person_type.id,
@@ -44,9 +45,10 @@ class TestList(tests.IntegrationTestCase):
                 type='seantis.people.list',
                 container=self.new_temporary_folder()
             )
-            person_type = self.new_temporary_type(behaviors=[
-                IPerson.__identifier__
-            ])
+            person_type = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
+            )
             one = api.content.create(
                 id='one',
                 type=person_type.id,
@@ -96,9 +98,10 @@ class TestList(tests.IntegrationTestCase):
 
     def test_custom_titles(self):
         with self.user('admin'):
-            person_type = self.new_temporary_type(behaviors=[
-                IPerson.__identifier__
-            ])
+            person_type = self.new_temporary_type(
+                behaviors=[IPerson.__identifier__],
+                klass='seantis.people.types.base.PersonBase'
+            )
             person = api.content.create(
                 id='test',
                 type=person_type.id,

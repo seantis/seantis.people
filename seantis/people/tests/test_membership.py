@@ -18,9 +18,40 @@ class TestMembership(tests.IntegrationTestCase):
 
         self.assertIs(type(ms.aq_base), Membership)
 
+    def test_organizations_macro(self):
+        person_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
+
+        with self.user('admin'):
+            organization = self.new_temporary_folder('S.H.I.E.L.D')
+
+            nick_fury = api.content.create(
+                title='Nick Fury',
+                type=person_type.id,
+                container=self.new_temporary_folder()
+            )
+
+            api.content.create(
+                title='Director',
+                type='seantis.people.membership',
+                container=organization,
+                person=nick_fury,
+                role='Director'
+            )
+
+            macros = nick_fury.unrestrictedTraverse('@@seantis-people-macros')
+            organizations = macros.organizations(nick_fury, 'memberships')
+
+        self.assertEqual(len(organizations), 1)
+        self.assertEqual(organizations[0].title, 'S.H.I.E.L.D')
+        self.assertEqual(organizations[0].role, 'Director')
+
     def test_membership_person_relation(self):
         person_type = self.new_temporary_type(
-            behaviors=[IPerson.__identifier__]
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
         )
 
         with self.user('admin'):
