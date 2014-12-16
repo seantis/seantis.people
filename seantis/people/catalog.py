@@ -16,7 +16,7 @@ class Extra(object):
 
 class PeopleCatalog(CatalogTool):
     """ A custom catalog for seantis.people. Required because people may have
-    a large number of metadata/indicies assigned to them which would slow
+    a large number of metadata/indices assigned to them which would slow
     down the rest of the site.
 
     The catalog is used by all types that inherit from
