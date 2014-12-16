@@ -17,6 +17,9 @@ Changelog
 
   [href]
 
+- Adds the ability to export by workflow state.
+  [href]
+
 - Exported XLSX files now automatically have the autofilter columns set.
   [href]
 

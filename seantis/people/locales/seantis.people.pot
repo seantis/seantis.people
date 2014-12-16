@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-06-24 08:02+0000\n"
+"POT-Creation-Date: 2014-12-16 09:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,10 @@ msgstr ""
 msgid "Address Private"
 msgstr ""
 
+#: ./browser/export_form.py:142
+msgid "All"
+msgstr ""
+
 #: ./types/standard.xml
 msgid "Attendance Time"
 msgstr ""
@@ -46,7 +50,7 @@ msgstr ""
 msgid "Biography"
 msgstr ""
 
-#: ./browser/export_form.py:118
+#: ./browser/export_form.py:166
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr ""
@@ -68,24 +72,24 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./browser/export_form.py:117
+#: ./browser/export_form.py:165
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr ""
 
-#: ./browser/export_form.py:58
+#: ./browser/export_form.py:66
 msgid "Export ${name}"
 msgstr ""
 
-#: ./content/export_content.py:70
+#: ./content/export_content.py:74
 msgid "Field '${name}' does not exist"
 msgstr ""
 
-#: ./browser/export_form.py:28
+#: ./browser/export_form.py:31
 msgid "Fields"
 msgstr ""
 
-#: ./browser/export_form.py:29
+#: ./browser/export_form.py:32
 msgid "Fields to include in the export"
 msgstr ""
 
@@ -102,7 +106,7 @@ msgstr ""
 msgid "First Name"
 msgstr ""
 
-#: ./browser/export_form.py:35
+#: ./browser/export_form.py:38
 msgid "Format"
 msgstr ""
 
@@ -111,7 +115,7 @@ msgstr ""
 msgid "Function"
 msgstr ""
 
-#: ./interfaces.py:86
+#: ./interfaces.py:90
 msgid "General note about this membership"
 msgstr ""
 
@@ -138,7 +142,7 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: ./browser/list.py:68
+#: ./browser/list.py:63
 msgid "Letter"
 msgstr ""
 
@@ -158,7 +162,7 @@ msgstr ""
 msgid "Membership"
 msgstr ""
 
-#: ./types/base.py:23
+#: ./types/base.py:37
 msgid "Memberships"
 msgstr ""
 
@@ -166,7 +170,7 @@ msgstr ""
 msgid "Miscellaneous"
 msgstr ""
 
-#: ./interfaces.py:36
+#: ./interfaces.py:40
 msgid "Name of the list of people"
 msgstr ""
 
@@ -174,7 +178,8 @@ msgstr ""
 msgid "Next portrait"
 msgstr ""
 
-#: ./content/export_content.py:80
+#: ./browser/renderer.py:75
+#: ./content/export_content.py:84
 msgid "No"
 msgstr ""
 
@@ -194,7 +199,7 @@ msgstr ""
 msgid "No people in the list."
 msgstr ""
 
-#: ./content/export_content.py:30
+#: ./content/export_content.py:31
 msgid "No people to export"
 msgstr ""
 
@@ -202,11 +207,11 @@ msgstr ""
 msgid "No upgradeable profiles."
 msgstr ""
 
-#: ./interfaces.py:85
+#: ./interfaces.py:89
 msgid "Note"
 msgstr ""
 
-#: ./interfaces.py:41
+#: ./interfaces.py:45
 msgid "Number of people shown on each page"
 msgstr ""
 
@@ -230,7 +235,7 @@ msgstr ""
 msgid "PH Zug Employees"
 msgstr ""
 
-#: ./interfaces.py:77
+#: ./interfaces.py:81
 msgid "Person"
 msgstr ""
 
@@ -264,11 +269,15 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: ./content/import_content.py:214
+#: ./content/import_content.py:234
 msgid "Required column is missing"
 msgstr ""
 
-#: ./interfaces.py:72
+#: ./browser/export_form.py:44
+msgid "Review States"
+msgstr ""
+
+#: ./interfaces.py:76
 msgid "Role inside organization"
 msgstr ""
 
@@ -296,11 +305,11 @@ msgstr ""
 msgid "Successfully imported ${count} records"
 msgstr ""
 
-#: ./content/import_content.py:114
+#: ./content/import_content.py:115
 msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
 msgstr ""
 
-#: ./content/import_content.py:106
+#: ./content/import_content.py:107
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
@@ -320,7 +329,8 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: ./content/export_content.py:80
+#: ./browser/renderer.py:73
+#: ./content/export_content.py:84
 msgid "Yes"
 msgstr ""
 

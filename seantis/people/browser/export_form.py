@@ -2,16 +2,17 @@ import codecs
 
 from copy import copy
 from cStringIO import StringIO as BytesIO
-from importlib import import_module
-
 from five import grok
-from zope import schema
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from importlib import import_module
+from plone import api
+from plone.directives import form
+from tablib import formats, packages
 from z3c.form import field
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
-from plone.directives import form
-from tablib import formats, packages
+from zope import schema
+from zope.i18nmessageid import MessageFactory
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 from seantis.people import _
 from seantis.people.interfaces import IList
@@ -39,6 +40,11 @@ class IExportFormSchema(form.Schema):
         default='CSV'
     )
 
+    review_state = schema.Choice(
+        title=_(u"State"),
+        values=[]
+    )
+
 
 class ExportForm(BaseForm):
 
@@ -48,6 +54,7 @@ class ExportForm(BaseForm):
 
     ignoreContext = True
     output = None
+    enable_unload_protection = False
 
     def render(self):
         if self.output:
@@ -90,6 +97,7 @@ class ExportForm(BaseForm):
         fields = field.Fields(IExportFormSchema)
         self.prepare_export_fields(fields)
         self.prepare_format_field(fields)
+        self.prepare_review_states_field(fields)
         return fields
 
     def prepare_export_fields(self, fields):
@@ -114,9 +122,49 @@ class ExportForm(BaseForm):
         f.field = copy(f.field)
         f.widgetFactory = RadioFieldWidget
 
+    def prepare_review_states_field(self, fields):
+
+        vocabulary = SimpleVocabulary(terms=[
+            SimpleTerm(id, title=title)
+            for id, title in self.available_review_states
+        ])
+
+        f = fields['review_state']
+        f.field = copy(f.field)
+
+        f.field.vocabulary = vocabulary
+        f.field.default = '__all__'
+
+        f.widgetFactory = RadioFieldWidget
+
+    @property
+    def available_review_states(self):
+        all_states = [
+            ('__all__', _(u'All'))
+        ]
+
+        used_type = self.context.used_type()
+        if not used_type:
+            return all_states
+
+        actual_states = set(b.review_state for b in self.context.people())
+        wftool = api.portal.get_tool('portal_workflow')
+
+        _plone = MessageFactory('plone')
+
+        for state in actual_states:
+            all_states.append((
+                state, _plone(
+                    wftool.getTitleForStateOnType(state, used_type.id)
+                )
+            ))
+
+        return all_states
+
     @property
     def available_actions(self):
-        yield dict(name='export', title=_(u"Export"), css_class='context')
+        yield dict(name='export', title=_(u"Export"),
+                   css_class='context allowMultiSubmit')
         yield dict(name='cancel', title=_(u"Cancel"))
 
     def export_as(self, dataset, format):
@@ -152,11 +200,15 @@ class ExportForm(BaseForm):
                 if id in export_fields
             ]
 
+            review_state = self.parameters.get('review_state')
+            review_state = None if review_state == '__all__' else review_state
+
             dataset = export_people(
                 self.request,
                 self.context,
                 self.portal_type.id,
-                export_fields
+                export_fields,
+                review_state
             )
 
             format = self.parameters.get('export_format').lower()
