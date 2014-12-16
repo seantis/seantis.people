@@ -3,7 +3,7 @@ import os
 
 name = 'seantis.people'
 description = (
-    "A list of people, optionally organized by organisations and positions."
+    "A list of people, optionally organized by organizations and positions."
 )
 version = '0.23'
 
