@@ -56,7 +56,7 @@ Note that we don't provide any styling for seantis.people. We build on
 `plonetheme.onegov`_ and try to keep our HTML as simple as possible.
 
 Having installed seantis.people be sure to open the seantis.people controlpanel
-found on the plone controlpanel (under "Add-on Configuration").
+found on the Plone controlpanel (under "Add-on Configuration").
 
 There you can select the Person type you would like to use. Currently this
 will without a doubt be "Seantis People - Standard". To use it, click
