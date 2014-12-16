@@ -79,15 +79,5 @@ def introduce_custom_catalog(context, profiles=None):
         setSite(import_ctx.getSite())
         catalog = api.portal.get_tool(catalog_id)
         catalog.refreshCatalog(clear=1)
-
-        # XXX is this required?
-        profiles = profiles or [
-            ('seantis.people.phz', 'seantis.people', 'phz'),
-            ('seantis.people.standard', 'seantis.people', 'standard')
-        ]
-
-        for profile in profiles:
-            upgrade_portal_type(*profile)
-
     finally:
         setSite(old_site)
