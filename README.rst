@@ -1,7 +1,7 @@
 Seantis People
 ==============
 
-A list of people, optionally organized by organisations and positions.
+A list of people, optionally organized by organizations and positions.
 
 Municiaplities for which we contribute to `OneGov`_ often require a public list
 of contacts. For the customers and us this package needs to scratch the
@@ -13,8 +13,8 @@ following itches:
 
 - Some fields should only be visible with certain permissions.
 
-- It must be possible to put people into various organisations and show the
-  membership of those organisations.
+- It must be possible to put people into various organizations and show the
+  membership of those organizations.
 
 Design
 ------
@@ -43,8 +43,8 @@ This is how it is done:
   membership type links to the actual person object.
 
 - We identify the organization solely by url and title. This makes
-  organisations very flexible. For example, with `seantis.cover.people`_
-  we implemented organisations using collective.cover.
+  organizations very flexible. For example, with `seantis.cover.people`_
+  we implemented organizations using collective.cover.
 
 Installation & Usage
 --------------------
@@ -78,13 +78,13 @@ same type together on the same list:
    :alt: Add Contact Screenshot
 
 Going back to the list you will notice that this person does not belong to
-an organisation. To add a person to an organisation you can simply create
-a folder with the name of the organisation as its title:
+an organization. To add a person to an organization you can simply create
+a folder with the name of the organization as its title:
 
 .. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-04-add-folder.png
    :alt: Add Folder Screenshot
 
-Finally, add the person to the organisation by creating a membership and
+Finally, add the person to the organization by creating a membership and
 referencing the person:
 
 .. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-05-add-membership.png
