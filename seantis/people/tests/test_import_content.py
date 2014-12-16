@@ -81,7 +81,7 @@ class TestImportContent(tests.IntegrationTestCase):
 
         self.login('admin')
 
-        # error with a column avaiable
+        # error with a column available
         try:
             import_people(self.request, folder, portal_type, 'csv', dedent("""
                 Name,Age

@@ -21,7 +21,7 @@ class TestCatalog(tests.IntegrationTestCase):
         on_type_modified(with_baseclass)
 
         # create one object with the correct baseclass, one without.
-        # both are going to be in portal_catalog, but the one with the
+        # Both are going to be in portal_catalog, but the one with the
         # person baseclass will end up in the people catalog only.
         with self.user('admin'):
             container = self.new_temporary_folder()

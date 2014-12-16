@@ -147,7 +147,7 @@ class TestIndex(tests.IntegrationTestCase):
         self.assertEqual(get_index_value(), u'Ä')
 
     def test_compound_columns_metadata(self):
-        # Both key and value of a compound_column is added to the metadata
+        # Both key and value of a compound_column are added to the metadata
         # if the key alone is added.
 
         new_type = self.new_temporary_type(behaviors=[IPerson.__identifier__])

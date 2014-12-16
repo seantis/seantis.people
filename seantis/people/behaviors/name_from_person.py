@@ -8,7 +8,7 @@ from seantis.people.interfaces import INameFromPerson
 
 
 def on_object_modified(obj, event=None):
-    """ If an object with the INameFromPerson beheavior activated is changed,
+    """ If an object with the INameFromPerson behavior activated is changed,
     the title needs to be changed. This does not happen automatically.
 
     """

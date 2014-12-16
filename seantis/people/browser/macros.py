@@ -9,7 +9,7 @@ from seantis.people.browser.base import BaseView
 
 
 class View(BaseView):
-    """A numer of macros for use with seantis.people"""
+    """A number of macros for use with seantis.people"""
 
     grok.context(Interface)
     grok.require('zope2.View')
