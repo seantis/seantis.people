@@ -21,7 +21,7 @@ Design
 
 This is how it is done:
 
-- We give the user the possiblity to define a list of people. Each list
+- We give the user the possibility to define a list of people. Each list
   consists of a number of dexterity objects with IPerson behavior. Within
   one list only one dexterity type is allowed.
 
@@ -56,7 +56,7 @@ Note that we don't provide any styling for seantis.people. We build on
 `plonetheme.onegov`_ and try to keep our HTML as simple as possible.
 
 Having installed seantis.people be sure to open the seantis.people controlpanel
-found on the plone contrlpanel (under "Add-on Configuration").
+found on the plone controlpanel (under "Add-on Configuration").
 
 There you can select the Person type you would like to use. Currently this
 will without a doubt be "Seantis People - Standard". To use it, click
@@ -85,7 +85,7 @@ a folder with the name of the organisation as its title:
    :alt: Add Folder Screenshot
 
 Finally, add the person to the organisation by creating a membership and
-referncing the person:
+referencing the person:
 
 .. image:: https://raw.githubusercontent.com/seantis/seantis.people/master/screenshots/readme-05-add-membership.png
    :alt: Add Folder Screenshot
@@ -101,7 +101,7 @@ Status
 Seantis.people is used in production already. Though it's one of our newer
 modules so it hasn't been as battle tested as some of our other offerings.
 
-Once we feel perfectly confident about this you'll see an 1.0 release.
+Once we feel perfectly confident about this you'll see a 1.0 release.
 
 Alternatives
 ------------
@@ -114,7 +114,7 @@ Requirements
 
 -  Python 2.7
 -  Plone 4.3+
--  Linux / Posix ( Windows may or may not work )
+-  Linux / Posix (Windows may or may not work)
 
 Build Status
 ------------
