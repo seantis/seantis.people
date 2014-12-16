@@ -130,8 +130,8 @@ Coverage
   :target: https://coveralls.io/r/seantis/seantis.people?branch=master
   :alt: Project Coverage
 
-Latests PyPI Release
---------------------
+Latest PyPI Release
+-------------------
 .. image:: https://pypip.in/v/seantis.people/badge.png
   :target: https://crate.io/packages/seantis.people
   :alt: Latest PyPI Release
