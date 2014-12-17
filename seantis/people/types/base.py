@@ -10,7 +10,9 @@ class PersonBase(Container):
     def _getCatalogTool(self):
         try:
             return api.portal.get_tool(catalog_id)
-        except api.exc.CannotGetPortalError:
+        except (api.exc.CannotGetPortalError, api.exc.InvalidParameterError):
+            # it's possible that this is called during an update step, at
+            # which point the seantis people catalog is not yet available
             return None
 
     @property

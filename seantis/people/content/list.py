@@ -25,6 +25,13 @@ class List(Container):
         if fti is None:
             return None
         else:
+            try:
+                # it's possible that this is called during an update step, at
+                # which point the seantis people catalog is not yet available
+                api.portal.get_tool(catalog_id)
+            except api.exc.InvalidParameterError:
+                return None
+
             # Update the list of available types if it's not correct.
             # This will lead to a write, but I've tried all possible hacks
             # to get around that and I want to do this here where it's
