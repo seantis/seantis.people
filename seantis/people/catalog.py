@@ -146,6 +146,7 @@ class PeopleCatalog(CatalogTool):
         for index in self.base_catalog.index_objects():
             if index.meta_type not in known_index_types:
                 log.warn('Unknown index type: {}'.format(index.meta_type))
+                continue
 
             extra = Extra()
 
