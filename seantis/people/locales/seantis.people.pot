@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-12-16 09:40+0000\n"
+"POT-Creation-Date: 2014-12-17 08:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Address Private"
 msgstr ""
 
-#: ./browser/export_form.py:142
+#: ./browser/export_form.py:168
 msgid "All"
 msgstr ""
 
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Biography"
 msgstr ""
 
-#: ./browser/export_form.py:166
+#: ./browser/export_form.py:193
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr ""
@@ -72,24 +72,24 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./browser/export_form.py:165
+#: ./browser/export_form.py:191
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr ""
 
-#: ./browser/export_form.py:66
+#: ./browser/export_form.py:74
 msgid "Export ${name}"
 msgstr ""
 
-#: ./content/export_content.py:74
+#: ./content/export_content.py:80
 msgid "Field '${name}' does not exist"
 msgstr ""
 
-#: ./browser/export_form.py:31
+#: ./browser/export_form.py:33
 msgid "Fields"
 msgstr ""
 
-#: ./browser/export_form.py:32
+#: ./browser/export_form.py:34
 msgid "Fields to include in the export"
 msgstr ""
 
@@ -106,7 +106,7 @@ msgstr ""
 msgid "First Name"
 msgstr ""
 
-#: ./browser/export_form.py:38
+#: ./browser/export_form.py:40
 msgid "Format"
 msgstr ""
 
@@ -127,6 +127,10 @@ msgstr ""
 
 #: ./browser/import_form.py:38
 msgid "Import ${name}"
+msgstr ""
+
+#: ./browser/export_form.py:51
+msgid "Include Inactive"
 msgstr ""
 
 #: ./browser/templates/controlpanel.pt:38
@@ -179,7 +183,7 @@ msgid "Next portrait"
 msgstr ""
 
 #: ./browser/renderer.py:75
-#: ./content/export_content.py:84
+#: ./content/export_content.py:90
 msgid "No"
 msgstr ""
 
@@ -199,7 +203,7 @@ msgstr ""
 msgid "No people in the list."
 msgstr ""
 
-#: ./content/export_content.py:31
+#: ./content/export_content.py:32
 msgid "No people to export"
 msgstr ""
 
@@ -273,10 +277,6 @@ msgstr ""
 msgid "Required column is missing"
 msgstr ""
 
-#: ./browser/export_form.py:44
-msgid "Review States"
-msgstr ""
-
 #: ./interfaces.py:76
 msgid "Role inside organization"
 msgstr ""
@@ -299,6 +299,10 @@ msgstr ""
 
 #: ./profiles/standard/types/seantis.people.standard.xml
 msgid "Standard Contact"
+msgstr ""
+
+#: ./browser/export_form.py:46
+msgid "State"
 msgstr ""
 
 #: ./browser/import_form.py:102
@@ -330,7 +334,7 @@ msgid "Website"
 msgstr ""
 
 #: ./browser/renderer.py:73
-#: ./content/export_content.py:84
+#: ./content/export_content.py:90
 msgid "Yes"
 msgstr ""
 

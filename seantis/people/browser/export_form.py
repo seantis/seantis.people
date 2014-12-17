@@ -8,6 +8,7 @@ from plone import api
 from plone.directives import form
 from tablib import formats, packages
 from z3c.form import field
+from z3c.form.interfaces import HIDDEN_MODE
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
@@ -15,6 +16,7 @@ from zope.i18nmessageid import MessageFactory
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 from seantis.people import _
+from seantis.people import catalog_id
 from seantis.people.interfaces import IList
 from seantis.people.browser import BaseForm
 from seantis.people.errors import ContentExportError
@@ -43,6 +45,11 @@ class IExportFormSchema(form.Schema):
     review_state = schema.Choice(
         title=_(u"State"),
         values=[]
+    )
+
+    include_inactive = schema.Bool(
+        title=_(u"Include Inactive"),
+        default=True
     )
 
 
@@ -99,6 +106,24 @@ class ExportForm(BaseForm):
         self.prepare_format_field(fields)
         self.prepare_review_states_field(fields)
         return fields
+
+    @property
+    def hide_include_inactive(self):
+        """ The include inactive flag is only shown if any people have it
+        set. If it wouldn't make a difference, don't include it.
+
+        """
+        path = {
+            'query': '/'.join(self.context.getPhysicalPath()), 'depth': 1
+        }
+        catalog = api.portal.get_tool(catalog_id)
+        return len(catalog(path=path, is_active_person=False)) == 0
+
+    def updateWidgets(self):
+        super(ExportForm, self).updateWidgets()
+
+        if self.hide_include_inactive:
+            self.widgets['include_inactive'].mode = HIDDEN_MODE
 
     def prepare_export_fields(self, fields):
 
@@ -203,12 +228,15 @@ class ExportForm(BaseForm):
             review_state = self.parameters.get('review_state')
             review_state = None if review_state == '__all__' else review_state
 
+            include_inactive = self.parameters.get('include_inactive')
+
             dataset = export_people(
                 self.request,
                 self.context,
                 self.portal_type.id,
                 export_fields,
-                review_state
+                review_state,
+                include_inactive
             )
 
             format = self.parameters.get('export_format').lower()

@@ -23,8 +23,10 @@ supported_formats = [
 ]
 
 
-def export_people(request, container, portal_type, fields, review_state=None):
-    people = get_people(container, portal_type, review_state)
+def export_people(request, container, portal_type, fields,
+                  review_state=None, include_inactive=True):
+
+    people = get_people(container, portal_type, review_state, include_inactive)
 
     if not people:
         raise ContentExportError(_(u"No people to export"))
@@ -38,7 +40,9 @@ def export_people(request, container, portal_type, fields, review_state=None):
     return dataset
 
 
-def get_people(container, portal_type, review_state=None):
+def get_people(container, portal_type,
+               review_state=None, include_inactive=True):
+
     catalog = api.portal.get_tool(catalog_id)
     path = '/'.join(container.getPhysicalPath())
 
@@ -49,6 +53,9 @@ def get_people(container, portal_type, review_state=None):
 
     if review_state is not None:
         query['review_state'] = review_state
+
+    if not include_inactive:
+        query['is_active_person'] = True
 
     return [b.getObject() for b in catalog(query)]
 

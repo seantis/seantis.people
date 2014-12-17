@@ -17,6 +17,9 @@ Changelog
 
   [href]
 
+- Adds the ability to exluce inactive people from the export.
+  [href]
+
 - Adds the ability to export by workflow state.
   [href]
 
