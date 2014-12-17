@@ -12,12 +12,13 @@ from z3c.form.interfaces import HIDDEN_MODE
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
+from zope.component import getAdapters
 from zope.i18nmessageid import MessageFactory
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 from seantis.people import _
 from seantis.people import catalog_id
-from seantis.people.interfaces import IList
+from seantis.people.interfaces import IList, IExportVariant
 from seantis.people.browser import BaseForm
 from seantis.people.errors import ContentExportError
 from seantis.people.content.export_content import (
@@ -40,6 +41,11 @@ class IExportFormSchema(form.Schema):
         title=_(u"Format"),
         values=uppercase_formats,
         default='CSV'
+    )
+
+    variant = schema.Choice(
+        title=_(u"Variant"),
+        values=[]
     )
 
     review_state = schema.Choice(
@@ -105,6 +111,7 @@ class ExportForm(BaseForm):
         self.prepare_export_fields(fields)
         self.prepare_format_field(fields)
         self.prepare_review_states_field(fields)
+        self.prepare_variants(fields)
         return fields
 
     @property
@@ -124,6 +131,9 @@ class ExportForm(BaseForm):
 
         if self.hide_include_inactive:
             self.widgets['include_inactive'].mode = HIDDEN_MODE
+
+        if len(self.available_variants) == 1:
+            self.widgets['variant'].mode = HIDDEN_MODE
 
     def prepare_export_fields(self, fields):
 
@@ -162,6 +172,21 @@ class ExportForm(BaseForm):
 
         f.widgetFactory = RadioFieldWidget
 
+    def prepare_variants(self, fields):
+
+        vocabulary = SimpleVocabulary(terms=[
+            SimpleTerm(name, title=self.translate(title))
+            for name, title in self.available_variants
+        ])
+
+        f = fields['variant']
+        f.field = copy(f.field)
+
+        f.field.vocabulary = vocabulary
+        f.field.default = '__none__'
+
+        f.widgetFactory = RadioFieldWidget
+
     @property
     def available_review_states(self):
         all_states = [
@@ -185,6 +210,28 @@ class ExportForm(BaseForm):
             ))
 
         return all_states
+
+    @property
+    def available_variants(self):
+        exports = [
+            ('__none__', _(u'Standard'))
+        ]
+
+        for name, export in getAdapters((self.context, ), IExportVariant):
+            if export.can_handle_type(self.portal_type):
+                exports.append((name, export.title))
+
+        return exports
+
+    def get_variant_by_name(self, name):
+        if name == '__none__':
+            return None
+
+        for variant, export in getAdapters((self.context, ), IExportVariant):
+            if variant == name and export.can_handle_type(self.portal_type):
+                return export
+
+        return None
 
     @property
     def available_actions(self):
@@ -238,6 +285,15 @@ class ExportForm(BaseForm):
                 review_state,
                 include_inactive
             )
+
+            variant = self.get_variant_by_name(self.parameters.get('variant'))
+            if variant:
+                dataset = variant.adjust_dataset(dataset, self.parameters)
+
+                if dataset is None:
+                    raise ContentExportError(
+                        _(u"The selected variant could not be applied")
+                    )
 
             format = self.parameters.get('export_format').lower()
             filename = '%s.%s' % (self.context.title, format)

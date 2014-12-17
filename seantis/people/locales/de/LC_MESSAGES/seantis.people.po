@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-12-17 08:28+0000\n"
+"POT-Creation-Date: 2014-12-17 14:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "Adresse"
 msgid "Address Private"
 msgstr "Privat-Adresse"
 
-#: ./browser/export_form.py:168
+#: ./browser/export_form.py:193
 msgid "All"
 msgstr "Alle"
 
@@ -47,7 +47,7 @@ msgstr "Verfügbare Profile"
 msgid "Biography"
 msgstr "Biographie"
 
-#: ./browser/export_form.py:193
+#: ./browser/export_form.py:240
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -69,12 +69,12 @@ msgstr "Abteilung"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ./browser/export_form.py:191
+#: ./browser/export_form.py:238
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr "Export"
 
-#: ./browser/export_form.py:74
+#: ./browser/export_form.py:80
 msgid "Export ${name}"
 msgstr "${name} exportieren"
 
@@ -82,11 +82,11 @@ msgstr "${name} exportieren"
 msgid "Field '${name}' does not exist"
 msgstr "Das Feld mit dem Namen '${name}' existiert nicht"
 
-#: ./browser/export_form.py:33
+#: ./browser/export_form.py:34
 msgid "Fields"
 msgstr "Felder"
 
-#: ./browser/export_form.py:34
+#: ./browser/export_form.py:35
 msgid "Fields to include in the export"
 msgstr "Felder die im Export enthalten sein sollen"
 
@@ -103,7 +103,7 @@ msgstr "Filter"
 msgid "First Name"
 msgstr "Vorname"
 
-#: ./browser/export_form.py:40
+#: ./browser/export_form.py:41
 msgid "Format"
 msgstr "Format"
 
@@ -112,7 +112,7 @@ msgstr "Format"
 msgid "Function"
 msgstr "Funktion"
 
-#: ./interfaces.py:90
+#: ./interfaces.py:114
 msgid "General note about this membership"
 msgstr "Allgemeine Notiz/Bemerkung zu dieser Mitgliedschaft"
 
@@ -126,7 +126,7 @@ msgstr "Import"
 msgid "Import ${name}"
 msgstr "${name} importieren"
 
-#: ./browser/export_form.py:51
+#: ./browser/export_form.py:52
 msgid "Include Inactive"
 msgstr "Mit inaktiven Personen"
 
@@ -163,7 +163,7 @@ msgstr "Liste von Profilen die Typen mit IPerson 'behavior' enthalten. Sie sollt
 msgid "Membership"
 msgstr "Mitgliedschaft"
 
-#: ./types/base.py:37
+#: ./types/base.py:39
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
@@ -208,7 +208,7 @@ msgstr "Keine Personen für den Export vorhanden"
 msgid "No upgradeable profiles."
 msgstr "Keine aktualisierbaren Profile."
 
-#: ./interfaces.py:89
+#: ./interfaces.py:113
 msgid "Note"
 msgstr "Notiz"
 
@@ -236,7 +236,7 @@ msgstr "Organisationen"
 msgid "PH Zug Employees"
 msgstr "PH Zug Mitarbeitende"
 
-#: ./interfaces.py:81
+#: ./interfaces.py:105
 msgid "Person"
 msgstr "Person"
 
@@ -274,7 +274,7 @@ msgstr "Privat"
 msgid "Required column is missing"
 msgstr "Benötigte Spalte fehlt"
 
-#: ./interfaces.py:76
+#: ./interfaces.py:100
 msgid "Role inside organization"
 msgstr "Rolle in der Organisation"
 
@@ -294,11 +294,15 @@ msgstr "Seantis People Kontrollzentrum"
 msgid "Shortcode"
 msgstr "Kurzzeichen"
 
+#: ./browser/export_form.py:217
+msgid "Standard"
+msgstr "Standart"
+
 #: ./profiles/standard/types/seantis.people.standard.xml
 msgid "Standard Contact"
 msgstr "Standard Kontakt"
 
-#: ./browser/export_form.py:46
+#: ./browser/export_form.py:47
 msgid "State"
 msgstr "Status"
 
@@ -314,6 +318,10 @@ msgstr "Die ${name} Spalte ist ungültig. \"title\" and \"id\" sind reservierte 
 msgid "The ${name} column is specified more than once"
 msgstr "Die ${name} Spalte ist mehr als einmal vorhanden"
 
+#: ./browser/export_form.py:295
+msgid "The selected variant could not be applied"
+msgstr "Die ausgewählte Variante konnte nicht angewendet werden"
+
 #: ./browser/import_form.py:24
 msgid "Type"
 msgstr "Typ"
@@ -325,6 +333,10 @@ msgstr "Aktualisieren"
 #: ./browser/templates/controlpanel.pt:55
 msgid "Upgradeable Profiles"
 msgstr "Aktualisierbare Profile"
+
+#: ./browser/export_form.py:57
+msgid "Variant"
+msgstr "Variante"
 
 #: ./types/standard.xml
 msgid "Website"

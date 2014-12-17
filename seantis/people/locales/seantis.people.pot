@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-12-17 08:28+0000\n"
+"POT-Creation-Date: 2014-12-17 14:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Address Private"
 msgstr ""
 
-#: ./browser/export_form.py:168
+#: ./browser/export_form.py:193
 msgid "All"
 msgstr ""
 
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Biography"
 msgstr ""
 
-#: ./browser/export_form.py:193
+#: ./browser/export_form.py:240
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr ""
@@ -72,12 +72,12 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./browser/export_form.py:191
+#: ./browser/export_form.py:238
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr ""
 
-#: ./browser/export_form.py:74
+#: ./browser/export_form.py:80
 msgid "Export ${name}"
 msgstr ""
 
@@ -85,11 +85,11 @@ msgstr ""
 msgid "Field '${name}' does not exist"
 msgstr ""
 
-#: ./browser/export_form.py:33
+#: ./browser/export_form.py:34
 msgid "Fields"
 msgstr ""
 
-#: ./browser/export_form.py:34
+#: ./browser/export_form.py:35
 msgid "Fields to include in the export"
 msgstr ""
 
@@ -106,7 +106,7 @@ msgstr ""
 msgid "First Name"
 msgstr ""
 
-#: ./browser/export_form.py:40
+#: ./browser/export_form.py:41
 msgid "Format"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgstr ""
 msgid "Function"
 msgstr ""
 
-#: ./interfaces.py:90
+#: ./interfaces.py:114
 msgid "General note about this membership"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Import ${name}"
 msgstr ""
 
-#: ./browser/export_form.py:51
+#: ./browser/export_form.py:52
 msgid "Include Inactive"
 msgstr ""
 
@@ -166,7 +166,7 @@ msgstr ""
 msgid "Membership"
 msgstr ""
 
-#: ./types/base.py:37
+#: ./types/base.py:39
 msgid "Memberships"
 msgstr ""
 
@@ -211,7 +211,7 @@ msgstr ""
 msgid "No upgradeable profiles."
 msgstr ""
 
-#: ./interfaces.py:89
+#: ./interfaces.py:113
 msgid "Note"
 msgstr ""
 
@@ -239,7 +239,7 @@ msgstr ""
 msgid "PH Zug Employees"
 msgstr ""
 
-#: ./interfaces.py:81
+#: ./interfaces.py:105
 msgid "Person"
 msgstr ""
 
@@ -277,7 +277,7 @@ msgstr ""
 msgid "Required column is missing"
 msgstr ""
 
-#: ./interfaces.py:76
+#: ./interfaces.py:100
 msgid "Role inside organization"
 msgstr ""
 
@@ -297,11 +297,15 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
+#: ./browser/export_form.py:217
+msgid "Standard"
+msgstr ""
+
 #: ./profiles/standard/types/seantis.people.standard.xml
 msgid "Standard Contact"
 msgstr ""
 
-#: ./browser/export_form.py:46
+#: ./browser/export_form.py:47
 msgid "State"
 msgstr ""
 
@@ -317,6 +321,10 @@ msgstr ""
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
+#: ./browser/export_form.py:295
+msgid "The selected variant could not be applied"
+msgstr ""
+
 #: ./browser/import_form.py:24
 msgid "Type"
 msgstr ""
@@ -327,6 +335,10 @@ msgstr ""
 
 #: ./browser/templates/controlpanel.pt:55
 msgid "Upgradeable Profiles"
+msgstr ""
+
+#: ./browser/export_form.py:57
+msgid "Variant"
 msgstr ""
 
 #: ./types/standard.xml

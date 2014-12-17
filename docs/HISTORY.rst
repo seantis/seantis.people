@@ -17,6 +17,11 @@ Changelog
 
   [href]
 
+- Adds a mechanism to define "export variants". Export variants can adjust
+  the dataset of any people type. It's used to add specific exports that build
+  on the standard people export.
+  [href]
+
 - Adds the ability to exluce inactive people from the export.
   [href]
 

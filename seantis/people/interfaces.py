@@ -60,6 +60,30 @@ class IMembershipSource(Interface):
         """
 
 
+class IExportVariant(Interface):
+    """ An export variant is an adapter that has the ability to intercept the
+    export process and change the tablib dataset before it is converted into
+    another format (XLS, CSV, JSON...).
+
+    Only one variant is used at a time. The passed dataset may not contain
+    all fields that are necesary for the export. In this case 'None' should be
+    returned.
+
+    """
+
+    title = Attribute("The title of the export")
+
+    def can_handle_type(self, fti):
+        """ Called with the person fti that is about to be exported. Return
+        true if that type is handled by this export.
+
+        """
+        raise NotImplementedError
+
+    def adjust_dataset(self, dataset, export_options):
+        raise NotImplementedError
+
+
 class IMembershipChangedEvent(Interface):
     """ This event needs to be signaled when the membership in a
     IMembershipSource object changed. That means if a membership was added,
