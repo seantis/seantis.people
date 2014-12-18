@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.23 (unreleased)
+0.23 (2014-12-18)
 ~~~~~~~~~~~~~~~~~
 
 - Adds a custom catalog to manage generated indexes and metadata. 
