@@ -330,7 +330,7 @@ class TestList(tests.IntegrationTestCase):
                 klass='seantis.people.types.base.PersonBase'
             ).id
 
-            countries = ['Germany', 'Switzerland']
+            countries = ['Österreich', 'Germany', 'Switzerland']
 
             for c in countries:
                 api.content.create(
@@ -341,7 +341,7 @@ class TestList(tests.IntegrationTestCase):
 
         columns = view.columns()
 
-        self.assertEqual(len(view.people()), 2)
+        self.assertEqual(len(view.people()), 3)
         self.assertEqual(len(columns), 1)
         self.assertEqual(view.selected_column_value(columns[0]), '__all__')
         self.assertEqual(view.column_values(columns[0]), countries)
@@ -351,6 +351,12 @@ class TestList(tests.IntegrationTestCase):
         self.assertEqual(len(view.people()), 1)
         self.assertEqual(view.column_values(columns[0]), countries)
         self.assertEqual(view.selected_column_value(columns[0]), 'Switzerland')
+
+        view.request['filter-country'] = 'Österreich'
+
+        self.assertEqual(len(view.people()), 1)
+        self.assertEqual(view.column_values(columns[0]), countries)
+        self.assertEqual(view.selected_column_value(columns[0]), 'Österreich')
 
     def test_list_view_compound_column_organizations(self):
 

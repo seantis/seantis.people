@@ -121,6 +121,6 @@ class ListView(BaseView):
         filter = self.filter
 
         if isinstance(filter, ListFilter) and filter.key == column.fields[0]:
-            return filter.value
+            return filter.value.encode('utf-8')
         else:
             return '__all__'

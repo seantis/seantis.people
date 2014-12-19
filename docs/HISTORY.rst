@@ -5,7 +5,9 @@ Changelog
 0.24 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Fixes unicode decode error when searching for organizations with non-ASCII
+  characters in their title.
+  [href]
 
 0.23 (2014-12-18)
 ~~~~~~~~~~~~~~~~~
