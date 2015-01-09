@@ -19,40 +19,6 @@ LetterFilter = namedtuple('LetterFilter', ['value', 'title'])
 
 class List(Container):
 
-    def getTypeInfo(self):
-        fti = super(List, self).getTypeInfo()
-
-        if fti is None:
-            return None
-        else:
-            try:
-                # it's possible that this is called during an update step, at
-                # which point the seantis people catalog is not yet available
-                api.portal.get_tool(catalog_id)
-            except api.exc.InvalidParameterError:
-                return None
-
-            # Update the list of available types if it's not correct.
-            # This will lead to a write, but I've tried all possible hacks
-            # to get around that and I want to do this here where it's
-            # convenient.
-
-            # This kind of clones the ListConstrainTypes logic below, but
-            # Plone sometimes uses this (CMFPlone) and sometimes the other
-            # (plone.api) - FUN!
-            types = tuple(t.id for t in self.available_types())
-
-            if fti.aq_base.allowed_content_types != types:
-                fti.aq_base.allowed_content_types = types
-
-            return fti
-
-    def invokeFactory(self, type, content_id, **kwargs):
-        # fixes plone.api.create as a side-effect because that one uses a
-        # cached fti which is not up to date during testing
-        self.getTypeInfo()
-        return super(List, self).invokeFactory(type, content_id, **kwargs)
-
     def people(
         self,
         filter=None,

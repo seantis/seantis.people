@@ -5,6 +5,9 @@ Changelog
 0.24 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- People types are now globally allowed - without hackery. Fixes #32.
+  [href]
+
 - Fixes unicode decode error when searching for organizations with non-ASCII
   characters in their title.
   [href]

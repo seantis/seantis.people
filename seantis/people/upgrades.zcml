@@ -58,6 +58,13 @@
         handler=".upgrades.introduce_custom_catalog"
     />
 
+    <genericsetup:upgradeStep 
+        title="Updates global allow."
+        source="1008" destination="1009"
+        profile="seantis.people:default"
+        handler=".upgrades.update_people_list"
+    />
+
     <!-- PHZ Upgrades -->
     <genericsetup:upgradeStep
         title="Remove import action from detail view."
@@ -71,6 +78,14 @@
         source="1001" destination="1002"
         profile="seantis.people:phz"
         handler=".upgrades.upgrade_phz_type_info"
+    />
+
+    <!-- Standard Upgrades -->
+    <genericsetup:upgradeStep
+        title="Remove import action from detail view."
+        source="1000" destination="1001"
+        profile="seantis.people:standard"
+        handler=".upgrades.upgrade_standard_type_info"
     />
 
 </configure>
