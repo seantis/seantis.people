@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.24 (unreleased)
+0.24 (2015-01-09)
 ~~~~~~~~~~~~~~~~~
 
 - People types are now globally allowed - without hackery. Fixes #32.
