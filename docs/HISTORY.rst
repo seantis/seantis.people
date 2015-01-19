@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.25 (unreleased)
+0.25 (2015-01-19)
 ~~~~~~~~~~~~~~~~~
 
 - Removed autofilter in XLSX files. This lead to problems with Excel.
