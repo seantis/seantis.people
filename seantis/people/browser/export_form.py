@@ -1,12 +1,10 @@
 import codecs
 
 from copy import copy
-from cStringIO import StringIO as BytesIO
 from five import grok
 from importlib import import_module
 from plone import api
 from plone.directives import form
-from tablib import formats, packages
 from z3c.form import field
 from z3c.form.interfaces import HIDDEN_MODE
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
@@ -239,30 +237,6 @@ class ExportForm(BaseForm):
                    css_class='context allowMultiSubmit')
         yield dict(name='cancel', title=_(u"Cancel"))
 
-    def export_as(self, dataset, format):
-        if format != 'xlsx':
-            return getattr(dataset, format)
-
-        # NOTE expect breakage here, tablib packages its own openpyxl module.
-        # (It's the package maintainers "style" to do this). If something stops
-        # working here, check back with tablib, if they updated the openpyxl
-        # module and have a look at _xlsx.py in tablib.
-        wb = packages.openpyxl.workbook.Workbook()
-        ws = wb.worksheets[0]
-        ws.title = dataset.title if dataset.title else 'Tablib Dataset'
-
-        # activate the autofilter for all columns
-        ws.auto_filter = ':'.join(cell.address for cell in (
-            ws.cell(row=0, column=0),
-            ws.cell(row=0, column=dataset.width)
-        ))
-
-        formats._xlsx.dset_sheet(dataset, ws)
-
-        stream = BytesIO()
-        wb.save(stream)
-        return stream.getvalue()
-
     def handle_export(self):
         try:
             export_fields = self.parameters.get('export_fields')
@@ -299,7 +273,7 @@ class ExportForm(BaseForm):
             filename = '%s.%s' % (self.context.title, format)
             filename = codecs.utf_8_encode('filename="%s"' % filename)[0]
 
-            output = self.export_as(dataset, format)
+            output = getattr(dataset, format)
 
             RESPONSE = self.request.RESPONSE
             RESPONSE.setHeader("Content-disposition", filename)
@@ -310,5 +284,5 @@ class ExportForm(BaseForm):
 
             self.output = output
 
-        except ContentExportError, e:
+        except ContentExportError as e:
             self.raise_action_error(e.translate(self.request))

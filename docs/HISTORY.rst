@@ -5,7 +5,8 @@ Changelog
 0.25 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Removed autofilter in XLSX files. This lead to problems with Excel.
+  [href]
 
 0.24 (2015-01-09)
 ~~~~~~~~~~~~~~~~~
