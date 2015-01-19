@@ -296,7 +296,7 @@ msgstr "Kurzzeichen"
 
 #: ./browser/export_form.py:217
 msgid "Standard"
-msgstr "Standart"
+msgstr "Standard"
 
 #: ./profiles/standard/types/seantis.people.standard.xml
 msgid "Standard Contact"
