@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.26 (unreleased)
+~~~~~~~~~~~~~~~~~
+
+- Fix metadata being out of sync. Fixes #34.
+  [href]
+
 0.25 (2015-01-19)
 ~~~~~~~~~~~~~~~~~
 
