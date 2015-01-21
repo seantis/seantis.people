@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.26 (unreleased)
+0.26 (2015-01-21)
 ~~~~~~~~~~~~~~~~~
 
 - Fix metadata being out of sync. Fixes #34.
