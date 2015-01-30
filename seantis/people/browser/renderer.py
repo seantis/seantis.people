@@ -224,9 +224,12 @@ class ChoiceRenderer(object):
         value = getattr(context, field)
         schema = tools.get_schema_from_portal_type(context.portal_type)
         name = schema.get(field).vocabularyName
-        voca = zope.component.getUtility(IVocabularyFactory, name)(context)
+        voc = zope.component.getUtility(IVocabularyFactory, name)(context)
 
-        return voca.getTerm(value).title
+        try:
+            return voc.getTerm(value).title
+        except LookupError:
+            return value
 
 
 # This is not the best way to match objects to classes, but it sure is the
