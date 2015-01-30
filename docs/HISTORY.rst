@@ -5,7 +5,8 @@ Changelog
 0.27 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Adds a renderer for choices.
+  [msom]
 
 0.26 (2015-01-21)
 ~~~~~~~~~~~~~~~~~
@@ -32,7 +33,7 @@ Nothing yet.
 0.23 (2014-12-18)
 ~~~~~~~~~~~~~~~~~
 
-- Adds a custom catalog to manage generated indexes and metadata. 
+- Adds a custom catalog to manage generated indexes and metadata.
 
   WARNING!
 

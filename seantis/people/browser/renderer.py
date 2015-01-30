@@ -11,6 +11,7 @@ is by far the fastest way of doing templates in python.
 """
 
 import string
+import zope.component
 
 from zope.schema import (
     Bool,
@@ -22,8 +23,10 @@ from zope.schema import (
     Text,
     Tuple,
     Date,
-    Datetime
+    Datetime,
+    Choice
 )
+from zope.schema.interfaces import IVocabularyFactory
 from plone import api
 from plone.namedfile.field import NamedBlobImage, NamedImage
 from plone.app.textfield import RichText
@@ -215,6 +218,17 @@ class DateRenderer(object):
             return u''
 
 
+class ChoiceRenderer(object):
+
+    def __call__(self, context, field, options):
+        value = getattr(context, field)
+        schema = tools.get_schema_from_portal_type(context.portal_type)
+        name = schema.get(field).vocabularyName
+        voca = zope.component.getUtility(IVocabularyFactory, name)(context)
+
+        return voca.getTerm(value).title
+
+
 # This is not the best way to match objects to classes, but it sure is the
 # fastest. Checking through isinstance would require going through a list.
 # Since that can easily happen more than a thousand times in a request it's
@@ -238,7 +252,8 @@ renderers = {
     LinkList: LinkListRenderer(),
     Bool: BoolRenderer(),
     Datetime: DateRenderer(long_format=True),
-    Date: DateRenderer(long_format=False)
+    Date: DateRenderer(long_format=False),
+    Choice: ChoiceRenderer(),
 }
 
 

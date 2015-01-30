@@ -1,7 +1,9 @@
 from collections import namedtuple
 from datetime import date, datetime
+from mock import patch, MagicMock
 
 from zope.interface import directlyProvides
+from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from Products.ZCatalog.interfaces import ICatalogBrain
 
@@ -65,6 +67,10 @@ class TestRenderer(tests.IntegrationTestCase):
                   <element>Three</element>
                 </values>
               </value_type>
+            </field>
+            <field name="choice" type="zope.schema.Choice">
+                <title>Choice</title>
+                <vocabulary>TestVocabulary</vocabulary>
             </field>
         </schema>
     </model>"""
@@ -196,3 +202,27 @@ class TestRenderer(tests.IntegrationTestCase):
             u'<li><a href="http://lmgtfy.com/?q=bing">Bing</a></li>',
             self.render_value('links', links)
         )
+
+    @patch('zope.component.getUtility')
+    @patch('seantis.plonetools.tools.get_schema_from_portal_type')
+    def test_choice(self, get_schema, get_utility):
+
+        class MockUtililty(object):
+            def __call__(self, name):
+                return SimpleVocabulary([
+                    SimpleTerm(value='1st', title=u'first'),
+                    SimpleTerm(value='2nd', title=u'second'),
+                ])
+
+        get_schema.return_value = self.schema
+        get_utility.return_value = MockUtililty()
+
+        renderer = Renderer(self.schema, place='list')
+
+        context = MagicMock()
+        context.portal_type = 'portal_type'
+        context.choice = '1st'
+        self.assertEqual(renderer.render(context, 'choice'), u'first')
+
+        context.choice = '2nd'
+        self.assertEqual(renderer.render(context, 'choice'), u'second')
