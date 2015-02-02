@@ -312,7 +312,7 @@ msgstr "${count} Eintrage erfolgreich importiert"
 
 #: ./content/import_content.py:196
 msgid "The ${name} column contains the unknown value ${value}"
-msgstr "The ${name} Spalte enthält den unbekannten Wert ${value}"
+msgstr "Die ${name} Spalte enthält den unbekannten Wert ${value}"
 
 #: ./content/import_content.py:117
 msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
