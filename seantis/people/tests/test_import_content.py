@@ -1,3 +1,4 @@
+from mock import patch, MagicMock
 from textwrap import dedent
 
 from zope import schema
@@ -10,6 +11,7 @@ from seantis.people.content.import_content import (
     get_dataset,
     get_attribute_map,
     get_attribute_values,
+    get_vocabularies,
     import_people,
     validate_attribute_values
 )
@@ -162,7 +164,7 @@ class TestImportContent(tests.IntegrationTestCase):
             record = {key: value}
             attrmap = {key: fieldtype(__name__=key)}
 
-            result = get_attribute_values(record, attrmap)
+            result = get_attribute_values(self.request, record, attrmap)
             self.assertEqual(result[key], expected)
 
     def test_get_attribute_values_validation_error(self):
@@ -170,7 +172,7 @@ class TestImportContent(tests.IntegrationTestCase):
         attrmap = {'test': schema.URI(__name__='test')}
 
         try:
-            get_attribute_values(record, attrmap)
+            get_attribute_values(self.request, record, attrmap)
         except ContentImportError, e:
             self.assertEqual(e.colname, 'test')
             self.assertEqual(e.message, u'The specified URI is not valid.')
@@ -243,3 +245,28 @@ class TestImportContent(tests.IntegrationTestCase):
 
         attrmap = get_attribute_map(self.request, ['foo', 'bar'], portal_type)
         self.assertEqual(len(attrmap), 0)
+
+    @patch('zope.component.getUtility')
+    def test_get_vocabularies(self, get_utility):
+        vocabulary = schema.vocabulary.SimpleVocabulary([
+            schema.vocabulary.SimpleTerm(value='1st', title=u'first'),
+            schema.vocabulary.SimpleTerm(value='2nd', title=u'second')
+        ])
+        attribute_map = {
+            'voc': schema.Choice(vocabulary=vocabulary, title=u"voc")
+        }
+
+        class MockUtililty(object):
+            def __call__(self, name):
+                return vocabulary
+
+        get_utility.return_value = MockUtililty()
+
+        vocabularies = get_vocabularies(self.request, attribute_map)
+
+        self.assertEqual(len(vocabularies), 1)
+        self.assertIn('voc', vocabularies)
+        self.assertIn('first', vocabularies['voc'])
+        self.assertEquals('1st', vocabularies['voc']['first'])
+        self.assertIn('second', vocabularies['voc'])
+        self.assertEquals('2nd', vocabularies['voc']['second'])

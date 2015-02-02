@@ -3,7 +3,9 @@ from datetime import date, time, datetime
 import isodate
 import tablib
 
+import zope
 from zope.i18nmessageid.message import Message
+from zope.schema.interfaces import IVocabularyFactory
 
 from plone import api
 from plone.app.textfield.value import RichTextValue
@@ -65,7 +67,7 @@ def get_record(request, person, fields):
 
     translate = tools.translator(request, 'seantis.people')
 
-    for field in (get_field(person, f[0]) for f in fields):
+    for field in (get_field(request, person, f[0]) for f in fields):
         if isinstance(field, Message):
             record.append(translate(field))
         else:
@@ -74,14 +76,32 @@ def get_record(request, person, fields):
     return record
 
 
-def get_field(person, field):
+def get_value(request, person, field):
+    value = getattr(person, field)
+
+    schema = tools.get_schema_from_portal_type(person.portal_type)
+    try:
+        name = schema.get(field).vocabularyName
+    except AttributeError:
+        return getattr(person, field)
+
+    vocabulary = zope.component.getUtility(IVocabularyFactory, name)(person)
+    try:
+        translate = tools.translator(request, 'seantis.people')
+        return translate(vocabulary.getTerm(value).title)
+
+    except LookupError:
+        return value
+
+
+def get_field(request, person, field):
 
     if not hasattr(person, field):
         raise ContentExportError(_(u"Field '${name}' does not exist", mapping={
             'name': field
         }))
 
-    value = getattr(person, field)
+    value = get_value(request, person, field)
 
     if value is None:
         return u''

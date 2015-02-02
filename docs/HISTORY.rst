@@ -8,6 +8,9 @@ Changelog
 - Adds a renderer for choices.
   [msom]
 
+- Import/export translated titles of vocabularies instead of values. Closes #36.
+  [msom]
+
 0.26 (2015-01-21)
 ~~~~~~~~~~~~~~~~~
 

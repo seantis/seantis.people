@@ -9,11 +9,13 @@ import tablib
 from plone import api
 from plone import namedfile
 
+import zope
 from zope.schema import getFields, getValidationErrors, Text
 from zope.schema._bootstrapinterfaces import RequiredMissing
 from zope.schema.interfaces import (
     IFromUnicode, ValidationError, SchemaNotFullyImplemented,
-    IDate, IDatetime, IURI, ITextLine, IList, ISet, IChoice
+    IDate, IDatetime, IURI, ITextLine, IList, ISet, IChoice,
+    IVocabularyFactory
 )
 
 from isodate import parse_date, parse_datetime
@@ -34,7 +36,7 @@ def import_people(request, container, portal_type, format, data):
     for ix, record in enumerate(dataset.dict):
         log.info('processing row number {}'.format(ix+1))
         try:
-            values = get_attribute_values(record, attribute_map)
+            values = get_attribute_values(request, record, attribute_map)
 
             # add None for missing values
             for field in getFields(schema).keys():
@@ -124,6 +126,26 @@ def get_attribute_map(request, headers, portal_type):
     return attribute_map
 
 
+def get_vocabularies(request, attribute_map):
+    """ Returns a dictionary containing all (translated) vocabularies used by
+    the given attribute map.
+
+    """
+    vocabularies = {}
+    translate = tools.translator(request)
+    for header, field in attribute_map.items():
+        if IChoice.providedBy(field):
+            vocabulary = zope.component.getUtility(IVocabularyFactory,
+                                                   field.vocabularyName)
+            vocabulary = vocabulary(None)
+            vocabularies[header] = dict([
+                (translate(term.title).lower(), term.value)
+                for term in vocabulary._terms
+            ])
+
+    return vocabularies
+
+
 def download_field_from_url(field, url):
     """ Download the field from the given url if supported by the field.
     Returns False if the download does not apply to the given field. If None
@@ -162,8 +184,9 @@ def convert_to_list(value):
     return [s.strip() for s in value.split(separator)]
 
 
-def get_attribute_values(record, attribute_map):
+def get_attribute_values(request, record, attribute_map):
     values = {}
+    vocabularies = get_vocabularies(request, attribute_map)
 
     for header, field in attribute_map.items():
 
@@ -200,6 +223,24 @@ def get_attribute_values(record, attribute_map):
             if IChoice.providedBy(field.value_type):
                 values[field.__name__] = set(convert_to_list(record[header]))
                 continue
+
+        if IChoice.providedBy(field):
+            if not record[header].strip():
+                values[field.__name__] = None
+            else:
+                vocabulary = vocabularies[header]
+                if record[header].lower() not in vocabulary:
+                    raise ContentImportError(
+                        _(
+                            u'The ${name} column contains the '
+                            u'unknown value ${value}',
+                            mapping=dict(name=header, value=record[header])
+                        )
+                    )
+
+                values[field.__name__] = vocabulary[record[header].lower()]
+
+            continue
 
         assert IFromUnicode.providedBy(field), """
             {} does not support fromUnicode

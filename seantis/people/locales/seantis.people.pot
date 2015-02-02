@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-12-17 14:36+0000\n"
+"POT-Creation-Date: 2015-02-02 08:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Address Private"
 msgstr ""
 
-#: ./browser/export_form.py:193
+#: ./browser/export_form.py:191
 msgid "All"
 msgstr ""
 
@@ -50,7 +50,7 @@ msgstr ""
 msgid "Biography"
 msgstr ""
 
-#: ./browser/export_form.py:240
+#: ./browser/export_form.py:238
 #: ./browser/import_form.py:51
 msgid "Cancel"
 msgstr ""
@@ -72,12 +72,12 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ./browser/export_form.py:238
+#: ./browser/export_form.py:236
 #: ./profiles/default/types/seantis.people.list.xml
 msgid "Export"
 msgstr ""
 
-#: ./browser/export_form.py:80
+#: ./browser/export_form.py:78
 msgid "Export ${name}"
 msgstr ""
 
@@ -85,11 +85,11 @@ msgstr ""
 msgid "Field '${name}' does not exist"
 msgstr ""
 
-#: ./browser/export_form.py:34
+#: ./browser/export_form.py:32
 msgid "Fields"
 msgstr ""
 
-#: ./browser/export_form.py:35
+#: ./browser/export_form.py:33
 msgid "Fields to include in the export"
 msgstr ""
 
@@ -106,7 +106,7 @@ msgstr ""
 msgid "First Name"
 msgstr ""
 
-#: ./browser/export_form.py:41
+#: ./browser/export_form.py:39
 msgid "Format"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Import ${name}"
 msgstr ""
 
-#: ./browser/export_form.py:52
+#: ./browser/export_form.py:55
 msgid "Include Inactive"
 msgstr ""
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "Next portrait"
 msgstr ""
 
-#: ./browser/renderer.py:75
+#: ./browser/renderer.py:78
 #: ./content/export_content.py:90
 msgid "No"
 msgstr ""
@@ -191,7 +191,7 @@ msgstr ""
 msgid "No available profiles."
 msgstr ""
 
-#: ./content/import_content.py:78
+#: ./content/import_content.py:80
 msgid "No column headers were found"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: ./content/import_content.py:234
+#: ./content/import_content.py:292
 msgid "Required column is missing"
 msgstr ""
 
@@ -297,7 +297,7 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: ./browser/export_form.py:217
+#: ./browser/export_form.py:215
 msgid "Standard"
 msgstr ""
 
@@ -305,7 +305,7 @@ msgstr ""
 msgid "Standard Contact"
 msgstr ""
 
-#: ./browser/export_form.py:47
+#: ./browser/export_form.py:50
 msgid "State"
 msgstr ""
 
@@ -313,15 +313,19 @@ msgstr ""
 msgid "Successfully imported ${count} records"
 msgstr ""
 
-#: ./content/import_content.py:115
+#: ./content/import_content.py:196
+msgid "The ${name} column contains the unknown value ${value}"
+msgstr ""
+
+#: ./content/import_content.py:117
 msgid "The ${name} column is invalid. \"title\" and \"id\" are reserved fieldnames which may not be used."
 msgstr ""
 
-#: ./content/import_content.py:107
+#: ./content/import_content.py:109
 msgid "The ${name} column is specified more than once"
 msgstr ""
 
-#: ./browser/export_form.py:295
+#: ./browser/export_form.py:269
 msgid "The selected variant could not be applied"
 msgstr ""
 
@@ -337,7 +341,7 @@ msgstr ""
 msgid "Upgradeable Profiles"
 msgstr ""
 
-#: ./browser/export_form.py:57
+#: ./browser/export_form.py:45
 msgid "Variant"
 msgstr ""
 
@@ -345,7 +349,7 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: ./browser/renderer.py:73
+#: ./browser/renderer.py:76
 #: ./content/export_content.py:90
 msgid "Yes"
 msgstr ""
