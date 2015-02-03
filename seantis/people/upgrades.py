@@ -85,3 +85,16 @@ def introduce_custom_catalog(context, profiles=None):
         catalog.refreshCatalog(clear=1)
     finally:
         setSite(old_site)
+
+
+def reindex_selectable_fields(context):
+    # An unknown number of properties have change their type (from str to
+    # unicode), we need to clear the catalogs first to avoid unicode exceptions
+    # and rebuild it then to update the related indexes
+    catalog = api.portal.get_tool('portal_catalog')
+    catalog.manage_catalogClear()
+    catalog.manage_catalogRebuild()
+
+    catalog = api.portal.get_tool(catalog_id)
+    catalog.manage_catalogClear()
+    catalog.manage_catalogRebuild()

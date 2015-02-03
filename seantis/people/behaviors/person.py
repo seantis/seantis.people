@@ -27,8 +27,13 @@ class Person(object):
 
         # organizations are defined in the general catalog, not the people
         # catalog, which only contains people, therefore use 'portal_catalog'
+        titles = []
         catalog = api.portal.get_tool('portal_catalog')
-        titles = (catalog(UID=uid)[0].Title for uid in organizations)
+        for uid in organizations:
+            title = catalog(UID=uid)[0].Title
+            if isinstance(title, str):
+                title = title.decode('utf-8')
+            titles.append(title)
 
         return sorted(titles, key=tools.unicode_collate_sortkey())
 

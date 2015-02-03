@@ -11,6 +11,9 @@ Changelog
 - Import/export translated titles of vocabularies instead of values. Closes #36.
   [msom]
 
+- Use unicode for selectable fields. Fixes #29.
+  [msom]
+
 0.26 (2015-01-21)
 ~~~~~~~~~~~~~~~~~
 
