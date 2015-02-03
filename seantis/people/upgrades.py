@@ -7,7 +7,6 @@ from plone import api
 from plone.dexterity.interfaces import IDexterityFTI
 
 from seantis.people import catalog_id
-from seantis.people.interfaces import IPersonMarker
 from seantis.people.supermodel.indexing import update_related_indexes
 
 
@@ -89,13 +88,13 @@ def introduce_custom_catalog(context, profiles=None):
 
 
 def reindex_selectable_fields(context):
-    catalog = api.portal.get_tool(catalog_id)
-    members = catalog.unrestrictedSearchResults(
-        object_provides=IPersonMarker.__identifier__
-    )
+    # An unknown number of properties have change their type (from str to
+    # unicode), we need to clear the catalogs first to avoid unicode exceptions
+    # and rebuild it then to update the related indexes
+    catalog = api.portal.get_tool('portal_catalog')
+    catalog.manage_catalogClear()
+    catalog.manage_catalogRebuild()
 
-    for member in [m.getObject() for m in members]:
-        try:
-            member.reindexObject()
-        except UnicodeWarning:
-            pass
+    catalog = api.portal.get_tool(catalog_id)
+    catalog.manage_catalogClear()
+    catalog.manage_catalogRebuild()
