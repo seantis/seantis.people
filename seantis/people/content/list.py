@@ -58,8 +58,7 @@ class List(Container):
                 if isinstance(filter, LetterFilter):
                     keyword_index = 'first_letter'
 
-                # the catalog cannot deal with unicode filter values
-                query[keyword_index] = {'query': filter.value.encode('utf-8')}
+                query[keyword_index] = {'query': filter.value}
 
         if unrestricted_search:
             return catalog.unrestrictedSearchResults(query)

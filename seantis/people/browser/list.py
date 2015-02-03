@@ -109,9 +109,10 @@ class ListView(BaseView):
                 continue
 
             if isinstance(value, list):
-                map(unique_values.add, value)
+                for item in value:
+                    unique_values.add(item.encode('utf-8'))
             else:
-                unique_values.add(value)
+                unique_values.add(value.encode('utf-8'))
 
         return sorted(unique_values, key=tools.unicode_collate_sortkey())
 

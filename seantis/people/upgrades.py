@@ -7,6 +7,7 @@ from plone import api
 from plone.dexterity.interfaces import IDexterityFTI
 
 from seantis.people import catalog_id
+from seantis.people.interfaces import IPersonMarker
 from seantis.people.supermodel.indexing import update_related_indexes
 
 
@@ -85,3 +86,16 @@ def introduce_custom_catalog(context, profiles=None):
         catalog.refreshCatalog(clear=1)
     finally:
         setSite(old_site)
+
+
+def reindex_selectable_fields(context):
+    catalog = api.portal.get_tool(catalog_id)
+    members = catalog.unrestrictedSearchResults(
+        object_provides=IPersonMarker.__identifier__
+    )
+
+    for member in [m.getObject() for m in members]:
+        try:
+            member.reindexObject()
+        except UnicodeWarning:
+            pass
