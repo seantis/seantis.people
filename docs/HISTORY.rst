@@ -14,6 +14,9 @@ Changelog
 - Use unicode for selectable fields. Fixes #29.
   [msom]
 
+- Fix unicode error in import.
+  [msom]
+
 0.26 (2015-01-21)
 ~~~~~~~~~~~~~~~~~
 

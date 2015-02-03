@@ -164,7 +164,7 @@ def download_field_from_url(field, url):
     for fieldtype, klass in downloadables.items():
         if isinstance(field, fieldtype):
             try:
-                image = klass(urlopen(url).read())
+                image = klass(urlopen(url.encode('utf-8')).read())
                 if -1 in image.getImageSize():
                     return None
                 else:
