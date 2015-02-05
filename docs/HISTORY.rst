@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.27 (unreleased)
+0.27 (2015-02-05)
 ~~~~~~~~~~~~~~~~~
 
 - Make sure "False" values are rendered and not omitted.
