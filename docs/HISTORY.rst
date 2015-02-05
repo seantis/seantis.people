@@ -5,6 +5,9 @@ Changelog
 0.27 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
+- Make sure "False" values are rendered and not omitted.
+  [href]
+
 - Adds a renderer for choices.
   [msom]
 

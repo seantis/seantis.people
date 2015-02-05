@@ -19,7 +19,7 @@
                           </tal:block>
                         </tal:block>
                         <tal:block condition="python: field not in context.membership_fields">
-                          <tal:block define="value context/?field" condition="value">
+                          <tal:block define="value context/?field" condition="python: value is not None">
                             <div class="person-detail">
                               <h2 tal:content="python: view.get_field_title(field)" />
                               <div tal:content="structure python: view.renderer.render(context, field)" />
