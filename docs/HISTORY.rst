@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.28 (unreleased)
+~~~~~~~~~~~~~~~~~
+
+- Check permissions in constrain types. Fixes #38.
+  [msom]
+
 0.27 (2015-02-05)
 ~~~~~~~~~~~~~~~~~
 
