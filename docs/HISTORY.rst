@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.28 (unreleased)
+0.28 (2015-03-02)
 ~~~~~~~~~~~~~~~~~
 
 - Check permissions in constrain types. Fixes #38.
