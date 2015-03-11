@@ -128,3 +128,45 @@ class TestCatalog(tests.IntegrationTestCase):
 
         # person only
         self.assertEqual(len(people_catalog(created=created)), 1)
+
+    def test_effectiveRange_index(self):
+        from Products.ZCatalog.ZCatalog import ZCatalog
+
+        # Create a patched search which queries only effective range
+        def patched_searchResults(self, REQUEST=None, used=None, **kw):
+            keys = [key for key in kw.keys() if key != 'effectiveRange']
+            for key in keys:
+                del kw[key]
+            return self._searchResults(REQUEST, used, **kw)
+
+        ZCatalog._searchResults = ZCatalog.searchResults
+        ZCatalog.searchResults = patched_searchResults
+
+        # Create test items
+        new_type = self.new_temporary_type(
+            behaviors=[IPerson.__identifier__],
+            klass='seantis.people.types.base.PersonBase'
+        )
+
+        set_columns(new_type.lookupSchema(), [['foo']])
+        on_type_modified(new_type)
+
+        with self.user('admin'):
+            created = datetime.now()
+
+            api.content.create(
+                id='007',
+                type=new_type.id,
+                container=self.new_temporary_folder(),
+                Subject='O O Seven',
+                title='James Bond',
+                description='Spy for his Majesty, the Queen',
+                created=created
+            )
+
+        # Query with both catalogs
+        portal_catalog = api.portal.get_tool('portal_catalog')
+        people_catalog = api.portal.get_tool('seantis_people_catalog')
+
+        self.assertIn('James Bond', [b.Title for b in portal_catalog()])
+        self.assertIn('James Bond', [b.Title for b in people_catalog()])
