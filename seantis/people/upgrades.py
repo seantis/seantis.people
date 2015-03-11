@@ -98,3 +98,18 @@ def reindex_selectable_fields(context):
     catalog = api.portal.get_tool(catalog_id)
     catalog.manage_catalogClear()
     catalog.manage_catalogRebuild()
+
+
+def enable_referenceablebehavior(context):
+    catalog = api.portal.get_tool('portal_catalog')
+    uid_catalog = api.portal.get_tool('uid_catalog')
+    types = api.portal.get_tool('portal_types')
+    portal = api.portal.get()
+
+    for type_name in ('seantis.people.list', 'seantis.people.membership'):
+        types[type_name].behaviors += (
+            'plone.app.referenceablebehavior.referenceable.IReferenceable',)
+
+        for brain in catalog.unrestrictedSearchResults(portal_type=type_name):
+            obj = portal.unrestrictedTraverse(brain.getPath())
+            uid_catalog.catalog_object(obj, brain.getPath())
