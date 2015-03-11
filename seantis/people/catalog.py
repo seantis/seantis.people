@@ -162,9 +162,6 @@ class PeopleCatalog(CatalogTool):
             if hasattr(index, 'since_field'):
                 extra.since_field = index.since_field
 
-            if hasattr(index, 'since_field'):
-                extra.since_field = index.since_field
-
             if hasattr(index, 'until_field'):
                 extra.until_field = index.until_field
 
