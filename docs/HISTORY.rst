@@ -8,6 +8,9 @@ Changelog
 - Enable referenceablebehavior on lists and memberships.
   [jone]
 
+- Update memberships if the parent folder has changed. Fixes #43
+  [msom]
+
 0.28 (2015-03-02)
 ~~~~~~~~~~~~~~~~~
 

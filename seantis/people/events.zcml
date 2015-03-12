@@ -38,4 +38,10 @@
         handler=".behaviors.memberships.on_membership_content_item_changed"
         />
 
+    <subscriber
+        for="Products.ATContentTypes.interfaces.folder.IATFolder
+             zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+        handler=".behaviors.memberships.on_parent_folder_modified"
+        />
+
 </configure>
