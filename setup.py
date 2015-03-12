@@ -56,6 +56,7 @@ setup(
         'five.grok',
         'plone.behavior',
         'plone.app.dexterity [grok, relations]',
+        'plone.app.referenceablebehavior',
         'plone.app.registry',
         'plone.formwidget.datetime',
         'seantis.plonetools>=0.16',

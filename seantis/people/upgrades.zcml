@@ -72,6 +72,13 @@
         handler=".upgrades.reindex_selectable_fields"
     />
 
+    <genericsetup:upgradeStep
+        title="Enable referenceablebehavior."
+        source="1010" destination="1011"
+        profile="seantis.people:default"
+        handler=".upgrades.enable_referenceablebehavior"
+    />
+
     <!-- PHZ Upgrades -->
     <genericsetup:upgradeStep
         title="Remove import action from detail view."
