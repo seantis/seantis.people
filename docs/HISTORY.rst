@@ -8,6 +8,9 @@ Changelog
 - Enable referenceablebehavior on lists and memberships.
   [jone]
 
+- Provide a temporary fix for #41.
+  [msom]
+
 0.28 (2015-03-02)
 ~~~~~~~~~~~~~~~~~
 
