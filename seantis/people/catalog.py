@@ -1,4 +1,5 @@
 from AccessControl import ClassSecurityInfo
+from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from Globals import InitializeClass
 from plone import api
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -57,6 +58,7 @@ class PeopleCatalog(CatalogTool):
     security.declarePrivate('setup_lexicons')
     security.declarePrivate('setup_indexes')
     security.declarePrivate('setup_metadata')
+    security.declareProtected(SearchZCatalog, 'searchResults')
 
     _properties = (
         {'id': 'title', 'type': 'string', 'mode': 'w'},
@@ -162,9 +164,6 @@ class PeopleCatalog(CatalogTool):
             if hasattr(index, 'since_field'):
                 extra.since_field = index.since_field
 
-            if hasattr(index, 'since_field'):
-                extra.since_field = index.since_field
-
             if hasattr(index, 'until_field'):
                 extra.until_field = index.until_field
 
@@ -178,6 +177,23 @@ class PeopleCatalog(CatalogTool):
         # copy the metadata from the base catalog
         for name in self.base_catalog._catalog.names:
             self.addColumn(name)
+
+    def searchResults(self, REQUEST=None, **kw):
+        """Calls the catalog tool with avoiding using the 'effectiveRange'
+        DateRangeIndex since our catalog has a not yet solved issue with it.
+        (see https://github.com/seantis/seantis.people/issues/41)
+        """
+        return super(PeopleCatalog, self).searchResults(REQUEST, **kw)
+
+        kw = kw.copy()
+        if 'effectiveRange' in kw:
+            del kw['effectiveRange']
+
+        return super(PeopleCatalog, self).searchResults(
+            REQUEST, show_inactive=True, **kw
+        )
+
+    __call__ = searchResults
 
 
 InitializeClass(PeopleCatalog)

@@ -16,6 +16,9 @@ following itches:
 - It must be possible to put people into various organizations and show the
   membership of those organizations.
 
+Warning! There is currently an issue (https://github.com/seantis/seantis.people/issues/41)
+which results in that publishing and expiration date of people are not working.
+
 Design
 ------
 
@@ -25,12 +28,12 @@ This is how it is done:
   consists of a number of dexterity objects with IPerson behavior. Within
   one list only one dexterity type is allowed.
 
-- This list of people is the same for all lists of people - it's just that 
+- This list of people is the same for all lists of people - it's just that
   the contained people must all have the same type.
 
 - Through the schema of the dexterity type we define the fields, their
   required read and write permissions, the fields shown in the list, the order
-  of those fields, the fields available for filtering in the list, and the 
+  of those fields, the fields available for filtering in the list, and the
   fields shown in the detail view.
 
 - These dexterity types may be installed by any package or they may be included
@@ -119,7 +122,7 @@ Requirements
 Build Status
 ------------
 
-.. image:: https://travis-ci.org/seantis/seantis.people.png   
+.. image:: https://travis-ci.org/seantis/seantis.people.png
   :target: https://travis-ci.org/seantis/seantis.people
   :alt: Build Status
 
