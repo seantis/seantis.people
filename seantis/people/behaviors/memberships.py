@@ -38,6 +38,22 @@ def on_membership_content_item_changed(context, event):
         notify(ObjectModifiedEvent(context.person))
 
 
+def on_parent_folder_modified(context, event=None):
+    """ Listens to IObjectModifiedEvent events of folders and triggers
+    reindexing for containing memberships.
+
+    """
+
+    catalog = api.portal.get_tool('portal_catalog')
+    memberships = catalog(
+        object_provides=IMembership.__identifier__,
+        path={'query': '/'.join(context.getPhysicalPath()), 'depth': 1}
+    )
+
+    for membership in memberships:
+        notify(ObjectModifiedEvent(membership.getObject()))
+
+
 def get_memberships(person=None, org_filter=None):
     context = api.portal.get()
 

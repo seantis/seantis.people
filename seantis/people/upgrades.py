@@ -113,3 +113,8 @@ def enable_referenceablebehavior(context):
         for brain in catalog.unrestrictedSearchResults(portal_type=type_name):
             obj = portal.unrestrictedTraverse(brain.getPath())
             uid_catalog.catalog_object(obj, brain.getPath())
+
+
+def reindex_members(context):
+    catalog = api.portal.get_tool(catalog_id)
+    catalog.refreshCatalog(clear=1)
