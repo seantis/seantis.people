@@ -40,7 +40,7 @@
 
     <subscriber
         for="Products.ATContentTypes.interfaces.folder.IATFolder
-             zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+             Products.Archetypes.interfaces.IObjectEditedEvent"
         handler=".behaviors.memberships.on_parent_folder_modified"
         />
 
