@@ -183,8 +183,6 @@ class PeopleCatalog(CatalogTool):
         DateRangeIndex since our catalog has a not yet solved issue with it.
         (see https://github.com/seantis/seantis.people/issues/41)
         """
-        return super(PeopleCatalog, self).searchResults(REQUEST, **kw)
-
         kw = kw.copy()
         if 'effectiveRange' in kw:
             del kw['effectiveRange']

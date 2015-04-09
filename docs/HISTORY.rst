@@ -5,7 +5,8 @@ Changelog
 0.30 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Fix the temporary fix. Updates #41.
+  [msom]
 
 0.29 (2015-03-18)
 ~~~~~~~~~~~~~~~~~
