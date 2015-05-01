@@ -91,12 +91,15 @@ class ZodbMembershipSource(grok.Adapter):
 
         # memberships are stored outside the people's list, so the normal
         # catalog is used instead of the people's catalog
-        memberships = api.portal.get_tool('portal_catalog')(**query)
+        catalog = api.portal.get_tool('portal_catalog')
+        memberships = catalog(**query)
 
         result = {}
 
         for membership in (m.getObject() for m in memberships):
             organization = IUUID(tools.get_parent(membership))
+            if not catalog(UID=organization):
+                continue
             result.setdefault(organization, []).append(membership)
 
         return result

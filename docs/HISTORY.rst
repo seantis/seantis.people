@@ -5,7 +5,7 @@ Changelog
 0.31 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Fix an error in ZodbMembershipSource #44.
 
 0.30 (2015-04-09)
 ~~~~~~~~~~~~~~~~~
