@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.31 (unreleased)
+0.31 (2015-05-03)
 ~~~~~~~~~~~~~~~~~
 
 - Fix an error in ZodbMembershipSource #44.
