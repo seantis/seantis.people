@@ -86,6 +86,13 @@
         handler=".upgrades.reindex_members"
     />
 
+    <genericsetup:upgradeStep
+        title="Reindex members."
+        source="1012" destination="1013"
+        profile="seantis.people:default"
+        handler=".upgrades.reindex_members"
+    />
+
     <!-- PHZ Upgrades -->
     <genericsetup:upgradeStep
         title="Remove import action from detail view."

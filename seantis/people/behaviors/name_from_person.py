@@ -14,6 +14,7 @@ def on_object_modified(obj, event=None):
     """
 
     obj.setTitle(get_name_from_person(obj))
+    obj.reindexObject()
 
 
 def get_name_from_person(obj):

@@ -118,3 +118,6 @@ def enable_referenceablebehavior(context):
 def reindex_members(context):
     catalog = api.portal.get_tool(catalog_id)
     catalog.refreshCatalog(clear=1)
+
+    catalog = api.portal.get_tool('portal_catalog')
+    catalog.refreshCatalog(clear=1)
