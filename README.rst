@@ -129,9 +129,11 @@ Build Status
 Coverage
 --------
 
-.. image:: https://coveralls.io/repos/seantis/seantis.people/badge.png?branch=master
-  :target: https://coveralls.io/r/seantis/seantis.people?branch=master
+.. image:: https://coveralls.io/repos/seantis/seantis.people/badge.svg?branch=master&service=github
+  :target: https://coveralls.io/github/seantis/seantis.people?branch=master
   :alt: Project Coverage
+
+
 
 Latest PyPI Release
 -------------------
