@@ -13,6 +13,7 @@ script: bin/coverage run bin/test -s seantis.people
 
 after_success:
     - pip install coveralls
+    - python -m coverage.pickle2json
     - coveralls
 
 cache:

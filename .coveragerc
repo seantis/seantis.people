@@ -7,4 +7,5 @@ omit =
     */test*
     */test-views/*
     */distutils/__init__.py
+    */upgrades.py
     src/*
