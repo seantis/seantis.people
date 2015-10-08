@@ -135,7 +135,7 @@ Coverage
 
 Latest PyPI Release
 -------------------
-.. image:: https://pypip.in/v/seantis.people/badge.png
+.. image:: https://img.shields.io/pypi/v/seantis.people.svg
   :target: https://crate.io/packages/seantis.people
   :alt: Latest PyPI Release
 
