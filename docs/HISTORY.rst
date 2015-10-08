@@ -2,7 +2,7 @@
 Changelog
 ---------
 
-0.32 (unreleased)
+0.32 (2015-10-08)
 ~~~~~~~~~~~~~~~~~
 
 - Update the catalog after renaming a person #45.
