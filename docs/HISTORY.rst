@@ -5,12 +5,14 @@ Changelog
 0.32 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Update the catalog after renaming a person #45.
+  [msom]
 
 0.31 (2015-05-03)
 ~~~~~~~~~~~~~~~~~
 
 - Fix an error in ZodbMembershipSource #44.
+  [msom]
 
 0.30 (2015-04-09)
 ~~~~~~~~~~~~~~~~~

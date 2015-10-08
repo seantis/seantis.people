@@ -85,3 +85,27 @@ class TestBrowser(tests.FunctionalTestCase):
         browser.open(list_url)
         self.assertNotIn('Claire', browser.contents)
         self.assertNotIn('Dunphy', browser.contents)
+
+    def test_rename_person(self):
+        list_url = self.new_people_list()
+        self.new_person('Claire', 'Dunphy')
+
+        browser = self.new_admin_browser()
+
+        browser.open(list_url)
+        self.assertIn('Dunphy', browser.contents)
+        browser.open(self.baseurl + '/@@search?SearchableText=Dunphy')
+        self.assertIn('Claire', browser.contents)
+        browser.open(self.baseurl + '/@@search?SearchableText=Griffin')
+        self.assertIn('No results were found', browser.contents)
+
+        browser.open(list_url + '/dunphy-claire/edit')
+        browser.getControl('Last Name').value = 'Griffin'
+        browser.getControl('Save').click()
+
+        browser.open(list_url)
+        self.assertIn('Griffin', browser.contents)
+        browser.open(self.baseurl + '/@@search?SearchableText=Dunphy')
+        self.assertIn('No results were found', browser.contents)
+        browser.open(self.baseurl + '/@@search?SearchableText=Griffin')
+        self.assertIn('Claire', browser.contents)
