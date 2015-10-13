@@ -5,7 +5,8 @@ Changelog
 0.33 (unreleased)
 ~~~~~~~~~~~~~~~~~
 
-Nothing yet.
+- Move people specific styles from plonetheme.onegov to this package.
+  [lknoepfel]
 
 0.32 (2015-10-08)
 ~~~~~~~~~~~~~~~~~
