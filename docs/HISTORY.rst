@@ -8,6 +8,9 @@ Changelog
 - Move people specific styles from plonetheme.onegov to this package.
   [lknoepfel]
 
+- Add an additional organisation unit for PHZ.
+  [msom]
+
 0.32 (2015-10-08)
 ~~~~~~~~~~~~~~~~~
 

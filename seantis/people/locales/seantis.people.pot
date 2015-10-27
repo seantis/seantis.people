@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-02-02 08:24+0000\n"
+"POT-Creation-Date: 2015-10-27 10:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Export ${name}"
 msgstr ""
 
-#: ./content/export_content.py:80
+#: ./content/export_content.py:100
 msgid "Field '${name}' does not exist"
 msgstr ""
 
@@ -183,7 +183,7 @@ msgid "Next portrait"
 msgstr ""
 
 #: ./browser/renderer.py:78
-#: ./content/export_content.py:90
+#: ./content/export_content.py:110
 msgid "No"
 msgstr ""
 
@@ -203,7 +203,7 @@ msgstr ""
 msgid "No people in the list."
 msgstr ""
 
-#: ./content/export_content.py:32
+#: ./content/export_content.py:34
 msgid "No people to export"
 msgstr ""
 
@@ -229,6 +229,10 @@ msgstr ""
 
 #: ./types/phz.xml
 msgid "Organisation Unit 2"
+msgstr ""
+
+#: ./types/phz.xml
+msgid "Organisation Unit 3"
 msgstr ""
 
 #: ./types/standard.xml
@@ -273,7 +277,7 @@ msgstr ""
 msgid "Private"
 msgstr ""
 
-#: ./content/import_content.py:292
+#: ./content/import_content.py:275
 msgid "Required column is missing"
 msgstr ""
 
@@ -313,7 +317,7 @@ msgstr ""
 msgid "Successfully imported ${count} records"
 msgstr ""
 
-#: ./content/import_content.py:196
+#: ./content/import_content.py:234
 msgid "The ${name} column contains the unknown value ${value}"
 msgstr ""
 
@@ -350,7 +354,7 @@ msgid "Website"
 msgstr ""
 
 #: ./browser/renderer.py:76
-#: ./content/export_content.py:90
+#: ./content/export_content.py:110
 msgid "Yes"
 msgstr ""
 
