@@ -41,6 +41,11 @@
       <required>False</required>
     </field>
 
+    <field name="org_unit_3" type="zope.schema.TextLine" indexer:searchable="true">
+      <title i18n:translate="">Organisation Unit 3</title>
+      <required>False</required>
+    </field>
+
     <field name="email" type="seantis.plonetools.schemafields.Email" indexer:searchable="true">
       <title i18n:translate="">E-Mail</title>
     </field>
@@ -107,6 +112,7 @@
         <people:item>function</people:item>
         <people:item>org_unit_1</people:item>
         <people:item>org_unit_2</people:item>
+        <people:item>org_unit_3</people:item>
         <people:item>email</people:item>
         <people:item>phone</people:item>
         <people:item>shortcode</people:item>

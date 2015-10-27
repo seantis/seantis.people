@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-02-02 08:24+0000\n"
+"POT-Creation-Date: 2015-10-27 10:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,7 +78,7 @@ msgstr "Export"
 msgid "Export ${name}"
 msgstr "${name} exportieren"
 
-#: ./content/export_content.py:80
+#: ./content/export_content.py:100
 msgid "Field '${name}' does not exist"
 msgstr "Das Feld mit dem Namen '${name}' existiert nicht"
 
@@ -180,7 +180,7 @@ msgid "Next portrait"
 msgstr "Nächstes Portrait"
 
 #: ./browser/renderer.py:78
-#: ./content/export_content.py:90
+#: ./content/export_content.py:110
 msgid "No"
 msgstr "Nein"
 
@@ -200,7 +200,7 @@ msgstr "Keine installierten Profile."
 msgid "No people in the list."
 msgstr "Keine Personen in der Liste."
 
-#: ./content/export_content.py:32
+#: ./content/export_content.py:34
 msgid "No people to export"
 msgstr "Keine Personen für den Export vorhanden"
 
@@ -226,6 +226,10 @@ msgstr "Organisationseinheit"
 
 #: ./types/phz.xml
 msgid "Organisation Unit 2"
+msgstr "Weitere Organisationseinheit"
+
+#: ./types/phz.xml
+msgid "Organisation Unit 3"
 msgstr "Weitere Organisationseinheit"
 
 #: ./types/standard.xml
@@ -270,7 +274,7 @@ msgstr "Vorheriges Portrait"
 msgid "Private"
 msgstr "Privat"
 
-#: ./content/import_content.py:292
+#: ./content/import_content.py:275
 msgid "Required column is missing"
 msgstr "Benötigte Spalte fehlt"
 
@@ -310,7 +314,7 @@ msgstr "Status"
 msgid "Successfully imported ${count} records"
 msgstr "${count} Eintrage erfolgreich importiert"
 
-#: ./content/import_content.py:196
+#: ./content/import_content.py:234
 msgid "The ${name} column contains the unknown value ${value}"
 msgstr "Die ${name} Spalte enthält den unbekannten Wert ${value}"
 
@@ -347,6 +351,6 @@ msgid "Website"
 msgstr "Webseite"
 
 #: ./browser/renderer.py:76
-#: ./content/export_content.py:90
+#: ./content/export_content.py:110
 msgid "Yes"
 msgstr "Ja"
