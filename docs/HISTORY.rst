@@ -2,12 +2,11 @@
 Changelog
 ---------
 
-1.0.0 (unreleased)
+1.0.0 (2015-11-13)
 ~~~~~~~~~~~~~~~~~~
 
 - Add an additional organisation unit for PHZ.
   [msom]
-
 
 0.32 (2015-10-08)
 ~~~~~~~~~~~~~~~~~
